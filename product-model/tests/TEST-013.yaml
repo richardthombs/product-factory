@@ -1,0 +1,7 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-012
+file_path: product-tools/tests/changeRequirement.test.ts
+id: TEST-013
+test_name: records a RequirementChanged event and projects the updated requirement description

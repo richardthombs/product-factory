@@ -9,12 +9,12 @@ Event-sourced product knowledge system for agent-driven software delivery.
 
 - Product ID: PROD-001
 - Capabilities: 2
-- Features: 8
-- Requirements: 8
-- Acceptance Criteria: 11
-- Tests: 12
-- Projected from events: 42
-- Last event: EVT-20260531-0042 @ 2026-05-31T10:10:00.000Z
+- Features: 11
+- Requirements: 11
+- Acceptance Criteria: 17
+- Tests: 18
+- Projected from events: 60
+- Last event: EVT-20260531-0060 @ 2026-05-31T10:28:00.000Z
 
 # Capabilities
 
@@ -63,6 +63,39 @@ Requirements:
   - Acceptance criteria:
     - **AC-010**: Given an existing feature, when the create-requirement helper is run, then the system writes a RequirementAdded event and one AcceptanceCriterionAdded event per acceptance criterion and rebuilds the model. `TEST-010`.
     - **AC-011**: Given an existing feature, when the create-requirement helper is run with multiple acceptance criteria, then the new requirement is projected under the feature with all created acceptance criteria. `TEST-011`.
+
+### FEAT-009 — Change existing requirements and acceptance criteria
+
+Updates existing requirement and acceptance criterion definitions incrementally as the product evolves.
+
+Requirements:
+
+- **REQ-009**: The system shall provide helpers to change existing requirements and acceptance criteria without rewriting accepted history.
+  - Acceptance criteria:
+    - **AC-012**: Given an existing requirement, when the change-requirement helper is run with a new description, then the system records a RequirementChanged event and projects the updated requirement description. `TEST-013`.
+    - **AC-013**: Given an existing acceptance criterion, when the change-acceptance-criterion helper is run with new text, then the system records an AcceptanceCriterionChanged event and projects the updated acceptance criterion text. `TEST-014`.
+
+### FEAT-010 — Reshape feature structure
+
+Moves and deprecates existing features while preserving append-only product history.
+
+Requirements:
+
+- **REQ-010**: The system shall support moving an existing feature to another capability and deprecating an existing feature without deleting its history.
+  - Acceptance criteria:
+    - **AC-014**: Given an existing feature and a target capability, when the move-feature helper is run, then the system records a FeatureMovedToCapability event and projects the feature under the target capability. `TEST-015`.
+    - **AC-015**: Given an existing feature, when the deprecate-feature helper is run with a reason, then the system records a FeatureDeprecated event and projects the feature as deprecated with its deprecation reason. `TEST-016`.
+
+### FEAT-011 — Track capability and feature readiness
+
+Represents capability and feature status transitions for planning and delivery workflow.
+
+Requirements:
+
+- **REQ-011**: The system shall record capability and feature status changes and project the resulting readiness metadata.
+  - Acceptance criteria:
+    - **AC-016**: Given an existing feature, when the set-feature-status helper is run with a new status, then the system records a FeatureStatusChanged event and projects the updated feature readiness state. `TEST-017`.
+    - **AC-017**: Given an existing capability, when the set-capability-status helper is run with a new status, then the system records a CapabilityStatusChanged event and projects the updated capability readiness state. `TEST-018`.
 
 ## CAP-002 — Validate and project product model
 

@@ -1,0 +1,14 @@
+id: EVT-20260531-0043
+type: FeatureAdded
+occurred_at: 2026-05-31T10:11:00.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-005
+payload:
+  feature_id: FEAT-009
+  capability_id: CAP-001
+  name: Change existing requirements and acceptance criteria
+  description: Updates existing requirement and acceptance criterion definitions
+    incrementally as the product evolves.

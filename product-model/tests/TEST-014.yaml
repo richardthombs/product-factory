@@ -1,0 +1,7 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-013
+file_path: product-tools/tests/changeAcceptanceCriterion.test.ts
+id: TEST-014
+test_name: records an AcceptanceCriterionChanged event and projects the updated acceptance criterion text

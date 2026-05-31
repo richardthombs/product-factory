@@ -2,6 +2,12 @@
 
 Initial tooling for the event-sourced product model vertical slice.
 
+Related references:
+
+- `docs/product_change_and_delivery_workflow.md`
+- `docs/product_evolution_tooling_plan.md`
+- `product-tools/IMPLEMENTATION_CHECKLIST.md`
+
 ## Commands
 
 From the repository root:
@@ -74,6 +80,99 @@ What the helper does:
 - writes one `RequirementAdded` event and one `AcceptanceCriterionAdded` event per acceptance criterion
 - rebuilds `product-model/`
 
+To change an existing requirement description:
+
+```bash
+npm run change-requirement -- \
+  --requirement REQ-001 \
+  --description "The system shall preserve heading structure when exporting generated requirements as Markdown."
+```
+
+What the helper does:
+
+- verifies the requirement exists
+- allocates the next `EVT-*` id
+- writes a `RequirementChanged` event
+- rebuilds `product-model/`
+
+To change an existing acceptance criterion text:
+
+```bash
+npm run change-acceptance-criterion -- \
+  --acceptance-criterion AC-001 \
+  --text "Given exported Markdown with headings, when it is opened in a Markdown viewer, then the heading structure is preserved."
+```
+
+What the helper does:
+
+- verifies the acceptance criterion exists
+- allocates the next `EVT-*` id
+- writes an `AcceptanceCriterionChanged` event
+- rebuilds `product-model/`
+
+To move an existing feature to another capability:
+
+```bash
+npm run move-feature -- \
+  --feature FEAT-001 \
+  --capability CAP-002
+```
+
+What the helper does:
+
+- verifies the feature exists
+- verifies the target capability exists
+- allocates the next `EVT-*` id
+- writes a `FeatureMovedToCapability` event
+- rebuilds `product-model/`
+
+To deprecate an existing feature:
+
+```bash
+npm run deprecate-feature -- \
+  --feature FEAT-001 \
+  --reason "Replaced by a new workflow."
+```
+
+What the helper does:
+
+- verifies the feature exists
+- allocates the next `EVT-*` id
+- writes a `FeatureDeprecated` event
+- rebuilds `product-model/`
+
+To update feature readiness state:
+
+```bash
+npm run set-feature-status -- \
+  --feature FEAT-001 \
+  --status implementation_ready \
+  --reason "Specification is complete and ready for delivery."
+```
+
+What the helper does:
+
+- verifies the feature exists
+- allocates the next `EVT-*` id
+- writes a `FeatureStatusChanged` event
+- rebuilds `product-model/`
+
+To update capability readiness state:
+
+```bash
+npm run set-capability-status -- \
+  --capability CAP-001 \
+  --status scoped \
+  --reason "Capability boundaries and first feature slices are defined."
+```
+
+What the helper does:
+
+- verifies the capability exists
+- allocates the next `EVT-*` id
+- writes a `CapabilityStatusChanged` event
+- rebuilds `product-model/`
+
 To create one or more test artifacts for acceptance criteria and annotate the test source:
 
 ```bash
@@ -106,6 +205,12 @@ Implemented event types:
 - `FeatureAdded`
 - `RequirementAdded`
 - `AcceptanceCriterionAdded`
+- `RequirementChanged`
+- `AcceptanceCriterionChanged`
+- `FeatureMovedToCapability`
+- `FeatureDeprecated`
+- `FeatureStatusChanged`
+- `CapabilityStatusChanged`
 - `TestCreated`
 
 Implemented checks:
@@ -116,6 +221,12 @@ Implemented checks:
 - exactly one `ProductCreated` exists
 - references resolve in replay order
 - entity IDs are unique within their type
+- changed requirements must already exist
+- changed acceptance criteria must already exist
+- moved features must already exist and reference an existing target capability
+- deprecated features must already exist
+- feature status changes must reference existing features and valid statuses
+- capability status changes must reference existing capabilities and valid statuses
 - linked acceptance criteria exist before tests are created
 - linked test files resolve
 - linked test names resolve uniquely in source
@@ -134,3 +245,4 @@ Implemented projection output:
 - `product-model/indexes/capability-map.yaml`
 - `product-model/indexes/traceability-matrix.yaml`
 - `product-model/indexes/tests.yaml`
+- `product-model/indexes/readiness.yaml`

@@ -9,14 +9,20 @@ describe("validateEvents", () => {
     const result = await validateEvents(root);
 
     expect(result.errors).toEqual([]);
-    expect(result.events).toHaveLength(42);
+    expect(result.events).toHaveLength(60);
     expect(summarizeEvents(result.events)).toEqual({
       ProductCreated: 1,
       CapabilityAdded: 2,
-      FeatureAdded: 8,
-      RequirementAdded: 8,
-      AcceptanceCriterionAdded: 11,
-      TestCreated: 12,
+      FeatureAdded: 11,
+      RequirementAdded: 11,
+      AcceptanceCriterionAdded: 17,
+      RequirementChanged: 0,
+      AcceptanceCriterionChanged: 0,
+      FeatureMovedToCapability: 0,
+      FeatureDeprecated: 0,
+      FeatureStatusChanged: 0,
+      CapabilityStatusChanged: 0,
+      TestCreated: 18,
     });
   });
 });

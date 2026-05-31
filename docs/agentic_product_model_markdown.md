@@ -1,5 +1,13 @@
 # Agentic Product Model
 
+## Related Documents
+
+- `docs/product_change_and_delivery_workflow.md` - consolidated branch-delta-driven workflow
+- `docs/branch_delta_workflow.md` - branch-only product events as proposed product delta
+- `docs/work_package_derivation.md` - deriving implementation work packages from product deltas
+- `docs/product_evolution_event_model.md` - proposed next event-model extensions
+- `docs/product_evolution_tooling_plan.md` - concrete tooling changes for iterative evolution
+
 ## Purpose
 
 This document captures a holistic product model for a suite of agents that help specify, build, test, release, operate, and evolve software products.

@@ -1,0 +1,14 @@
+id: EVT-20260531-0048
+type: TestCreated
+occurred_at: 2026-05-31T10:16:00.000Z
+actor:
+  type: agent
+  id: test_agent
+source:
+  change_proposal_id: CHG-005
+payload:
+  test_id: TEST-014
+  acceptance_criterion_id: AC-013
+  file_path: product-tools/tests/changeAcceptanceCriterion.test.ts
+  test_name: records an AcceptanceCriterionChanged event and projects the updated
+    acceptance criterion text

@@ -1,3 +1,4 @@
+import { DEFAULT_CAPABILITY_STATUS, DEFAULT_FEATURE_STATUS } from "../domain/status.js";
 import type { LoadedEvent } from "../validation/types.js";
 import type {
   AcceptanceCriterionState,
@@ -31,6 +32,7 @@ export function replayEvents(events: LoadedEvent[]): ProductModelState {
           id: event.payload.capability_id,
           name: event.payload.name,
           description: event.payload.description,
+          status: DEFAULT_CAPABILITY_STATUS,
           featureIds: [],
         });
         break;
@@ -48,6 +50,7 @@ export function replayEvents(events: LoadedEvent[]): ProductModelState {
           capabilityId: event.payload.capability_id,
           name: event.payload.name,
           description: event.payload.description,
+          status: DEFAULT_FEATURE_STATUS,
           requirementIds: [],
         };
 
@@ -90,6 +93,95 @@ export function replayEvents(events: LoadedEvent[]): ProductModelState {
 
         acceptanceCriteria.set(nextAcceptanceCriterion.id, nextAcceptanceCriterion);
         requirement.acceptanceCriterionIds = [...requirement.acceptanceCriterionIds, nextAcceptanceCriterion.id].sort();
+        break;
+      }
+      case "RequirementChanged": {
+        const requirement = requirements.get(event.payload.requirement_id);
+        if (!requirement) {
+          throw new Error(
+            `Cannot replay RequirementChanged from ${path}: missing requirement '${event.payload.requirement_id}'`,
+          );
+        }
+
+        requirement.description = event.payload.description;
+        break;
+      }
+      case "AcceptanceCriterionChanged": {
+        const acceptanceCriterion = acceptanceCriteria.get(event.payload.acceptance_criterion_id);
+        if (!acceptanceCriterion) {
+          throw new Error(
+            `Cannot replay AcceptanceCriterionChanged from ${path}: missing acceptance criterion '${event.payload.acceptance_criterion_id}'`,
+          );
+        }
+
+        acceptanceCriterion.text = event.payload.text;
+        break;
+      }
+      case "FeatureMovedToCapability": {
+        const feature = features.get(event.payload.feature_id);
+        if (!feature) {
+          throw new Error(
+            `Cannot replay FeatureMovedToCapability from ${path}: missing feature '${event.payload.feature_id}'`,
+          );
+        }
+
+        const targetCapability = capabilities.get(event.payload.capability_id);
+        if (!targetCapability) {
+          throw new Error(
+            `Cannot replay FeatureMovedToCapability from ${path}: missing capability '${event.payload.capability_id}'`,
+          );
+        }
+
+        const currentCapability = capabilities.get(feature.capabilityId);
+        if (!currentCapability) {
+          throw new Error(
+            `Cannot replay FeatureMovedToCapability from ${path}: missing current capability '${feature.capabilityId}'`,
+          );
+        }
+
+        currentCapability.featureIds = currentCapability.featureIds.filter((featureId) => featureId !== feature.id);
+        targetCapability.featureIds = [...targetCapability.featureIds, feature.id].sort();
+        feature.capabilityId = targetCapability.id;
+        break;
+      }
+      case "FeatureDeprecated": {
+        const feature = features.get(event.payload.feature_id);
+        if (!feature) {
+          throw new Error(
+            `Cannot replay FeatureDeprecated from ${path}: missing feature '${event.payload.feature_id}'`,
+          );
+        }
+
+        feature.status = "deprecated";
+        feature.deprecatedReason = event.payload.reason;
+        feature.statusReason = event.payload.reason;
+        break;
+      }
+      case "FeatureStatusChanged": {
+        const feature = features.get(event.payload.feature_id);
+        if (!feature) {
+          throw new Error(
+            `Cannot replay FeatureStatusChanged from ${path}: missing feature '${event.payload.feature_id}'`,
+          );
+        }
+
+        feature.status = event.payload.status;
+        feature.statusReason = event.payload.reason;
+        if (event.payload.status !== "deprecated") {
+          delete feature.deprecatedReason;
+        }
+        break;
+      }
+      case "CapabilityStatusChanged": {
+        const capability = capabilities.get(event.payload.capability_id);
+        if (!capability) {
+          throw new Error(
+            `Cannot replay CapabilityStatusChanged from ${path}: missing capability '${event.payload.capability_id}'`,
+          );
+        }
+
+        capability.status = event.payload.status;
+        capability.statusReason = event.payload.reason;
         break;
       }
       case "TestCreated": {

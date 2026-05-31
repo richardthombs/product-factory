@@ -1,0 +1,7 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-015
+file_path: product-tools/tests/deprecateFeature.test.ts
+id: TEST-016
+test_name: marks an existing feature as deprecated and projects the deprecation metadata

@@ -7,5 +7,9 @@ feature_ids:
   - FEAT-002
   - FEAT-003
   - FEAT-008
+  - FEAT-009
+  - FEAT-010
+  - FEAT-011
 id: CAP-001
 name: Manage product model structure
+status: active

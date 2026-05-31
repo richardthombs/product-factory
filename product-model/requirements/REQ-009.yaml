@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-012
+  - AC-013
+description: The system shall provide helpers to change existing requirements and acceptance criteria without rewriting accepted history.
+feature_id: FEAT-009
+id: REQ-009

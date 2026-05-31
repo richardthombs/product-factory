@@ -7,3 +7,4 @@ id: FEAT-003
 name: Create feature with requirements and acceptance criteria
 requirement_ids:
   - REQ-003
+status: active

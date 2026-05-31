@@ -7,3 +7,4 @@ id: FEAT-004
 name: Validate product events
 requirement_ids:
   - REQ-004
+status: active

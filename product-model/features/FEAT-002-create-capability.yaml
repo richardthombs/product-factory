@@ -7,3 +7,4 @@ id: FEAT-002
 name: Create capability
 requirement_ids:
   - REQ-002
+status: active

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CAPABILITY_STATUSES, FEATURE_STATUSES } from "../domain/status.js";
 
 const isoTimestamp = z
   .string()
@@ -60,6 +61,50 @@ export const acceptanceCriterionAddedPayloadSchema = z
   })
   .strict();
 
+export const requirementChangedPayloadSchema = z
+  .object({
+    requirement_id: z.string().regex(/^REQ-[A-Z0-9-]+$/),
+    description: z.string().min(1),
+  })
+  .strict();
+
+export const acceptanceCriterionChangedPayloadSchema = z
+  .object({
+    acceptance_criterion_id: z.string().regex(/^AC-[A-Z0-9-]+$/),
+    text: z.string().min(1),
+  })
+  .strict();
+
+export const featureMovedToCapabilityPayloadSchema = z
+  .object({
+    feature_id: z.string().regex(/^FEAT-[A-Z0-9-]+$/),
+    capability_id: z.string().regex(/^CAP-[A-Z0-9-]+$/),
+  })
+  .strict();
+
+export const featureDeprecatedPayloadSchema = z
+  .object({
+    feature_id: z.string().regex(/^FEAT-[A-Z0-9-]+$/),
+    reason: z.string().min(1),
+  })
+  .strict();
+
+export const featureStatusChangedPayloadSchema = z
+  .object({
+    feature_id: z.string().regex(/^FEAT-[A-Z0-9-]+$/),
+    status: z.enum(FEATURE_STATUSES),
+    reason: z.string().min(1).optional(),
+  })
+  .strict();
+
+export const capabilityStatusChangedPayloadSchema = z
+  .object({
+    capability_id: z.string().regex(/^CAP-[A-Z0-9-]+$/),
+    status: z.enum(CAPABILITY_STATUSES),
+    reason: z.string().min(1).optional(),
+  })
+  .strict();
+
 export const testCreatedPayloadSchema = z
   .object({
     test_id: z.string().regex(/^TEST-[A-Z0-9-]+$/),
@@ -78,6 +123,12 @@ const baseEventSchema = z
       "FeatureAdded",
       "RequirementAdded",
       "AcceptanceCriterionAdded",
+      "RequirementChanged",
+      "AcceptanceCriterionChanged",
+      "FeatureMovedToCapability",
+      "FeatureDeprecated",
+      "FeatureStatusChanged",
+      "CapabilityStatusChanged",
       "TestCreated",
     ]),
     occurred_at: isoTimestamp,
@@ -108,6 +159,30 @@ export const eventSchema = z.discriminatedUnion("type", [
   baseEventSchema.extend({
     type: z.literal("AcceptanceCriterionAdded"),
     payload: acceptanceCriterionAddedPayloadSchema,
+  }),
+  baseEventSchema.extend({
+    type: z.literal("RequirementChanged"),
+    payload: requirementChangedPayloadSchema,
+  }),
+  baseEventSchema.extend({
+    type: z.literal("AcceptanceCriterionChanged"),
+    payload: acceptanceCriterionChangedPayloadSchema,
+  }),
+  baseEventSchema.extend({
+    type: z.literal("FeatureMovedToCapability"),
+    payload: featureMovedToCapabilityPayloadSchema,
+  }),
+  baseEventSchema.extend({
+    type: z.literal("FeatureDeprecated"),
+    payload: featureDeprecatedPayloadSchema,
+  }),
+  baseEventSchema.extend({
+    type: z.literal("FeatureStatusChanged"),
+    payload: featureStatusChangedPayloadSchema,
+  }),
+  baseEventSchema.extend({
+    type: z.literal("CapabilityStatusChanged"),
+    payload: capabilityStatusChangedPayloadSchema,
   }),
   baseEventSchema.extend({
     type: z.literal("TestCreated"),

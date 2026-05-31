@@ -1,0 +1,10 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capability_id: CAP-001
+description: Represents capability and feature status transitions for planning and delivery workflow.
+id: FEAT-011
+name: Track capability and feature readiness
+requirement_ids:
+  - REQ-011
+status: active

@@ -1,0 +1,44 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capabilities:
+  - capability_id: CAP-001
+    status: active
+  - capability_id: CAP-002
+    status: active
+features:
+  - capability_id: CAP-001
+    feature_id: FEAT-001
+    status: active
+  - capability_id: CAP-001
+    feature_id: FEAT-002
+    status: active
+  - capability_id: CAP-001
+    feature_id: FEAT-003
+    status: active
+  - capability_id: CAP-002
+    feature_id: FEAT-004
+    status: active
+  - capability_id: CAP-002
+    feature_id: FEAT-005
+    status: active
+  - capability_id: CAP-002
+    feature_id: FEAT-006
+    status: active
+  - capability_id: CAP-002
+    feature_id: FEAT-007
+    status: active
+  - capability_id: CAP-001
+    feature_id: FEAT-008
+    status: active
+  - capability_id: CAP-001
+    feature_id: FEAT-009
+    status: active
+  - capability_id: CAP-001
+    feature_id: FEAT-010
+    status: active
+  - capability_id: CAP-001
+    feature_id: FEAT-011
+    status: active
+implementation_ready_features: []
+product_id: PROD-001

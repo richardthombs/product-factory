@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import YAML from "yaml";
 import { ZodError } from "zod";
+import { CAPABILITY_STATUSES, FEATURE_STATUSES } from "../domain/status.js";
 import { eventSchema, type ProductEvent } from "../schemas/events.js";
 import { listFilesRecursive } from "../util/fs.js";
 import type { LoadedEvent, ValidationError, ValidationResult } from "./types.js";
@@ -82,6 +83,7 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
   const eventIds = new Map<string, string>();
   const capabilityIds = new Map<string, string>();
   const featureIds = new Map<string, string>();
+  const currentFeatureCapabilities = new Map<string, string>();
   const requirementIds = new Map<string, string>();
   const acceptanceCriterionIds = new Map<string, string>();
   const testIds = new Map<string, string>();
@@ -137,6 +139,8 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             path: loaded.path,
             message: `FeatureAdded references missing capability '${loaded.event.payload.capability_id}'`,
           });
+        } else {
+          currentFeatureCapabilities.set(loaded.event.payload.feature_id, loaded.event.payload.capability_id);
         }
         break;
       }
@@ -174,6 +178,123 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
           errors.push({
             path: loaded.path,
             message: `AcceptanceCriterionAdded references missing requirement '${loaded.event.payload.requirement_id}'`,
+          });
+        }
+        break;
+      }
+      case "RequirementChanged": {
+        if (!productCreated) {
+          errors.push({
+            path: loaded.path,
+            message: "RequirementChanged requires ProductCreated to exist first",
+          });
+        }
+        if (!requirementIds.has(loaded.event.payload.requirement_id)) {
+          errors.push({
+            path: loaded.path,
+            message: `RequirementChanged references missing requirement '${loaded.event.payload.requirement_id}'`,
+          });
+        }
+        break;
+      }
+      case "AcceptanceCriterionChanged": {
+        if (!productCreated) {
+          errors.push({
+            path: loaded.path,
+            message: "AcceptanceCriterionChanged requires ProductCreated to exist first",
+          });
+        }
+        if (!acceptanceCriterionIds.has(loaded.event.payload.acceptance_criterion_id)) {
+          errors.push({
+            path: loaded.path,
+            message: `AcceptanceCriterionChanged references missing acceptance criterion '${loaded.event.payload.acceptance_criterion_id}'`,
+          });
+        }
+        break;
+      }
+      case "FeatureMovedToCapability": {
+        if (!productCreated) {
+          errors.push({
+            path: loaded.path,
+            message: "FeatureMovedToCapability requires ProductCreated to exist first",
+          });
+        }
+        if (!featureIds.has(loaded.event.payload.feature_id)) {
+          errors.push({
+            path: loaded.path,
+            message: `FeatureMovedToCapability references missing feature '${loaded.event.payload.feature_id}'`,
+          });
+        }
+        if (!capabilityIds.has(loaded.event.payload.capability_id)) {
+          errors.push({
+            path: loaded.path,
+            message: `FeatureMovedToCapability references missing capability '${loaded.event.payload.capability_id}'`,
+          });
+        }
+        const currentCapabilityId = currentFeatureCapabilities.get(loaded.event.payload.feature_id);
+        if (currentCapabilityId === loaded.event.payload.capability_id) {
+          errors.push({
+            path: loaded.path,
+            message: `FeatureMovedToCapability would not change the capability for feature '${loaded.event.payload.feature_id}'`,
+          });
+        } else if (currentCapabilityId && capabilityIds.has(loaded.event.payload.capability_id)) {
+          currentFeatureCapabilities.set(loaded.event.payload.feature_id, loaded.event.payload.capability_id);
+        }
+        break;
+      }
+      case "FeatureDeprecated": {
+        if (!productCreated) {
+          errors.push({
+            path: loaded.path,
+            message: "FeatureDeprecated requires ProductCreated to exist first",
+          });
+        }
+        if (!featureIds.has(loaded.event.payload.feature_id)) {
+          errors.push({
+            path: loaded.path,
+            message: `FeatureDeprecated references missing feature '${loaded.event.payload.feature_id}'`,
+          });
+        }
+        break;
+      }
+      case "FeatureStatusChanged": {
+        if (!productCreated) {
+          errors.push({
+            path: loaded.path,
+            message: "FeatureStatusChanged requires ProductCreated to exist first",
+          });
+        }
+        if (!featureIds.has(loaded.event.payload.feature_id)) {
+          errors.push({
+            path: loaded.path,
+            message: `FeatureStatusChanged references missing feature '${loaded.event.payload.feature_id}'`,
+          });
+        }
+        if (!FEATURE_STATUSES.includes(loaded.event.payload.status)) {
+          errors.push({
+            path: loaded.path,
+            message: `FeatureStatusChanged uses invalid status '${loaded.event.payload.status}'`,
+          });
+        }
+        break;
+      }
+      case "CapabilityStatusChanged": {
+        if (!productCreated) {
+          errors.push({
+            path: loaded.path,
+            message: "CapabilityStatusChanged requires ProductCreated to exist first",
+          });
+        }
+        if (!capabilityIds.has(loaded.event.payload.capability_id)) {
+          errors.push({
+            path: loaded.path,
+            message: `CapabilityStatusChanged references missing capability '${loaded.event.payload.capability_id}'`,
+          });
+        }
+        if (!CAPABILITY_STATUSES.includes(loaded.event.payload.status)) {
+          errors.push({
+            path: loaded.path,
+            message: `CapabilityStatusChanged uses invalid status '${loaded.event.payload.status}'`,
           });
         }
         break;
@@ -314,6 +435,12 @@ export function summarizeEvents(events: LoadedEvent[]): Record<ProductEvent["typ
       FeatureAdded: 0,
       RequirementAdded: 0,
       AcceptanceCriterionAdded: 0,
+      RequirementChanged: 0,
+      AcceptanceCriterionChanged: 0,
+      FeatureMovedToCapability: 0,
+      FeatureDeprecated: 0,
+      FeatureStatusChanged: 0,
+      CapabilityStatusChanged: 0,
       TestCreated: 0,
     },
   );

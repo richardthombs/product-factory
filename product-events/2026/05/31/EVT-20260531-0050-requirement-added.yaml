@@ -1,0 +1,13 @@
+id: EVT-20260531-0050
+type: RequirementAdded
+occurred_at: 2026-05-31T10:17:01.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-006
+payload:
+  requirement_id: REQ-010
+  feature_id: FEAT-010
+  description: The system shall support moving an existing feature to another
+    capability and deprecating an existing feature without deleting its history.

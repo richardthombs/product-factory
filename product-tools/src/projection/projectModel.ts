@@ -110,6 +110,8 @@ async function writeCapabilityFiles(modelRoot: string, state: ProductModelState)
         id: capability.id,
         name: capability.name,
         description: capability.description,
+        status: capability.status,
+        ...(capability.statusReason ? { status_reason: capability.statusReason } : {}),
         feature_ids: [...capability.featureIds].sort(),
       };
 
@@ -131,6 +133,9 @@ async function writeFeatureFiles(modelRoot: string, state: ProductModelState): P
         capability_id: feature.capabilityId,
         name: feature.name,
         description: feature.description,
+        status: feature.status,
+        ...(feature.statusReason ? { status_reason: feature.statusReason } : {}),
+        ...(feature.deprecatedReason ? { deprecated_reason: feature.deprecatedReason } : {}),
         requirement_ids: [...feature.requirementIds].sort(),
       };
 
@@ -203,6 +208,8 @@ async function writeIndexes(modelRoot: string, state: ProductModelState, summary
     capabilities: capabilities.map((capability) => ({
       capability_id: capability.id,
       capability_name: capability.name,
+      status: capability.status,
+      ...(capability.statusReason ? { status_reason: capability.statusReason } : {}),
       feature_ids: [...capability.featureIds].sort(),
     })),
   };
@@ -235,10 +242,30 @@ async function writeIndexes(modelRoot: string, state: ProductModelState, summary
     })),
   };
 
+  const readiness = {
+    product_id: state.product.id,
+    implementation_ready_features: sortById([...state.features.values()])
+      .filter((feature) => feature.status === "implementation_ready")
+      .map((feature) => feature.id),
+    capabilities: capabilities.map((capability) => ({
+      capability_id: capability.id,
+      status: capability.status,
+      ...(capability.statusReason ? { status_reason: capability.statusReason } : {}),
+    })),
+    features: sortById([...state.features.values()]).map((feature) => ({
+      feature_id: feature.id,
+      capability_id: feature.capabilityId,
+      status: feature.status,
+      ...(feature.statusReason ? { status_reason: feature.statusReason } : {}),
+      ...(feature.deprecatedReason ? { deprecated_reason: feature.deprecatedReason } : {}),
+    })),
+  };
+
   await Promise.all([
     writeGeneratedYaml(path.join(modelRoot, "indexes", "capability-map.yaml"), capabilityMap),
     writeGeneratedYaml(path.join(modelRoot, "indexes", "traceability-matrix.yaml"), traceabilityMatrix),
     writeGeneratedYaml(path.join(modelRoot, "indexes", "tests.yaml"), testCatalog),
+    writeGeneratedYaml(path.join(modelRoot, "indexes", "readiness.yaml"), readiness),
   ]);
 }
 
@@ -251,6 +278,9 @@ function buildFeatureTraceability(state: ProductModelState, featureId: string) {
   return {
     feature_id: feature.id,
     feature_name: feature.name,
+    status: feature.status,
+    ...(feature.statusReason ? { status_reason: feature.statusReason } : {}),
+    ...(feature.deprecatedReason ? { deprecated_reason: feature.deprecatedReason } : {}),
     requirements: [...feature.requirementIds].sort().map((requirementId) => buildRequirementTraceability(state, requirementId)),
   };
 }

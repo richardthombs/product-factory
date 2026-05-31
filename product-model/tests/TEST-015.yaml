@@ -1,0 +1,7 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-014
+file_path: product-tools/tests/moveFeature.test.ts
+id: TEST-015
+test_name: moves an existing feature to another capability and projects the updated hierarchy

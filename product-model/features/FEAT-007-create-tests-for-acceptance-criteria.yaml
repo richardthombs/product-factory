@@ -7,3 +7,4 @@ id: FEAT-007
 name: Create tests for acceptance criteria
 requirement_ids:
   - REQ-007
+status: active

@@ -1,0 +1,14 @@
+id: EVT-20260531-0057
+type: TestCreated
+occurred_at: 2026-05-31T10:25:00.000Z
+actor:
+  type: agent
+  id: test_agent
+source:
+  change_proposal_id: CHG-006
+payload:
+  test_id: TEST-015
+  acceptance_criterion_id: AC-014
+  file_path: product-tools/tests/moveFeature.test.ts
+  test_name: moves an existing feature to another capability and projects the
+    updated hierarchy

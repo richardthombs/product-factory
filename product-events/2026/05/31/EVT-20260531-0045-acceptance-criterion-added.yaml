@@ -1,0 +1,14 @@
+id: EVT-20260531-0045
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T10:11:02.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-005
+payload:
+  acceptance_criterion_id: AC-012
+  requirement_id: REQ-009
+  text: Given an existing requirement, when the change-requirement helper is run
+    with a new description, then the system records a RequirementChanged event
+    and projects the updated requirement description.

@@ -2,7 +2,7 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 product_id: PROD-001
-test_count: 12
+test_count: 18
 tests:
   - acceptance_criterion_id: AC-001
     file_path: product-tools/tests/createProduct.test.ts
@@ -52,3 +52,27 @@ tests:
     file_path: product-tools/tests/rebuild.test.ts
     id: TEST-012
     test_name: validates events and regenerates the product model successfully
+  - acceptance_criterion_id: AC-012
+    file_path: product-tools/tests/changeRequirement.test.ts
+    id: TEST-013
+    test_name: records a RequirementChanged event and projects the updated requirement description
+  - acceptance_criterion_id: AC-013
+    file_path: product-tools/tests/changeAcceptanceCriterion.test.ts
+    id: TEST-014
+    test_name: records an AcceptanceCriterionChanged event and projects the updated acceptance criterion text
+  - acceptance_criterion_id: AC-014
+    file_path: product-tools/tests/moveFeature.test.ts
+    id: TEST-015
+    test_name: moves an existing feature to another capability and projects the updated hierarchy
+  - acceptance_criterion_id: AC-015
+    file_path: product-tools/tests/deprecateFeature.test.ts
+    id: TEST-016
+    test_name: marks an existing feature as deprecated and projects the deprecation metadata
+  - acceptance_criterion_id: AC-016
+    file_path: product-tools/tests/setFeatureStatus.test.ts
+    id: TEST-017
+    test_name: records a feature status transition and projects readiness metadata
+  - acceptance_criterion_id: AC-017
+    file_path: product-tools/tests/setCapabilityStatus.test.ts
+    id: TEST-018
+    test_name: records a capability status transition and projects the updated capability state

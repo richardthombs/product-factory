@@ -1,5 +1,11 @@
 # Event-Sourced Product Model Implementation Plan
 
+## Related Documents
+
+- `docs/product_change_and_delivery_workflow.md` - consolidated change and delivery workflow
+- `docs/product_evolution_tooling_plan.md` - concrete next-step tooling plan
+- `docs/product_evolution_event_model.md` - proposed next event vocabulary for iterative evolution
+
 ## Goal
 
 Implement a first vertical slice of the proposed event-sourced product model so the repository can:

@@ -7,3 +7,4 @@ id: FEAT-008
 name: Create requirement
 requirement_ids:
   - REQ-008
+status: active

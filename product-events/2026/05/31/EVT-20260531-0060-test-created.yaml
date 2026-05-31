@@ -1,0 +1,14 @@
+id: EVT-20260531-0060
+type: TestCreated
+occurred_at: 2026-05-31T10:28:00.000Z
+actor:
+  type: agent
+  id: test_agent
+source:
+  change_proposal_id: CHG-006
+payload:
+  test_id: TEST-018
+  acceptance_criterion_id: AC-017
+  file_path: product-tools/tests/setCapabilityStatus.test.ts
+  test_name: records a capability status transition and projects the updated
+    capability state

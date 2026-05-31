@@ -15,6 +15,7 @@ capabilities:
                 text: Given an empty event store, when the create-product command is run, then a ProductCreated event is written and the product model is rebuilt.
             description: The system shall create an initial product record when the event store is empty.
             requirement_id: REQ-001
+        status: active
       - feature_id: FEAT-002
         feature_name: Create capability
         requirements:
@@ -25,6 +26,7 @@ capabilities:
                 text: Given an existing product model, when the create-capability command is run, then a CapabilityAdded event is written and the product model is rebuilt.
             description: The system shall create a capability under an existing product model.
             requirement_id: REQ-002
+        status: active
       - feature_id: FEAT-003
         feature_name: Create feature with requirements and acceptance criteria
         requirements:
@@ -39,6 +41,7 @@ capabilities:
                 text: Given an existing capability, when the create-feature command is run with multiple acceptance criterion texts, then the system creates one acceptance criterion event for each text.
             description: The system shall create a feature, a linked requirement, and one or more linked acceptance criteria for an existing capability.
             requirement_id: REQ-003
+        status: active
       - feature_id: FEAT-008
         feature_name: Create requirement
         requirements:
@@ -53,6 +56,52 @@ capabilities:
                 text: Given an existing feature, when the create-requirement helper is run with multiple acceptance criteria, then the new requirement is projected under the feature with all created acceptance criteria.
             description: The system shall create a requirement under an existing feature and attach one or more acceptance criteria to it.
             requirement_id: REQ-008
+        status: active
+      - feature_id: FEAT-009
+        feature_name: Change existing requirements and acceptance criteria
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-012
+                tests:
+                  - TEST-013
+                text: Given an existing requirement, when the change-requirement helper is run with a new description, then the system records a RequirementChanged event and projects the updated requirement description.
+              - acceptance_criterion_id: AC-013
+                tests:
+                  - TEST-014
+                text: Given an existing acceptance criterion, when the change-acceptance-criterion helper is run with new text, then the system records an AcceptanceCriterionChanged event and projects the updated acceptance criterion text.
+            description: The system shall provide helpers to change existing requirements and acceptance criteria without rewriting accepted history.
+            requirement_id: REQ-009
+        status: active
+      - feature_id: FEAT-010
+        feature_name: Reshape feature structure
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-014
+                tests:
+                  - TEST-015
+                text: Given an existing feature and a target capability, when the move-feature helper is run, then the system records a FeatureMovedToCapability event and projects the feature under the target capability.
+              - acceptance_criterion_id: AC-015
+                tests:
+                  - TEST-016
+                text: Given an existing feature, when the deprecate-feature helper is run with a reason, then the system records a FeatureDeprecated event and projects the feature as deprecated with its deprecation reason.
+            description: The system shall support moving an existing feature to another capability and deprecating an existing feature without deleting its history.
+            requirement_id: REQ-010
+        status: active
+      - feature_id: FEAT-011
+        feature_name: Track capability and feature readiness
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-016
+                tests:
+                  - TEST-017
+                text: Given an existing feature, when the set-feature-status helper is run with a new status, then the system records a FeatureStatusChanged event and projects the updated feature readiness state.
+              - acceptance_criterion_id: AC-017
+                tests:
+                  - TEST-018
+                text: Given an existing capability, when the set-capability-status helper is run with a new status, then the system records a CapabilityStatusChanged event and projects the updated capability readiness state.
+            description: The system shall record capability and feature status changes and project the resulting readiness metadata.
+            requirement_id: REQ-011
+        status: active
   - capability_id: CAP-002
     capability_name: Validate and project product model
     features:
@@ -66,6 +115,7 @@ capabilities:
                 text: Given a set of product event files, when validate-events is run, then the system reports schema or reference errors and succeeds only when the event stream is valid.
             description: The system shall validate product event files against schemas and repository-level consistency rules.
             requirement_id: REQ-004
+        status: active
       - feature_id: FEAT-005
         feature_name: Project current-state product model
         requirements:
@@ -77,6 +127,7 @@ capabilities:
                 text: Given a valid event stream, when project-model is run, then the system generates deterministic YAML files for the product, capabilities, features, requirements, acceptance criteria, and indexes.
             description: The system shall deterministically project accepted product events into generated YAML documentation of current state.
             requirement_id: REQ-005
+        status: active
       - feature_id: FEAT-006
         feature_name: Rebuild product model
         requirements:
@@ -87,6 +138,7 @@ capabilities:
                 text: Given a valid event stream, when rebuild is run, then the system validates events and regenerates the product model successfully.
             description: The system shall provide a rebuild command that validates events and regenerates the product model.
             requirement_id: REQ-006
+        status: active
       - feature_id: FEAT-007
         feature_name: Create tests for acceptance criteria
         requirements:
@@ -101,9 +153,10 @@ capabilities:
                 text: Given created tests and acceptance criteria, when project-model is run, then the generated model includes test ids under the relevant acceptance criteria and projects each test artifact with file path and test name.
             description: The system shall provide a create-test helper that annotates tests with acceptance criterion ids and records test artifacts with test id, file path, and test name.
             requirement_id: REQ-007
+        status: active
 product_id: PROD-001
 projected_from:
-  event_count: 42
-  last_event_id: EVT-20260531-0042
-  last_occurred_at: 2026-05-31T10:10:00.000Z
-  test_count: 12
+  event_count: 60
+  last_event_id: EVT-20260531-0060
+  last_occurred_at: 2026-05-31T10:28:00.000Z
+  test_count: 18

@@ -1,0 +1,14 @@
+id: EVT-20260531-0051
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T10:17:02.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-006
+payload:
+  acceptance_criterion_id: AC-014
+  requirement_id: REQ-010
+  text: Given an existing feature and a target capability, when the move-feature
+    helper is run, then the system records a FeatureMovedToCapability event and
+    projects the feature under the target capability.

@@ -1,0 +1,14 @@
+id: EVT-20260531-0055
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T10:21:02.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-006
+payload:
+  acceptance_criterion_id: AC-016
+  requirement_id: REQ-011
+  text: Given an existing feature, when the set-feature-status helper is run with
+    a new status, then the system records a FeatureStatusChanged event and
+    projects the updated feature readiness state.

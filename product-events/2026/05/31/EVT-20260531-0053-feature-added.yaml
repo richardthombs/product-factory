@@ -1,0 +1,14 @@
+id: EVT-20260531-0053
+type: FeatureAdded
+occurred_at: 2026-05-31T10:21:00.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-006
+payload:
+  feature_id: FEAT-011
+  capability_id: CAP-001
+  name: Track capability and feature readiness
+  description: Represents capability and feature status transitions for planning
+    and delivery workflow.

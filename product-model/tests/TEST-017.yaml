@@ -1,0 +1,7 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-016
+file_path: product-tools/tests/setFeatureStatus.test.ts
+id: TEST-017
+test_name: records a feature status transition and projects readiness metadata

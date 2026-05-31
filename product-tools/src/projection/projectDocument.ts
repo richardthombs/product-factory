@@ -33,10 +33,13 @@ function renderCapabilitySection(state: ProductModelState, capabilityId: string)
     throw new Error(`Missing capability '${capabilityId}' while rendering project document`);
   }
 
+  const capabilityStatusSuffix = capability.status !== "active" ? ` (${capability.status})` : "";
+
   const lines = [
-    `## ${capability.id} — ${capability.name}`,
+    `## ${capability.id} — ${capability.name}${capabilityStatusSuffix}`,
     "",
     capability.description,
+    ...(capability.statusReason ? [`Status reason: ${capability.statusReason}`, ""] : []),
     "",
   ];
 
@@ -59,10 +62,14 @@ function renderFeatureSection(state: ProductModelState, featureId: string): stri
     throw new Error(`Missing feature '${featureId}' while rendering project document`);
   }
 
+  const featureStatusSuffix = feature.status !== "active" ? ` (${feature.status})` : "";
+
   const lines = [
-    `### ${feature.id} — ${feature.name}`,
+    `### ${feature.id} — ${feature.name}${featureStatusSuffix}`,
     "",
     feature.description,
+    ...(feature.statusReason ? [`Status reason: ${feature.statusReason}`, ""] : []),
+    ...(feature.deprecatedReason ? [`Deprecated reason: ${feature.deprecatedReason}`, ""] : []),
     "",
   ];
 

@@ -7,3 +7,4 @@ id: FEAT-005
 name: Project current-state product model
 requirement_ids:
   - REQ-005
+status: active

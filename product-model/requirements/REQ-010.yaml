@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-014
+  - AC-015
+description: The system shall support moving an existing feature to another capability and deprecating an existing feature without deleting its history.
+feature_id: FEAT-010
+id: REQ-010

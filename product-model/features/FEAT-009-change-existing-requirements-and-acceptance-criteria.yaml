@@ -1,0 +1,10 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capability_id: CAP-001
+description: Updates existing requirement and acceptance criterion definitions incrementally as the product evolves.
+id: FEAT-009
+name: Change existing requirements and acceptance criteria
+requirement_ids:
+  - REQ-009
+status: active

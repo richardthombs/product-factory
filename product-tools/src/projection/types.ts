@@ -1,3 +1,5 @@
+import type { CapabilityStatus, FeatureStatus } from "../domain/status.js";
+
 export type ProductState = {
   id: string;
   name: string;
@@ -8,6 +10,8 @@ export type CapabilityState = {
   id: string;
   name: string;
   description: string;
+  status: CapabilityStatus;
+  statusReason?: string;
   featureIds: string[];
 };
 
@@ -16,6 +20,9 @@ export type FeatureState = {
   capabilityId: string;
   name: string;
   description: string;
+  status: FeatureStatus;
+  statusReason?: string;
+  deprecatedReason?: string;
   requirementIds: string[];
 };
 

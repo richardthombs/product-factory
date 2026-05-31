@@ -195,7 +195,124 @@ Use this when an existing feature needs more requirements without creating a new
 
 ---
 
-## 5. Create a test for one or more acceptance criteria
+## 5. Change an existing requirement
+
+```bash
+npm run change-requirement -- \
+  --requirement REQ-001 \
+  --description "The system shall preserve heading structure when exporting generated requirements as Markdown."
+```
+
+What it does:
+
+- verifies the requirement exists
+- allocates the next `EVT-*` id
+- writes a `RequirementChanged` event
+- rebuilds `product-model/`
+
+Use this when an existing requirement needs to be refined without inventing a replacement requirement id.
+
+---
+
+## 6. Change an existing acceptance criterion
+
+```bash
+npm run change-acceptance-criterion -- \
+  --acceptance-criterion AC-001 \
+  --text "Given exported Markdown with headings, when it is opened in a Markdown viewer, then the heading structure is preserved."
+```
+
+What it does:
+
+- verifies the acceptance criterion exists
+- allocates the next `EVT-*` id
+- writes an `AcceptanceCriterionChanged` event
+- rebuilds `product-model/`
+
+Use this when an existing acceptance criterion needs to be refined without inventing a replacement acceptance criterion id.
+
+---
+
+## 7. Move an existing feature to another capability
+
+```bash
+npm run move-feature -- \
+  --feature FEAT-001 \
+  --capability CAP-002
+```
+
+What it does:
+
+- verifies the feature exists
+- verifies the target capability exists
+- allocates the next `EVT-*` id
+- writes a `FeatureMovedToCapability` event
+- rebuilds `product-model/`
+
+Use this when product-model clarification shows a feature belongs under a different capability.
+
+---
+
+## 8. Deprecate an existing feature
+
+```bash
+npm run deprecate-feature -- \
+  --feature FEAT-001 \
+  --reason "Replaced by a new workflow."
+```
+
+What it does:
+
+- verifies the feature exists
+- allocates the next `EVT-*` id
+- writes a `FeatureDeprecated` event
+- rebuilds `product-model/`
+
+Use this when a feature should remain in history but no longer be treated as current product direction.
+
+---
+
+## 9. Change feature readiness status
+
+```bash
+npm run set-feature-status -- \
+  --feature FEAT-001 \
+  --status implementation_ready \
+  --reason "Specification is complete and ready for delivery."
+```
+
+What it does:
+
+- verifies the feature exists
+- allocates the next `EVT-*` id
+- writes a `FeatureStatusChanged` event
+- rebuilds `product-model/`
+
+Use this when a feature moves between definition, delivery, verification, or deprecation states.
+
+---
+
+## 10. Change capability readiness status
+
+```bash
+npm run set-capability-status -- \
+  --capability CAP-001 \
+  --status scoped \
+  --reason "Capability boundaries and first feature slices are defined."
+```
+
+What it does:
+
+- verifies the capability exists
+- allocates the next `EVT-*` id
+- writes a `CapabilityStatusChanged` event
+- rebuilds `product-model/`
+
+Use this when a capability moves between shaping, scoping, delivery, or deprecation states.
+
+---
+
+## 11. Create a test for one or more acceptance criteria
 
 ```bash
 npm run create-test -- \
@@ -253,6 +370,12 @@ Use:
 - `create-capability`
 - `create-feature`
 - `create-requirement`
+- `change-requirement`
+- `change-acceptance-criterion`
+- `move-feature`
+- `deprecate-feature`
+- `set-feature-status`
+- `set-capability-status`
 - `create-test`
 
 Prefer these over manual event authoring.
@@ -326,6 +449,12 @@ The current vertical slice supports:
 - `FeatureAdded`
 - `RequirementAdded`
 - `AcceptanceCriterionAdded`
+- `RequirementChanged`
+- `AcceptanceCriterionChanged`
+- `FeatureMovedToCapability`
+- `FeatureDeprecated`
+- `FeatureStatusChanged`
+- `CapabilityStatusChanged`
 - `TestCreated`
 
 The current model depth is:
@@ -350,7 +479,7 @@ it("example test", async () => {
 });
 ```
 
-Do not assume rename, deprecation, deployment, release, or incident events exist unless you add them explicitly.
+Do not assume rename, deployment, release, or incident events exist unless you add them explicitly. Feature moves, feature deprecation, and capability/feature status changes are in scope.
 
 ---
 
@@ -367,6 +496,24 @@ Use `create-feature`.
 
 ### If asked to add more requirements to an existing feature
 Use `create-requirement`.
+
+### If asked to refine an existing requirement
+Use `change-requirement`.
+
+### If asked to refine an existing acceptance criterion
+Use `change-acceptance-criterion`.
+
+### If asked to move a feature under a different capability
+Use `move-feature`.
+
+### If asked to deprecate an existing feature
+Use `deprecate-feature`.
+
+### If asked to update feature readiness or delivery state
+Use `set-feature-status`.
+
+### If asked to update capability maturity or delivery state
+Use `set-capability-status`.
 
 ### If asked to create test coverage for an acceptance criterion
 Use `create-test` so the test file is annotated and the test artifact event is recorded consistently.

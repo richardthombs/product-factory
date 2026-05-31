@@ -20,27 +20,33 @@ describe("rebuildModel", () => {
     const summary = await rebuildModel(eventsRoot, modelRoot);
 
     expect(summary).toEqual({
-      eventCount: 42,
+      eventCount: 60,
       capabilityCount: 2,
-      featureCount: 8,
-      requirementCount: 8,
-      acceptanceCriterionCount: 11,
-      testCount: 12,
-      lastEventId: "EVT-20260531-0042",
-      lastOccurredAt: "2026-05-31T10:10:00.000Z",
+      featureCount: 11,
+      requirementCount: 11,
+      acceptanceCriterionCount: 17,
+      testCount: 18,
+      lastEventId: "EVT-20260531-0060",
+      lastOccurredAt: "2026-05-31T10:28:00.000Z",
     });
 
     const productYaml = await readFile(path.join(modelRoot, "product.yaml"), "utf8");
     expect(productYaml).toContain("id: PROD-001");
-    expect(productYaml).toContain("tests: 12");
+    expect(productYaml).toContain("tests: 18");
 
     const projectMarkdown = await readFile(path.join(modelRoot, "project.md"), "utf8");
     expect(projectMarkdown).toContain("# Product Factory");
     expect(projectMarkdown).toContain("### FEAT-006 — Rebuild product model");
+    expect(projectMarkdown).toContain("### FEAT-009 — Change existing requirements and acceptance criteria");
+    expect(projectMarkdown).toContain("### FEAT-011 — Track capability and feature readiness");
 
     const traceabilityMatrix = await readFile(path.join(modelRoot, "indexes", "traceability-matrix.yaml"), "utf8");
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-007");
+    expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-013");
+    expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-017");
     expect(traceabilityMatrix).toContain("- TEST-012");
+    expect(traceabilityMatrix).toContain("- TEST-014");
+    expect(traceabilityMatrix).toContain("- TEST-018");
   });
 });
 

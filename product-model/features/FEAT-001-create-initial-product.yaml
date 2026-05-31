@@ -7,3 +7,4 @@ id: FEAT-001
 name: Create initial product
 requirement_ids:
   - REQ-001
+status: active

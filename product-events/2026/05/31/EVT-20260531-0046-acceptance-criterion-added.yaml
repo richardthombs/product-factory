@@ -1,0 +1,15 @@
+id: EVT-20260531-0046
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T10:11:03.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-005
+payload:
+  acceptance_criterion_id: AC-013
+  requirement_id: REQ-009
+  text: Given an existing acceptance criterion, when the
+    change-acceptance-criterion helper is run with new text, then the system
+    records an AcceptanceCriterionChanged event and projects the updated
+    acceptance criterion text.

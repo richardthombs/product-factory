@@ -1,0 +1,10 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capability_id: CAP-001
+description: Moves and deprecates existing features while preserving append-only product history.
+id: FEAT-010
+name: Reshape feature structure
+requirement_ids:
+  - REQ-010
+status: active

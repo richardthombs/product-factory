@@ -7,3 +7,4 @@ id: FEAT-006
 name: Rebuild product model
 requirement_ids:
   - REQ-006
+status: active
