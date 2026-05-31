@@ -1,0 +1,14 @@
+id: EVT-20260531-0019
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T09:35:02.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-008
+payload:
+  acceptance_criterion_id: AC-006
+  requirement_id: REQ-005
+  text: Given a valid event stream, when project-model is run, then the system
+    generates deterministic YAML files for the product, capabilities, features,
+    requirements, acceptance criteria, and indexes.

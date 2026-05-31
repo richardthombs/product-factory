@@ -1,0 +1,14 @@
+id: EVT-20260531-0028
+type: TestCreated
+occurred_at: 2026-05-31T09:51:00.000Z
+actor:
+  type: agent
+  id: test_agent
+source:
+  change_proposal_id: CHG-012
+payload:
+  test_id: TEST-002
+  acceptance_criterion_id: AC-002
+  file_path: product-tools/tests/createCapability.test.ts
+  line_number: 17
+  test_name: allocates the next capability id and rebuilds the model

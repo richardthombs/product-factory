@@ -1,0 +1,12 @@
+id: EVT-20260531-0002
+type: CapabilityAdded
+occurred_at: 2026-05-31T09:05:00Z
+actor:
+  type: agent
+  id: capability_modeller
+source:
+  change_proposal_id: CHG-002
+payload:
+  capability_id: CAP-001
+  name: Manage product model structure
+  description: Enables users to define and extend the core structure of the product model.

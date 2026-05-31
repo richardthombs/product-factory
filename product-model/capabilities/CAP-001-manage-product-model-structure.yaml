@@ -1,0 +1,10 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+description: Enables users to define and extend the core structure of the product model.
+feature_ids:
+  - FEAT-001
+  - FEAT-002
+  - FEAT-003
+id: CAP-001
+name: Manage product model structure

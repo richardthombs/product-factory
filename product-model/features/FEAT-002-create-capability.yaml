@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capability_id: CAP-001
+description: Adds a new capability to an existing product model.
+id: FEAT-002
+name: Create capability
+requirement_ids:
+  - REQ-002

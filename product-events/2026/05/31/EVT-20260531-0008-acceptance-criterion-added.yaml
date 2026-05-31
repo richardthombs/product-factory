@@ -1,0 +1,14 @@
+id: EVT-20260531-0008
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T09:15:02.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-004
+payload:
+  acceptance_criterion_id: AC-002
+  requirement_id: REQ-002
+  text: Given an existing product model, when the create-capability command is
+    run, then a CapabilityAdded event is written and the product model is
+    rebuilt.

@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+id: AC-003
+requirement_id: REQ-003
+tests:
+  - TEST-003
+text: Given an existing capability, when the create-feature command is run with one acceptance criterion, then the system writes FeatureAdded, RequirementAdded, and AcceptanceCriterionAdded events and rebuilds the model.

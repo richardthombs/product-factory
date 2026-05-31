@@ -1,0 +1,15 @@
+id: EVT-20260531-0026
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T09:45:03.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-010
+payload:
+  acceptance_criterion_id: AC-009
+  requirement_id: REQ-007
+  text: Given created tests and acceptance criteria, when project-model is run,
+    then the generated model includes test ids under the relevant acceptance
+    criteria and projects each test artifact with file path, line number, and
+    test name.

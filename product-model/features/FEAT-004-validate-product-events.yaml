@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capability_id: CAP-002
+description: Validates the product event stream against schemas and repository rules.
+id: FEAT-004
+name: Validate product events
+requirement_ids:
+  - REQ-004

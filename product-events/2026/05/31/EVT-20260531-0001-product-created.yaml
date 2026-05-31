@@ -1,0 +1,12 @@
+id: EVT-20260531-0001
+type: ProductCreated
+occurred_at: 2026-05-31T09:00:00Z
+actor:
+  type: agent
+  id: product_model_steward
+source:
+  change_proposal_id: CHG-001
+payload:
+  product_id: PROD-001
+  name: Product Factory
+  description: Event-sourced product knowledge system for agent-driven software delivery.

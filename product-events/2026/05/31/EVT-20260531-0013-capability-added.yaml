@@ -1,0 +1,13 @@
+id: EVT-20260531-0013
+type: CapabilityAdded
+occurred_at: 2026-05-31T09:25:00Z
+actor:
+  type: agent
+  id: capability_modeller
+source:
+  change_proposal_id: CHG-006
+payload:
+  capability_id: CAP-002
+  name: Validate and project product model
+  description: Enables users to validate product events and regenerate the
+    current-state product model.

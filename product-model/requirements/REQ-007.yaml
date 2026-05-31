@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-008
+  - AC-009
+description: The system shall provide a create-test helper that annotates tests with acceptance criterion ids and records test artifacts with test id, file path, line number, and test name.
+feature_id: FEAT-007
+id: REQ-007

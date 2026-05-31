@@ -1,0 +1,13 @@
+id: EVT-20260531-0003
+type: FeatureAdded
+occurred_at: 2026-05-31T09:10:00.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-003
+payload:
+  feature_id: FEAT-001
+  capability_id: CAP-001
+  name: Create initial product
+  description: Creates the first product record in an empty event store.

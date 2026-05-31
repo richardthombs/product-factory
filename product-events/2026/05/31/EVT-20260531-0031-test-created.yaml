@@ -1,0 +1,14 @@
+id: EVT-20260531-0031
+type: TestCreated
+occurred_at: 2026-05-31T09:53:00.000Z
+actor:
+  type: agent
+  id: test_agent
+source:
+  change_proposal_id: CHG-014
+payload:
+  test_id: TEST-005
+  acceptance_criterion_id: AC-005
+  file_path: product-tools/tests/validateEvents.test.ts
+  line_number: 7
+  test_name: validates the current self-described event stream

@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capability_id: CAP-001
+description: Adds a feature, requirement, and one or more acceptance criteria under an existing capability.
+id: FEAT-003
+name: Create feature with requirements and acceptance criteria
+requirement_ids:
+  - REQ-003

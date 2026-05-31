@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-001
+file_path: product-tools/tests/createProduct.test.ts
+id: TEST-001
+line_number: 16
+test_name: creates the initial product in an empty event store and rebuilds the model

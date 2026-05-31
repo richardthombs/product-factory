@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-007
+description: The system shall provide a rebuild command that validates events and regenerates the product model.
+feature_id: FEAT-006
+id: REQ-006

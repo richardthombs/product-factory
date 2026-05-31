@@ -1,0 +1,18 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capabilities:
+  - capability_id: CAP-001
+    capability_name: Manage product model structure
+    feature_ids:
+      - FEAT-001
+      - FEAT-002
+      - FEAT-003
+  - capability_id: CAP-002
+    capability_name: Validate and project product model
+    feature_ids:
+      - FEAT-004
+      - FEAT-005
+      - FEAT-006
+      - FEAT-007
+product_id: PROD-001

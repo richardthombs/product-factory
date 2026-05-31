@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-002
+description: The system shall create a capability under an existing product model.
+feature_id: FEAT-002
+id: REQ-002

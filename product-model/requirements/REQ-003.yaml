@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-003
+  - AC-004
+description: The system shall create a feature, a linked requirement, and one or more linked acceptance criteria for an existing capability.
+feature_id: FEAT-003
+id: REQ-003

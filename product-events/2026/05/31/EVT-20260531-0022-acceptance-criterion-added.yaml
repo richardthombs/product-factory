@@ -1,0 +1,13 @@
+id: EVT-20260531-0022
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T09:40:02.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-009
+payload:
+  acceptance_criterion_id: AC-007
+  requirement_id: REQ-006
+  text: Given a valid event stream, when rebuild is run, then the system validates
+    events and regenerates the product model successfully.

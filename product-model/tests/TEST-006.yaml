@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-006
+file_path: product-tools/tests/projectModel.test.ts
+id: TEST-006
+line_number: 15
+test_name: projects the current self-described event stream into deterministic YAML files

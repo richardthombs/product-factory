@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capability_id: CAP-001
+description: Creates the first product record in an empty event store.
+id: FEAT-001
+name: Create initial product
+requirement_ids:
+  - REQ-001

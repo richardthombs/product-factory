@@ -1,0 +1,14 @@
+id: EVT-20260531-0023
+type: FeatureAdded
+occurred_at: 2026-05-31T09:45:00.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-010
+payload:
+  feature_id: FEAT-007
+  capability_id: CAP-002
+  name: Create tests for acceptance criteria
+  description: Creates test artifacts for acceptance criteria using filename,
+    line number, and test name, and annotates tests with AC ids.

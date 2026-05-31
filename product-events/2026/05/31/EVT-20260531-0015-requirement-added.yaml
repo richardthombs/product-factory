@@ -1,0 +1,13 @@
+id: EVT-20260531-0015
+type: RequirementAdded
+occurred_at: 2026-05-31T09:30:01.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-007
+payload:
+  requirement_id: REQ-004
+  feature_id: FEAT-004
+  description: The system shall validate product event files against schemas and
+    repository-level consistency rules.

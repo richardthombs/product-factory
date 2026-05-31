@@ -1,0 +1,13 @@
+id: EVT-20260531-0021
+type: RequirementAdded
+occurred_at: 2026-05-31T09:40:01.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-009
+payload:
+  requirement_id: REQ-006
+  feature_id: FEAT-006
+  description: The system shall provide a rebuild command that validates events
+    and regenerates the product model.

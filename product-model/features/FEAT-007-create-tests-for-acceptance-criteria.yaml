@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capability_id: CAP-002
+description: Creates test artifacts for acceptance criteria using filename, line number, and test name, and annotates tests with AC ids.
+id: FEAT-007
+name: Create tests for acceptance criteria
+requirement_ids:
+  - REQ-007

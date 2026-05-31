@@ -1,0 +1,13 @@
+id: EVT-20260531-0010
+type: RequirementAdded
+occurred_at: 2026-05-31T09:20:01.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-005
+payload:
+  requirement_id: REQ-003
+  feature_id: FEAT-003
+  description: The system shall create a feature, a linked requirement, and one or
+    more linked acceptance criteria for an existing capability.

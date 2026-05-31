@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-001
+description: The system shall create an initial product record when the event store is empty.
+feature_id: FEAT-001
+id: REQ-001

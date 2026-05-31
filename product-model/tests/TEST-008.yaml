@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-006
+file_path: product-tools/tests/projectModel.test.ts
+id: TEST-008
+line_number: 88
+test_name: produces identical output across repeated rebuilds

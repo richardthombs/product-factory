@@ -1,0 +1,26 @@
+{
+  "name": "product-factory",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate-events": "tsx product-tools/src/cli/validate-events.ts",
+    "project-model": "tsx product-tools/src/cli/project-model.ts",
+    "rebuild": "tsx product-tools/src/cli/rebuild.ts",
+    "create-product": "tsx product-tools/src/cli/create-product.ts",
+    "create-capability": "tsx product-tools/src/cli/create-capability.ts",
+    "create-feature": "tsx product-tools/src/cli/create-feature.ts",
+    "create-test": "tsx product-tools/src/cli/create-test.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "yaml": "^2.8.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

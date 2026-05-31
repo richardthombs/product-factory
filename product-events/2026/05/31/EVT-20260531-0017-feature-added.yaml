@@ -1,0 +1,14 @@
+id: EVT-20260531-0017
+type: FeatureAdded
+occurred_at: 2026-05-31T09:35:00.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-008
+payload:
+  feature_id: FEAT-005
+  capability_id: CAP-002
+  name: Project current-state product model
+  description: Projects accepted product events into generated YAML that
+    represents the current product state.

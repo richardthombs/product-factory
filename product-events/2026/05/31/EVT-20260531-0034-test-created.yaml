@@ -1,0 +1,14 @@
+id: EVT-20260531-0034
+type: TestCreated
+occurred_at: 2026-05-31T09:55:00.000Z
+actor:
+  type: agent
+  id: test_agent
+source:
+  change_proposal_id: CHG-016
+payload:
+  test_id: TEST-008
+  acceptance_criterion_id: AC-006
+  file_path: product-tools/tests/projectModel.test.ts
+  line_number: 88
+  test_name: produces identical output across repeated rebuilds

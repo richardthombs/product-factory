@@ -1,0 +1,13 @@
+id: EVT-20260531-0014
+type: FeatureAdded
+occurred_at: 2026-05-31T09:30:00.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-007
+payload:
+  feature_id: FEAT-004
+  capability_id: CAP-002
+  name: Validate product events
+  description: Validates the product event stream against schemas and repository rules.

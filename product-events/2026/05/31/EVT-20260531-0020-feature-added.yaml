@@ -1,0 +1,13 @@
+id: EVT-20260531-0020
+type: FeatureAdded
+occurred_at: 2026-05-31T09:40:00.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-009
+payload:
+  feature_id: FEAT-006
+  capability_id: CAP-002
+  name: Rebuild product model
+  description: Validates events and regenerates the product model in one command.

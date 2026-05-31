@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-005
+file_path: product-tools/tests/validateEvents.test.ts
+id: TEST-005
+line_number: 7
+test_name: validates the current self-described event stream

@@ -1,0 +1,13 @@
+id: EVT-20260531-0005
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T09:10:02.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-003
+payload:
+  acceptance_criterion_id: AC-001
+  requirement_id: REQ-001
+  text: Given an empty event store, when the create-product command is run, then a
+    ProductCreated event is written and the product model is rebuilt.

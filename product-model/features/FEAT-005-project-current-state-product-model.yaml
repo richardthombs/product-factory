@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capability_id: CAP-002
+description: Projects accepted product events into generated YAML that represents the current product state.
+id: FEAT-005
+name: Project current-state product model
+requirement_ids:
+  - REQ-005

@@ -1,0 +1,14 @@
+id: EVT-20260531-0024
+type: RequirementAdded
+occurred_at: 2026-05-31T09:45:01.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-010
+payload:
+  requirement_id: REQ-007
+  feature_id: FEAT-007
+  description: The system shall provide a create-test helper that annotates
+    tests with acceptance criterion ids and records test artifacts with test id,
+    file path, line number, and test name.

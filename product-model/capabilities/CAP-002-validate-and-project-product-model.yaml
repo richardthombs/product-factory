@@ -1,0 +1,11 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+description: Enables users to validate product events and regenerate the current-state product model.
+feature_ids:
+  - FEAT-004
+  - FEAT-005
+  - FEAT-006
+  - FEAT-007
+id: CAP-002
+name: Validate and project product model

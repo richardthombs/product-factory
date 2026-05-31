@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-006
+description: The system shall deterministically project accepted product events into generated YAML documentation of current state.
+feature_id: FEAT-005
+id: REQ-005

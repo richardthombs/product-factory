@@ -1,0 +1,14 @@
+id: EVT-20260531-0027
+type: TestCreated
+occurred_at: 2026-05-31T09:50:00.000Z
+actor:
+  type: agent
+  id: test_agent
+source:
+  change_proposal_id: CHG-011
+payload:
+  test_id: TEST-001
+  acceptance_criterion_id: AC-001
+  file_path: product-tools/tests/createProduct.test.ts
+  line_number: 16
+  test_name: creates the initial product in an empty event store and rebuilds the model

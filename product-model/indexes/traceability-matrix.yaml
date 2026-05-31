@@ -1,0 +1,94 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capabilities:
+  - capability_id: CAP-001
+    capability_name: Manage product model structure
+    features:
+      - feature_id: FEAT-001
+        feature_name: Create initial product
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-001
+                tests:
+                  - TEST-001
+                text: Given an empty event store, when the create-product command is run, then a ProductCreated event is written and the product model is rebuilt.
+            description: The system shall create an initial product record when the event store is empty.
+            requirement_id: REQ-001
+      - feature_id: FEAT-002
+        feature_name: Create capability
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-002
+                tests:
+                  - TEST-002
+                text: Given an existing product model, when the create-capability command is run, then a CapabilityAdded event is written and the product model is rebuilt.
+            description: The system shall create a capability under an existing product model.
+            requirement_id: REQ-002
+      - feature_id: FEAT-003
+        feature_name: Create feature with requirements and acceptance criteria
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-003
+                tests:
+                  - TEST-003
+                text: Given an existing capability, when the create-feature command is run with one acceptance criterion, then the system writes FeatureAdded, RequirementAdded, and AcceptanceCriterionAdded events and rebuilds the model.
+              - acceptance_criterion_id: AC-004
+                tests:
+                  - TEST-004
+                text: Given an existing capability, when the create-feature command is run with multiple acceptance criterion texts, then the system creates one acceptance criterion event for each text.
+            description: The system shall create a feature, a linked requirement, and one or more linked acceptance criteria for an existing capability.
+            requirement_id: REQ-003
+  - capability_id: CAP-002
+    capability_name: Validate and project product model
+    features:
+      - feature_id: FEAT-004
+        feature_name: Validate product events
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-005
+                tests:
+                  - TEST-005
+                text: Given a set of product event files, when validate-events is run, then the system reports schema or reference errors and succeeds only when the event stream is valid.
+            description: The system shall validate product event files against schemas and repository-level consistency rules.
+            requirement_id: REQ-004
+      - feature_id: FEAT-005
+        feature_name: Project current-state product model
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-006
+                tests:
+                  - TEST-006
+                  - TEST-008
+                text: Given a valid event stream, when project-model is run, then the system generates deterministic YAML files for the product, capabilities, features, requirements, acceptance criteria, and indexes.
+            description: The system shall deterministically project accepted product events into generated YAML documentation of current state.
+            requirement_id: REQ-005
+      - feature_id: FEAT-006
+        feature_name: Rebuild product model
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-007
+                tests: []
+                text: Given a valid event stream, when rebuild is run, then the system validates events and regenerates the product model successfully.
+            description: The system shall provide a rebuild command that validates events and regenerates the product model.
+            requirement_id: REQ-006
+      - feature_id: FEAT-007
+        feature_name: Create tests for acceptance criteria
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-008
+                tests:
+                  - TEST-009
+                text: Given one or more acceptance criterion ids, a test file, and a test name, when the create-test helper is run, then the test is annotated with the acceptance criterion ids and one TestCreated event is recorded for each id.
+              - acceptance_criterion_id: AC-009
+                tests:
+                  - TEST-007
+                text: Given created tests and acceptance criteria, when project-model is run, then the generated model includes test ids under the relevant acceptance criteria and projects each test artifact with file path, line number, and test name.
+            description: The system shall provide a create-test helper that annotates tests with acceptance criterion ids and records test artifacts with test id, file path, line number, and test name.
+            requirement_id: REQ-007
+product_id: PROD-001
+projected_from:
+  event_count: 35
+  last_event_id: EVT-20260531-0035
+  last_occurred_at: 2026-05-31T09:56:00.000Z
+  test_count: 9

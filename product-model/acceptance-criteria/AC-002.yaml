@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+id: AC-002
+requirement_id: REQ-002
+tests:
+  - TEST-002
+text: Given an existing product model, when the create-capability command is run, then a CapabilityAdded event is written and the product model is rebuilt.

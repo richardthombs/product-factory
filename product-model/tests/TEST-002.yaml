@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-002
+file_path: product-tools/tests/createCapability.test.ts
+id: TEST-002
+line_number: 17
+test_name: allocates the next capability id and rebuilds the model
