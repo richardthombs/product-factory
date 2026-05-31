@@ -9,12 +9,12 @@ Event-sourced product knowledge system for agent-driven software delivery.
 
 - Product ID: PROD-001
 - Capabilities: 2
-- Features: 11
-- Requirements: 11
-- Acceptance Criteria: 17
-- Tests: 18
-- Projected from events: 60
-- Last event: EVT-20260531-0060 @ 2026-05-31T10:28:00.000Z
+- Features: 12
+- Requirements: 13
+- Acceptance Criteria: 21
+- Tests: 22
+- Projected from events: 71
+- Last event: EVT-20260531-0071 @ 2026-05-31T10:37:00.000Z
 
 # Capabilities
 
@@ -141,3 +141,19 @@ Requirements:
   - Acceptance criteria:
     - **AC-008**: Given one or more acceptance criterion ids, a test file, and a test name, when the create-test helper is run, then the test is annotated with the acceptance criterion ids and one TestCreated event is recorded for each id. `TEST-009`.
     - **AC-009**: Given created tests and acceptance criteria, when project-model is run, then the generated model includes test ids under the relevant acceptance criteria and projects each test artifact with file path and test name. `TEST-007`.
+
+### FEAT-012 — Report branch delta
+
+Reports product events unique to a working branch relative to a base branch.
+
+Requirements:
+
+- **REQ-012**: The system shall compare the current branch against a base branch and report the product events unique to the current branch.
+  - Acceptance criteria:
+    - **AC-018**: Given a working branch with product events not contained in the base branch, when the branch-delta helper is run, then it reports the branch-only product events relative to the base branch. `TEST-019`.
+    - **AC-019**: Given a base branch that cannot be resolved, when the branch-delta helper is run, then it fails instead of emitting a trusted branch-delta report. `TEST-020`.
+
+- **REQ-013**: The system shall summarize changed product entities and inferred change categories in the branch-delta report.
+  - Acceptance criteria:
+    - **AC-020**: Given branch-only product events affecting capabilities, features, requirements, acceptance criteria, or tests, when the branch-delta helper is run, then it reports the changed entities grouped by entity type and change kind. `TEST-021`.
+    - **AC-021**: Given branch-only product events spanning additive, refinement, reshaping, deprecation, verification, or readiness changes, when the branch-delta helper is run, then it reports the inferred change categories present in the branch delta. `TEST-022`.

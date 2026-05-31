@@ -12,6 +12,12 @@ It brings together three ideas:
 
 This document is intended as the primary workflow reference for change-oriented work.
 
+Related branch-delta tool documents:
+
+- `docs/branch_delta_tool_spec.md`
+- `docs/branch_delta_output_schema.md`
+- `docs/branch_delta_tool_implementation_plan.md`
+
 ---
 
 ## Core Model

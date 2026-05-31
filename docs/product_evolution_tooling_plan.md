@@ -6,6 +6,12 @@ This document proposes concrete schema, validation, projection, and CLI changes 
 
 It is intended as the practical follow-on to the current vertical slice.
 
+For the next workflow-enablement step focused on first-class branch comparison, see:
+
+- `docs/branch_delta_tool_spec.md`
+- `docs/branch_delta_output_schema.md`
+- `docs/branch_delta_tool_implementation_plan.md`
+
 ---
 
 ## Current Baseline

@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-018
+  - AC-019
+description: The system shall compare the current branch against a base branch and report the product events unique to the current branch.
+feature_id: FEAT-012
+id: REQ-012

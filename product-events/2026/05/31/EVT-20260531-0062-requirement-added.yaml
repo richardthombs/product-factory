@@ -1,0 +1,13 @@
+id: EVT-20260531-0062
+type: RequirementAdded
+occurred_at: 2026-05-31T10:29:01.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-007
+payload:
+  requirement_id: REQ-012
+  feature_id: FEAT-012
+  description: The system shall compare the current branch against a base branch
+    and report the product events unique to the current branch.

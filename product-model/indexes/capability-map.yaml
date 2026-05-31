@@ -20,5 +20,6 @@ capabilities:
       - FEAT-005
       - FEAT-006
       - FEAT-007
+      - FEAT-012
     status: active
 product_id: PROD-001

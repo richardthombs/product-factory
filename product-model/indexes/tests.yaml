@@ -2,7 +2,7 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 product_id: PROD-001
-test_count: 18
+test_count: 22
 tests:
   - acceptance_criterion_id: AC-001
     file_path: product-tools/tests/createProduct.test.ts
@@ -76,3 +76,19 @@ tests:
     file_path: product-tools/tests/setCapabilityStatus.test.ts
     id: TEST-018
     test_name: records a capability status transition and projects the updated capability state
+  - acceptance_criterion_id: AC-018
+    file_path: product-tools/tests/branchDelta.test.ts
+    id: TEST-019
+    test_name: reports product events unique to the current branch relative to a base branch
+  - acceptance_criterion_id: AC-019
+    file_path: product-tools/tests/branchDelta.test.ts
+    id: TEST-020
+    test_name: fails when the base branch cannot be resolved
+  - acceptance_criterion_id: AC-020
+    file_path: product-tools/tests/branchDelta.test.ts
+    id: TEST-021
+    test_name: reports the changed entities grouped by entity type and change kind
+  - acceptance_criterion_id: AC-021
+    file_path: product-tools/tests/branchDelta.test.ts
+    id: TEST-022
+    test_name: reports inferred change categories present in the branch delta

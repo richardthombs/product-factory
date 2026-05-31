@@ -1,0 +1,13 @@
+id: EVT-20260531-0066
+type: TestCreated
+occurred_at: 2026-05-31T10:34:00.000Z
+actor:
+  type: agent
+  id: test_agent
+source:
+  change_proposal_id: CHG-007
+payload:
+  test_id: TEST-020
+  acceptance_criterion_id: AC-019
+  file_path: product-tools/tests/branchDelta.test.ts
+  test_name: fails when the base branch cannot be resolved

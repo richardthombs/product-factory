@@ -24,8 +24,16 @@ export async function validateEvents(eventsRoot = DEFAULT_EVENTS_ROOT): Promise<
     parsed.push(fileErrors);
   }
 
-  const sortedEvents = [...parsed].sort(compareLoadedEvents);
-  errors.push(...await validateRepositoryRules(sortedEvents, eventsRoot));
+  const validated = await validateLoadedEvents(parsed, eventsRoot);
+  return {
+    events: validated.events,
+    errors: [...errors, ...validated.errors],
+  };
+}
+
+export async function validateLoadedEvents(events: LoadedEvent[], eventsRoot: string): Promise<ValidationResult> {
+  const sortedEvents = [...events].sort(compareLoadedEvents);
+  const errors = await validateRepositoryRules(sortedEvents, eventsRoot);
 
   return {
     events: sortedEvents,
@@ -69,7 +77,7 @@ async function parseEventFile(filePath: string): Promise<LoadedEvent | { errors:
   }
 }
 
-function compareLoadedEvents(a: LoadedEvent, b: LoadedEvent): number {
+export function compareLoadedEvents(a: LoadedEvent, b: LoadedEvent): number {
   const byTimestamp = a.event.occurred_at.localeCompare(b.event.occurred_at);
   if (byTimestamp !== 0) {
     return byTimestamp;

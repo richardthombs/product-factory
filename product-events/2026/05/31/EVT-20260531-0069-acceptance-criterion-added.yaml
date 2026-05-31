@@ -1,0 +1,15 @@
+id: EVT-20260531-0069
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T10:35:02.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+source:
+  change_proposal_id: CHG-007
+payload:
+  acceptance_criterion_id: AC-021
+  requirement_id: REQ-013
+  text: Given branch-only product events spanning additive, refinement, reshaping,
+    deprecation, verification, or readiness changes, when the branch-delta
+    helper is run, then it reports the inferred change categories present in the
+    branch delta.

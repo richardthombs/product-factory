@@ -20,33 +20,39 @@ describe("rebuildModel", () => {
     const summary = await rebuildModel(eventsRoot, modelRoot);
 
     expect(summary).toEqual({
-      eventCount: 60,
+      eventCount: 71,
       capabilityCount: 2,
-      featureCount: 11,
-      requirementCount: 11,
-      acceptanceCriterionCount: 17,
-      testCount: 18,
-      lastEventId: "EVT-20260531-0060",
-      lastOccurredAt: "2026-05-31T10:28:00.000Z",
+      featureCount: 12,
+      requirementCount: 13,
+      acceptanceCriterionCount: 21,
+      testCount: 22,
+      lastEventId: "EVT-20260531-0071",
+      lastOccurredAt: "2026-05-31T10:37:00.000Z",
     });
 
     const productYaml = await readFile(path.join(modelRoot, "product.yaml"), "utf8");
     expect(productYaml).toContain("id: PROD-001");
-    expect(productYaml).toContain("tests: 18");
+    expect(productYaml).toContain("tests: 22");
 
     const projectMarkdown = await readFile(path.join(modelRoot, "project.md"), "utf8");
     expect(projectMarkdown).toContain("# Product Factory");
     expect(projectMarkdown).toContain("### FEAT-006 — Rebuild product model");
     expect(projectMarkdown).toContain("### FEAT-009 — Change existing requirements and acceptance criteria");
     expect(projectMarkdown).toContain("### FEAT-011 — Track capability and feature readiness");
+    expect(projectMarkdown).toContain("### FEAT-012 — Report branch delta");
+    expect(projectMarkdown).toContain("**AC-021**: Given branch-only product events spanning additive, refinement, reshaping, deprecation, verification, or readiness changes, when the branch-delta helper is run, then it reports the inferred change categories present in the branch delta. `TEST-022`.");
 
     const traceabilityMatrix = await readFile(path.join(modelRoot, "indexes", "traceability-matrix.yaml"), "utf8");
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-007");
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-013");
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-017");
+    expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-019");
+    expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-021");
     expect(traceabilityMatrix).toContain("- TEST-012");
     expect(traceabilityMatrix).toContain("- TEST-014");
     expect(traceabilityMatrix).toContain("- TEST-018");
+    expect(traceabilityMatrix).toContain("- TEST-020");
+    expect(traceabilityMatrix).toContain("- TEST-022");
   });
 });
 

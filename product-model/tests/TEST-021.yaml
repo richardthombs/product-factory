@@ -1,0 +1,7 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-020
+file_path: product-tools/tests/branchDelta.test.ts
+id: TEST-021
+test_name: reports the changed entities grouped by entity type and change kind

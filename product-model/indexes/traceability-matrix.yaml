@@ -154,9 +154,35 @@ capabilities:
             description: The system shall provide a create-test helper that annotates tests with acceptance criterion ids and records test artifacts with test id, file path, and test name.
             requirement_id: REQ-007
         status: active
+      - feature_id: FEAT-012
+        feature_name: Report branch delta
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-018
+                tests:
+                  - TEST-019
+                text: Given a working branch with product events not contained in the base branch, when the branch-delta helper is run, then it reports the branch-only product events relative to the base branch.
+              - acceptance_criterion_id: AC-019
+                tests:
+                  - TEST-020
+                text: Given a base branch that cannot be resolved, when the branch-delta helper is run, then it fails instead of emitting a trusted branch-delta report.
+            description: The system shall compare the current branch against a base branch and report the product events unique to the current branch.
+            requirement_id: REQ-012
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-020
+                tests:
+                  - TEST-021
+                text: Given branch-only product events affecting capabilities, features, requirements, acceptance criteria, or tests, when the branch-delta helper is run, then it reports the changed entities grouped by entity type and change kind.
+              - acceptance_criterion_id: AC-021
+                tests:
+                  - TEST-022
+                text: Given branch-only product events spanning additive, refinement, reshaping, deprecation, verification, or readiness changes, when the branch-delta helper is run, then it reports the inferred change categories present in the branch delta.
+            description: The system shall summarize changed product entities and inferred change categories in the branch-delta report.
+            requirement_id: REQ-013
+        status: active
 product_id: PROD-001
 projected_from:
-  event_count: 60
-  last_event_id: EVT-20260531-0060
-  last_occurred_at: 2026-05-31T10:28:00.000Z
-  test_count: 18
+  event_count: 71
+  last_event_id: EVT-20260531-0071
+  last_occurred_at: 2026-05-31T10:37:00.000Z
+  test_count: 22

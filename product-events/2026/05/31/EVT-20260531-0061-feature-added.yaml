@@ -1,0 +1,13 @@
+id: EVT-20260531-0061
+type: FeatureAdded
+occurred_at: 2026-05-31T10:29:00.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-007
+payload:
+  feature_id: FEAT-012
+  capability_id: CAP-002
+  name: Report branch delta
+  description: Reports product events unique to a working branch relative to a base branch.

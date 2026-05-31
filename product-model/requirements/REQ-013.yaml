@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-020
+  - AC-021
+description: The system shall summarize changed product entities and inferred change categories in the branch-delta report.
+feature_id: FEAT-012
+id: REQ-013

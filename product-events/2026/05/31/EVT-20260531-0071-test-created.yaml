@@ -1,0 +1,13 @@
+id: EVT-20260531-0071
+type: TestCreated
+occurred_at: 2026-05-31T10:37:00.000Z
+actor:
+  type: agent
+  id: test_agent
+source:
+  change_proposal_id: CHG-007
+payload:
+  test_id: TEST-022
+  acceptance_criterion_id: AC-021
+  file_path: product-tools/tests/branchDelta.test.ts
+  test_name: reports inferred change categories present in the branch delta

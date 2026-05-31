@@ -1,0 +1,14 @@
+id: EVT-20260531-0063
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T10:29:02.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-007
+payload:
+  acceptance_criterion_id: AC-018
+  requirement_id: REQ-012
+  text: Given a working branch with product events not contained in the base
+    branch, when the branch-delta helper is run, then it reports the branch-only
+    product events relative to the base branch.

@@ -1,0 +1,11 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capability_id: CAP-002
+description: Reports product events unique to a working branch relative to a base branch.
+id: FEAT-012
+name: Report branch delta
+requirement_ids:
+  - REQ-012
+  - REQ-013
+status: active

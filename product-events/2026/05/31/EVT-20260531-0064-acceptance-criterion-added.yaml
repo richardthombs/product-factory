@@ -1,0 +1,13 @@
+id: EVT-20260531-0064
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T10:29:03.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-007
+payload:
+  acceptance_criterion_id: AC-019
+  requirement_id: REQ-012
+  text: Given a base branch that cannot be resolved, when the branch-delta helper
+    is run, then it fails instead of emitting a trusted branch-delta report.

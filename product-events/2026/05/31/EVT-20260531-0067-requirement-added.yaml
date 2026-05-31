@@ -1,0 +1,13 @@
+id: EVT-20260531-0067
+type: RequirementAdded
+occurred_at: 2026-05-31T10:35:00.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+source:
+  change_proposal_id: CHG-007
+payload:
+  requirement_id: REQ-013
+  feature_id: FEAT-012
+  description: The system shall summarize changed product entities and inferred
+    change categories in the branch-delta report.

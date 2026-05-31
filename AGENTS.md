@@ -79,6 +79,14 @@ npm run validate-events
 npm run project-model
 ```
 
+### Report branch-only product events relative to a base branch
+
+```bash
+npm run branch-delta -- --base main
+```
+
+Use this when you need an explicit view of the proposed product delta on the current branch, including branch-only events, changed entities, and inferred change categories.
+
 ### Validate and regenerate everything
 
 ```bash
@@ -517,6 +525,9 @@ Use `set-capability-status`.
 
 ### If asked to create test coverage for an acceptance criterion
 Use `create-test` so the test file is annotated and the test artifact event is recorded consistently.
+
+### If asked to inspect what product changes a branch proposes
+Use `branch-delta` relative to the appropriate base branch.
 
 ### If asked to update generated YAML directly
 Do not do that. Add or modify events instead.

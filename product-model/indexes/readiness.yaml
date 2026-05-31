@@ -40,5 +40,8 @@ features:
   - capability_id: CAP-001
     feature_id: FEAT-011
     status: active
+  - capability_id: CAP-002
+    feature_id: FEAT-012
+    status: active
 implementation_ready_features: []
 product_id: PROD-001

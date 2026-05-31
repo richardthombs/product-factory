@@ -32,6 +32,21 @@ To run the full local workflow:
 npm run rebuild
 ```
 
+To report the product events unique to the current branch relative to a base branch:
+
+```bash
+npm run branch-delta -- --base main
+```
+
+What the helper does in its current version:
+
+- loads product events from the current working tree
+- loads product events from the base branch using Git
+- validates both event streams
+- reports branch-only product events in YAML by default
+- summarizes changed entities by type and change kind
+- infers high-level change categories such as `extend`, `refine`, `reshape`, `deprecate`, `verify`, and `readiness`
+
 To create the initial product in an empty event store:
 
 ```bash
@@ -246,3 +261,7 @@ Implemented projection output:
 - `product-model/indexes/traceability-matrix.yaml`
 - `product-model/indexes/tests.yaml`
 - `product-model/indexes/readiness.yaml`
+
+Additional reporting commands:
+
+- `npm run branch-delta -- --base main` prints a first-class branch-delta report for the current branch
