@@ -196,7 +196,6 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
         const signature = [
           loaded.event.payload.acceptance_criterion_id,
           loaded.event.payload.file_path,
-          String(loaded.event.payload.line_number),
           loaded.event.payload.test_name,
         ].join("|");
         if (testSignatures.has(signature)) {
@@ -238,32 +237,35 @@ async function validateTestSource(loaded: LoadedEvent): Promise<ValidationError[
   try {
     const content = await readFile(filePath, "utf8");
     const lines = content.split(/\r?\n/);
-    const lineIndex = loaded.event.payload.line_number - 1;
+    const match = lines
+      .map((line, index) => ({ line, index }))
+      .filter(({ line }) => line.includes(loaded.event.payload.test_name));
 
-    if (lineIndex < 0 || lineIndex >= lines.length) {
+    if (match.length === 0) {
       errors.push({
         path: loaded.path,
-        message: `Linked test line ${loaded.event.payload.line_number} is outside file '${loaded.event.payload.file_path}'`,
+        message: `Could not find a test line containing '${loaded.event.payload.test_name}' in '${loaded.event.payload.file_path}'`,
       });
       return errors;
     }
 
-    const testLine = lines[lineIndex] ?? "";
-    if (!testLine.includes(loaded.event.payload.test_name)) {
+    if (match.length > 1) {
       errors.push({
         path: loaded.path,
-        message: `Linked test line ${loaded.event.payload.line_number} in '${loaded.event.payload.file_path}' does not contain test name '${loaded.event.payload.test_name}'`,
+        message: `Found multiple test lines containing '${loaded.event.payload.test_name}' in '${loaded.event.payload.file_path}'`,
       });
+      return errors;
     }
 
-    const annotationLine = lines[lineIndex - 1] ?? "";
+    const testLineIndex = match[0].index;
+    const annotationLine = lines[testLineIndex - 1] ?? "";
     const acceptanceCriterionId = loaded.event.payload.acceptance_criterion_id;
     if (!annotationLine.includes(`AC: ${acceptanceCriterionId}`)
       && !annotationLine.includes(`, ${acceptanceCriterionId}`)
       && !annotationLine.includes(`${acceptanceCriterionId},`)) {
       errors.push({
         path: loaded.path,
-        message: `Expected AC annotation immediately above line ${loaded.event.payload.line_number} in '${loaded.event.payload.file_path}'`,
+        message: `Expected AC annotation immediately above test '${loaded.event.payload.test_name}' in '${loaded.event.payload.file_path}'`,
       });
     }
   } catch (error) {

@@ -3,5 +3,6 @@
 # To change this file, add or modify product events.
 id: AC-007
 requirement_id: REQ-006
-tests: []
+tests:
+  - TEST-012
 text: Given a valid event stream, when rebuild is run, then the system validates events and regenerates the product model successfully.

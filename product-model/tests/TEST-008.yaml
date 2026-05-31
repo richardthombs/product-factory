@@ -4,5 +4,4 @@
 acceptance_criterion_id: AC-006
 file_path: product-tools/tests/projectModel.test.ts
 id: TEST-008
-line_number: 89
 test_name: produces identical output across repeated rebuilds

@@ -21,7 +21,6 @@ async function main(): Promise<void> {
   console.log(`- tests: ${result.testIds.join(", ")}`);
   console.log(`- acceptance criteria: ${result.acceptanceCriterionIds.join(", ")}`);
   console.log(`- file: ${result.filePath}`);
-  console.log(`- line: ${result.lineNumber}`);
   console.log(`- test: ${result.testName}`);
   console.log(`- events: ${result.eventIds.join(", ")}`);
   for (const file of result.files) {

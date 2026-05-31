@@ -65,7 +65,6 @@ export const testCreatedPayloadSchema = z
     test_id: z.string().regex(/^TEST-[A-Z0-9-]+$/),
     acceptance_criterion_id: z.string().regex(/^AC-[A-Z0-9-]+$/),
     file_path: z.string().min(1),
-    line_number: z.number().int().positive(),
     test_name: z.string().min(1),
   })
   .strict();

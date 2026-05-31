@@ -4,5 +4,4 @@
 acceptance_criterion_id: AC-004
 file_path: product-tools/tests/createFeature.test.ts
 id: TEST-004
-line_number: 18
 test_name: allocates ids automatically and creates multiple acceptance criteria

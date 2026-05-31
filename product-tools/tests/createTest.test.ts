@@ -64,7 +64,7 @@ describe("createTest", () => {
       capabilityId: "CAP-001",
       name: "Create tests for acceptance criteria",
       description: "Creates tests for acceptance criteria by annotating source and recording test locations.",
-      requirementDescription: "The system shall annotate a test and create a test artifact linked to an acceptance criterion with file path, line number, and test name.",
+      requirementDescription: "The system shall annotate a test and create a test artifact linked to an acceptance criterion with file path and test name.",
       acceptanceCriterionTexts: [
         "Given an acceptance criterion and test locator, when the helper is run, then the test is annotated and a test artifact is recorded.",
       ],
@@ -86,7 +86,6 @@ describe("createTest", () => {
       modelRoot,
     });
 
-    expect(result.lineNumber).toBe(5);
     expect(result.testIds).toEqual(["TEST-001"]);
     expect(result.eventIds).toEqual(["EVT-20260531-0006"]);
 
@@ -105,7 +104,7 @@ describe("createTest", () => {
     const testYaml = await readFile(path.join(modelRoot, "tests", "TEST-001.yaml"), "utf8");
     expect(testYaml).toContain("acceptance_criterion_id: AC-001");
     expect(testYaml).toContain("sample.test.ts");
-    expect(testYaml).toContain("line_number: 5");
+    expect(testYaml).not.toContain("line_number:");
     expect(testYaml).toContain("test_name: covers the linked acceptance criterion");
   });
 });

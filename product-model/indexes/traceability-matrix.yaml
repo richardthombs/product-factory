@@ -82,7 +82,8 @@ capabilities:
         requirements:
           - acceptance_criteria:
               - acceptance_criterion_id: AC-007
-                tests: []
+                tests:
+                  - TEST-012
                 text: Given a valid event stream, when rebuild is run, then the system validates events and regenerates the product model successfully.
             description: The system shall provide a rebuild command that validates events and regenerates the product model.
             requirement_id: REQ-006
@@ -97,12 +98,12 @@ capabilities:
               - acceptance_criterion_id: AC-009
                 tests:
                   - TEST-007
-                text: Given created tests and acceptance criteria, when project-model is run, then the generated model includes test ids under the relevant acceptance criteria and projects each test artifact with file path, line number, and test name.
-            description: The system shall provide a create-test helper that annotates tests with acceptance criterion ids and records test artifacts with test id, file path, line number, and test name.
+                text: Given created tests and acceptance criteria, when project-model is run, then the generated model includes test ids under the relevant acceptance criteria and projects each test artifact with file path and test name.
+            description: The system shall provide a create-test helper that annotates tests with acceptance criterion ids and records test artifacts with test id, file path, and test name.
             requirement_id: REQ-007
 product_id: PROD-001
 projected_from:
-  event_count: 41
-  last_event_id: EVT-20260531-0041
-  last_occurred_at: 2026-05-31T10:05:01.000Z
-  test_count: 11
+  event_count: 42
+  last_event_id: EVT-20260531-0042
+  last_occurred_at: 2026-05-31T10:10:00.000Z
+  test_count: 12

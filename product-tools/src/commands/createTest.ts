@@ -26,7 +26,6 @@ export type CreateTestResult = {
   testIds: string[];
   acceptanceCriterionIds: string[];
   filePath: string;
-  lineNumber: number;
   testName: string;
   eventIds: string[];
   files: string[];
@@ -59,7 +58,7 @@ export async function createTest(options: CreateTestOptions): Promise<CreateTest
   const absoluteFilePath = path.resolve(process.cwd(), options.filePath);
   const relativeFilePath = path.relative(process.cwd(), absoluteFilePath).replaceAll("\\", "/");
   const originalContent = await readFile(absoluteFilePath, "utf8");
-  const { content: annotatedContent, lineNumber } = annotateTestSource(
+  const annotatedContent = annotateTestSource(
     originalContent,
     uniqueAcceptanceCriterionIds,
     options.testName,
@@ -67,10 +66,10 @@ export async function createTest(options: CreateTestOptions): Promise<CreateTest
 
   const existingTestSignatures = validation.events
     .filter((loaded): loaded is LoadedEvent & { event: Extract<ProductEvent, { type: "TestCreated" }> } => loaded.event.type === "TestCreated")
-    .map(({ event }) => `${event.payload.acceptance_criterion_id}|${event.payload.file_path}|${event.payload.line_number}|${event.payload.test_name}`);
+    .map(({ event }) => `${event.payload.acceptance_criterion_id}|${event.payload.file_path}|${event.payload.test_name}`);
 
   const duplicateKeys = uniqueAcceptanceCriterionIds
-    .map((acceptanceCriterionId) => `${acceptanceCriterionId}|${relativeFilePath}|${lineNumber}|${options.testName}`)
+    .map((acceptanceCriterionId) => `${acceptanceCriterionId}|${relativeFilePath}|${options.testName}`)
     .filter((key) => existingTestSignatures.includes(key));
   if (duplicateKeys.length > 0) {
     throw new Error(`Test already exists for ${duplicateKeys.join(", ")}`);
@@ -103,7 +102,6 @@ export async function createTest(options: CreateTestOptions): Promise<CreateTest
       test_id: testIds[index],
       acceptance_criterion_id: acceptanceCriterionId,
       file_path: relativeFilePath,
-      line_number: lineNumber,
       test_name: options.testName,
     },
   }));
@@ -127,7 +125,6 @@ export async function createTest(options: CreateTestOptions): Promise<CreateTest
       testIds,
       acceptanceCriterionIds: uniqueAcceptanceCriterionIds,
       filePath: relativeFilePath,
-      lineNumber,
       testName: options.testName,
       eventIds: events.map((event) => event.id),
       files,
@@ -140,7 +137,7 @@ export async function createTest(options: CreateTestOptions): Promise<CreateTest
   }
 }
 
-function annotateTestSource(content: string, acceptanceCriterionIds: string[], testName: string): { content: string; lineNumber: number } {
+function annotateTestSource(content: string, acceptanceCriterionIds: string[], testName: string): string {
   const lines = content.split(/\r?\n/);
   const matchingIndexes = lines
     .map((line, index) => ({ line, index }))
@@ -165,17 +162,11 @@ function annotateTestSource(content: string, acceptanceCriterionIds: string[], t
       .filter((value) => value.length > 0);
     const mergedIds = [...new Set([...existingIds, ...acceptanceCriterionIds])].sort();
     lines[testLineIndex - 1] = `// AC: ${mergedIds.join(", ")}`;
-    return {
-      content: `${lines.join("\n")}\n`,
-      lineNumber: testLineIndex + 1,
-    };
+    return `${lines.join("\n")}\n`;
   }
 
   lines.splice(testLineIndex, 0, annotation);
-  return {
-    content: `${lines.join("\n")}\n`,
-    lineNumber: testLineIndex + 2,
-  };
+  return `${lines.join("\n")}\n`;
 }
 
 function buildOccurredAtSequence(baseOccurredAt: string, count: number): string[] {

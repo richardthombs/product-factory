@@ -9,13 +9,8 @@ import { toGeneratedYaml } from "../util/yaml.js";
 import { replayEvents } from "./replay.js";
 import { renderProjectDocument } from "./projectDocument.js";
 import type {
-  AcceptanceCriterionState,
-  CapabilityState,
-  FeatureState,
   ProductModelState,
   ProjectionSummary,
-  RequirementState,
-  TestState,
 } from "./types.js";
 
 export const DEFAULT_MODEL_ROOT = path.resolve(process.cwd(), "product-model");
@@ -193,7 +188,6 @@ async function writeTestFiles(modelRoot: string, state: ProductModelState): Prom
         id: test.id,
         acceptance_criterion_id: test.acceptanceCriterionId,
         file_path: test.filePath,
-        line_number: test.lineNumber,
         test_name: test.testName,
       };
 
@@ -237,7 +231,6 @@ async function writeIndexes(modelRoot: string, state: ProductModelState, summary
       id: test.id,
       acceptance_criterion_id: test.acceptanceCriterionId,
       file_path: test.filePath,
-      line_number: test.lineNumber,
       test_name: test.testName,
     })),
   };

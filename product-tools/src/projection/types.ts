@@ -36,7 +36,6 @@ export type TestState = {
   id: string;
   acceptanceCriterionId: string;
   filePath: string;
-  lineNumber: number;
   testName: string;
 };
 

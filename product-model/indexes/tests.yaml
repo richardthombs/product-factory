@@ -2,60 +2,53 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 product_id: PROD-001
-test_count: 11
+test_count: 12
 tests:
   - acceptance_criterion_id: AC-001
     file_path: product-tools/tests/createProduct.test.ts
     id: TEST-001
-    line_number: 16
     test_name: creates the initial product in an empty event store and rebuilds the model
   - acceptance_criterion_id: AC-002
     file_path: product-tools/tests/createCapability.test.ts
     id: TEST-002
-    line_number: 17
     test_name: allocates the next capability id and rebuilds the model
   - acceptance_criterion_id: AC-003
     file_path: product-tools/tests/createFeature.test.ts
     id: TEST-003
-    line_number: 18
     test_name: allocates ids automatically and creates multiple acceptance criteria
   - acceptance_criterion_id: AC-004
     file_path: product-tools/tests/createFeature.test.ts
     id: TEST-004
-    line_number: 18
     test_name: allocates ids automatically and creates multiple acceptance criteria
   - acceptance_criterion_id: AC-005
     file_path: product-tools/tests/validateEvents.test.ts
     id: TEST-005
-    line_number: 7
     test_name: validates the current self-described event stream
   - acceptance_criterion_id: AC-006
     file_path: product-tools/tests/projectModel.test.ts
     id: TEST-006
-    line_number: 15
     test_name: projects the current self-described event stream into deterministic YAML files
   - acceptance_criterion_id: AC-009
     file_path: product-tools/tests/projectModel.test.ts
     id: TEST-007
-    line_number: 15
     test_name: projects the current self-described event stream into deterministic YAML files
   - acceptance_criterion_id: AC-006
     file_path: product-tools/tests/projectModel.test.ts
     id: TEST-008
-    line_number: 89
     test_name: produces identical output across repeated rebuilds
   - acceptance_criterion_id: AC-008
     file_path: product-tools/tests/createTest.test.ts
     id: TEST-009
-    line_number: 19
     test_name: annotates a test and records created test artifacts
   - acceptance_criterion_id: AC-010
     file_path: product-tools/tests/createRequirement.test.ts
     id: TEST-010
-    line_number: 19
     test_name: allocates ids automatically and creates acceptance criteria for an existing feature
   - acceptance_criterion_id: AC-011
     file_path: product-tools/tests/createRequirement.test.ts
     id: TEST-011
-    line_number: 19
     test_name: allocates ids automatically and creates acceptance criteria for an existing feature
+  - acceptance_criterion_id: AC-007
+    file_path: product-tools/tests/rebuild.test.ts
+    id: TEST-012
+    test_name: validates events and regenerates the product model successfully

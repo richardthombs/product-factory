@@ -104,7 +104,6 @@ export function replayEvents(events: LoadedEvent[]): ProductModelState {
           id: event.payload.test_id,
           acceptanceCriterionId: acceptanceCriterion.id,
           filePath: event.payload.file_path,
-          lineNumber: event.payload.line_number,
           testName: event.payload.test_name,
         };
 

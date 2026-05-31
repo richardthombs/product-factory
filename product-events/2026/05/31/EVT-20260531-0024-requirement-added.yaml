@@ -11,4 +11,4 @@ payload:
   feature_id: FEAT-007
   description: The system shall provide a create-test helper that annotates
     tests with acceptance criterion ids and records test artifacts with test id,
-    file path, line number, and test name.
+    file path, and test name.

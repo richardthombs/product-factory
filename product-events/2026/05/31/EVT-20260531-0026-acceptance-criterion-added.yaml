@@ -11,5 +11,4 @@ payload:
   requirement_id: REQ-007
   text: Given created tests and acceptance criteria, when project-model is run,
     then the generated model includes test ids under the relevant acceptance
-    criteria and projects each test artifact with file path, line number, and
-    test name.
+    criteria and projects each test artifact with file path and test name.

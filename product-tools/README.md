@@ -94,7 +94,6 @@ What the helper does:
   - `test_id`
   - `acceptance_criterion_id`
   - `file_path`
-  - `line_number`
   - `test_name`
 - rebuilds `product-model/`
 
@@ -118,8 +117,8 @@ Implemented checks:
 - references resolve in replay order
 - entity IDs are unique within their type
 - linked acceptance criteria exist before tests are created
-- linked test files and line numbers resolve
-- linked test lines contain the recorded test name
+- linked test files resolve
+- linked test names resolve uniquely in source
 - linked tests are annotated with nearby `// AC: ...` comments
 - test ids are unique
 

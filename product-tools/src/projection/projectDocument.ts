@@ -119,7 +119,7 @@ function renderAcceptanceCriterionSection(state: ProductModelState, acceptanceCr
   if (tests.length > 0) {
     lines.push("      - Tests:");
     for (const test of tests) {
-      lines.push(`        - ${test.id}: ${test.filePath}:${test.lineNumber} — ${test.testName}`);
+      lines.push(`        - ${test.id}: ${test.filePath} — ${test.testName}`);
     }
   }
 

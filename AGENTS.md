@@ -215,7 +215,6 @@ What it does:
   - `test_id`
   - `acceptance_criterion_id`
   - `file_path`
-  - `line_number`
   - `test_name`
 - rebuilds `product-model/`
 
@@ -340,7 +339,6 @@ Tests are first-class product artifacts with a simple locator model:
 - `test_id`
 - `acceptance_criterion_id`
 - `file_path`
-- `line_number`
 - `test_name`
 
 When creating tests for acceptance criteria, use `create-test` so the source file is also annotated with a nearby comment like:

@@ -20,14 +20,14 @@ describe("projectModel", () => {
     const summary = await projectModel(eventsRoot, modelRoot);
 
     expect(summary).toEqual({
-      eventCount: 41,
+      eventCount: 42,
       capabilityCount: 2,
       featureCount: 8,
       requirementCount: 8,
       acceptanceCriterionCount: 11,
-      testCount: 11,
-      lastEventId: "EVT-20260531-0041",
-      lastOccurredAt: "2026-05-31T10:05:01.000Z",
+      testCount: 12,
+      lastEventId: "EVT-20260531-0042",
+      lastOccurredAt: "2026-05-31T10:10:00.000Z",
     });
 
     const productYaml = await readFile(path.join(modelRoot, "product.yaml"), "utf8");
@@ -41,11 +41,12 @@ describe("projectModel", () => {
     expect(projectMarkdown).toContain("<!-- Generated from /product-events. -->");
     expect(projectMarkdown).toContain("# Product Factory");
     expect(projectMarkdown).toContain("# Summary");
-    expect(projectMarkdown).toContain("- Tests: 11");
+    expect(projectMarkdown).toContain("- Tests: 12");
     expect(projectMarkdown).toContain("## CAP-001 — Manage product model structure");
     expect(projectMarkdown).toContain("### FEAT-008 — Create requirement");
     expect(projectMarkdown).toContain("**AC-011**");
-    expect(projectMarkdown).toContain("TEST-010: product-tools/tests/createRequirement.test.ts:19");
+    expect(projectMarkdown).toContain("TEST-010: product-tools/tests/createRequirement.test.ts — allocates ids automatically and creates acceptance criteria for an existing feature");
+    expect(projectMarkdown).toContain("TEST-012: product-tools/tests/rebuild.test.ts — validates events and regenerates the product model successfully");
 
     const capabilityFiles = await readdir(path.join(modelRoot, "capabilities"));
     expect(capabilityFiles).toEqual([
@@ -71,18 +72,18 @@ describe("projectModel", () => {
     expect(traceabilityMatrix).toContain("feature_id: FEAT-003");
     expect(traceabilityMatrix).toContain("feature_id: FEAT-008");
     expect(traceabilityMatrix).toContain("requirement_id: REQ-008");
-    expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-004");
+    expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-007");
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-011");
-    expect(traceabilityMatrix).toContain("- TEST-004");
+    expect(traceabilityMatrix).toContain("- TEST-012");
     expect(traceabilityMatrix).toContain("- TEST-011");
 
     const testsIndex = await readFile(path.join(modelRoot, "indexes", "tests.yaml"), "utf8");
-    expect(testsIndex).toContain("id: TEST-011");
-    expect(testsIndex).toContain("test_count: 11");
+    expect(testsIndex).toContain("id: TEST-012");
+    expect(testsIndex).toContain("test_count: 12");
 
-    const testFile = await readFile(path.join(modelRoot, "tests", "TEST-010.yaml"), "utf8");
-    expect(testFile).toContain("acceptance_criterion_id: AC-010");
-    expect(testFile).toContain("line_number: 19");
+    const testFile = await readFile(path.join(modelRoot, "tests", "TEST-012.yaml"), "utf8");
+    expect(testFile).toContain("acceptance_criterion_id: AC-007");
+    expect(testFile).not.toContain("line_number:");
   });
 
 // AC: AC-006
