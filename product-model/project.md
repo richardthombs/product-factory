@@ -110,7 +110,7 @@ Requirements:
   - Acceptance criteria:
     - **AC-008**: Given one or more acceptance criterion ids, a test file, and a test name, when the create-test helper is run, then the test is annotated with the acceptance criterion ids and one TestCreated event is recorded for each id.
       - Tests:
-        - TEST-009: product-tools/tests/linkAcceptanceCriterionTest.test.ts:19 — annotates a test and records created test artifacts
+        - TEST-009: product-tools/tests/createTest.test.ts:19 — annotates a test and records created test artifacts
     - **AC-009**: Given created tests and acceptance criteria, when project-model is run, then the generated model includes test ids under the relevant acceptance criteria and projects each test artifact with file path, line number, and test name.
       - Tests:
         - TEST-007: product-tools/tests/projectModel.test.ts:15 — projects the current self-described event stream into deterministic YAML files

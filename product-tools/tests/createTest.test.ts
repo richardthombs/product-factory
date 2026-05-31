@@ -17,7 +17,7 @@ afterEach(async () => {
 describe("createTest", () => {
 // AC: AC-008
   it("annotates a test and records created test artifacts", async () => {
-    const tempRoot = await mkdtemp(path.join(os.tmpdir(), "link-ac-test-"));
+    const tempRoot = await mkdtemp(path.join(os.tmpdir(), "create-test-"));
     const eventsRoot = path.join(tempRoot, "product-events");
     const modelRoot = path.join(tempRoot, "product-model");
     const testsRoot = path.join(tempRoot, "temp-tests");

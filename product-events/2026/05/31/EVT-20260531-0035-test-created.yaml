@@ -9,6 +9,6 @@ source:
 payload:
   test_id: TEST-009
   acceptance_criterion_id: AC-008
-  file_path: product-tools/tests/linkAcceptanceCriterionTest.test.ts
+  file_path: product-tools/tests/createTest.test.ts
   line_number: 19
   test_name: annotates a test and records created test artifacts
