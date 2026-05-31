@@ -44,9 +44,12 @@ describe("projectModel", () => {
     expect(projectMarkdown).toContain("- Tests: 12");
     expect(projectMarkdown).toContain("## CAP-001 — Manage product model structure");
     expect(projectMarkdown).toContain("### FEAT-008 — Create requirement");
-    expect(projectMarkdown).toContain("**AC-011**");
-    expect(projectMarkdown).toContain("TEST-010: product-tools/tests/createRequirement.test.ts — allocates ids automatically and creates acceptance criteria for an existing feature");
-    expect(projectMarkdown).toContain("TEST-012: product-tools/tests/rebuild.test.ts — validates events and regenerates the product model successfully");
+    expect(projectMarkdown).toContain("**AC-006**: Given a valid event stream, when project-model is run, then the system generates deterministic YAML files for the product, capabilities, features, requirements, acceptance criteria, and indexes. `TEST-006`, `TEST-008`.");
+    expect(projectMarkdown).toContain("**AC-011**: Given an existing feature, when the create-requirement helper is run with multiple acceptance criteria, then the new requirement is projected under the feature with all created acceptance criteria. `TEST-011`.");
+    expect(projectMarkdown).toContain("**AC-007**: Given a valid event stream, when rebuild is run, then the system validates events and regenerates the product model successfully. `TEST-012`.");
+    expect(projectMarkdown).not.toContain("product-tools/tests/createRequirement.test.ts");
+    expect(projectMarkdown).not.toContain("product-tools/tests/rebuild.test.ts");
+    expect(projectMarkdown).not.toContain("      - Tests:");
 
     const capabilityFiles = await readdir(path.join(modelRoot, "capabilities"));
     expect(capabilityFiles).toEqual([

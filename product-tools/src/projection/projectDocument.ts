@@ -111,17 +111,13 @@ function renderAcceptanceCriterionSection(state: ProductModelState, acceptanceCr
     throw new Error(`Missing acceptance criterion '${acceptanceCriterionId}' while rendering project document`);
   }
 
-  const lines = [`    - **${acceptanceCriterion.id}**: ${acceptanceCriterion.text}`];
   const tests = [...state.tests.values()]
     .filter((test) => test.acceptanceCriterionId === acceptanceCriterionId)
     .sort((a, b) => a.id.localeCompare(b.id));
 
-  if (tests.length > 0) {
-    lines.push("      - Tests:");
-    for (const test of tests) {
-      lines.push(`        - ${test.id}: ${test.filePath} — ${test.testName}`);
-    }
-  }
+  const testSuffix = tests.length > 0
+    ? ` ${tests.map((test) => `\`${test.id}\``).join(", ")}.`
+    : "";
 
-  return lines;
+  return [`    - **${acceptanceCriterion.id}**: ${acceptanceCriterion.text}${testSuffix}`];
 }
