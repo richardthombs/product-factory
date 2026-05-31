@@ -360,3 +360,9 @@ branch-only events
 ```
 
 This keeps planning anchored to the event-sourced product definition while still allowing practical incremental delivery.
+
+See also:
+
+- `docs/work_package_tool_spec.md`
+- `docs/work_package_output_schema.md`
+- `docs/work_package_tool_implementation_plan.md`

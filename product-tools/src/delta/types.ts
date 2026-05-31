@@ -66,6 +66,52 @@ export type BranchDeltaChangedEntities = {
   };
 };
 
+export type BranchDeltaImpactedEntities = {
+  capability_ids: string[];
+  feature_ids: string[];
+  requirement_ids: string[];
+  acceptance_criterion_ids: string[];
+  test_ids: string[];
+};
+
+export type BranchDeltaTestContext = {
+  test_id: string;
+};
+
+export type BranchDeltaAcceptanceCriterionContext = {
+  acceptance_criterion_id: string;
+  text: string;
+  change_notes: string[];
+  tests: BranchDeltaTestContext[];
+};
+
+export type BranchDeltaRequirementContext = {
+  requirement_id: string;
+  description: string;
+  change_notes: string[];
+  acceptance_criteria: BranchDeltaAcceptanceCriterionContext[];
+};
+
+export type BranchDeltaFeatureContext = {
+  feature_id: string;
+  feature_name: string;
+  description: string;
+  change_notes: string[];
+  requirements: BranchDeltaRequirementContext[];
+};
+
+export type BranchDeltaCapabilityContext = {
+  capability_id: string;
+  capability_name: string;
+  description: string;
+  change_notes: string[];
+  features: BranchDeltaFeatureContext[];
+};
+
+export type BranchDeltaContext = {
+  capabilities: BranchDeltaCapabilityContext[];
+};
+
 export type BranchDeltaReport = {
   base_branch: string;
   current_branch: string;
@@ -78,6 +124,8 @@ export type BranchDeltaReport = {
   change_categories: BranchDeltaChangeCategory[];
   branch_only_events: BranchDeltaEventReport[];
   changed_entities: BranchDeltaChangedEntities;
+  impacted_entities: BranchDeltaImpactedEntities;
+  contextual_changes: BranchDeltaContext;
 };
 
 export type BranchDeltaOptions = {

@@ -1,0 +1,13 @@
+id: EVT-20260531-0078
+type: RequirementChanged
+occurred_at: 2026-05-31T10:42:00.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+source:
+  change_proposal_id: CHG-007
+payload:
+  requirement_id: REQ-014
+  description: The system shall report impacted product entities and write
+    standard branch-delta artifacts for the current branch in machine-readable
+    YAML and human-readable contextual Markdown.

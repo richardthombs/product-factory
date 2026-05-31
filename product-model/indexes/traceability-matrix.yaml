@@ -179,10 +179,23 @@ capabilities:
                 text: Given branch-only product events spanning additive, refinement, reshaping, deprecation, verification, or readiness changes, when the branch-delta helper is run, then it reports the inferred change categories present in the branch delta.
             description: The system shall summarize changed product entities and inferred change categories in the branch-delta report.
             requirement_id: REQ-013
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-022
+                tests:
+                  - TEST-023
+                  - TEST-024
+                text: Given changed entities in the branch delta, when the branch-delta helper is run, then it reports the impacted capabilities, features, requirements, acceptance criteria, and tests related to those changes.
+              - acceptance_criterion_id: AC-023
+                tests:
+                  - TEST-025
+                  - TEST-026
+                text: Given a working branch and base branch, when the branch-delta helper is run without a custom output path, then it writes product-model/indexes/branch-delta.yaml and product-model/branch-delta.md as generated artifacts, and the markdown presents changed entities in parent context with explicit change labels.
+            description: The system shall report impacted product entities and write standard branch-delta artifacts for the current branch in machine-readable YAML and human-readable contextual Markdown.
+            requirement_id: REQ-014
         status: active
 product_id: PROD-001
 projected_from:
-  event_count: 71
-  last_event_id: EVT-20260531-0071
-  last_occurred_at: 2026-05-31T10:37:00.000Z
-  test_count: 22
+  event_count: 80
+  last_event_id: EVT-20260531-0080
+  last_occurred_at: 2026-05-31T10:44:00.000Z
+  test_count: 26

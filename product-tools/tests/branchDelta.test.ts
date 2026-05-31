@@ -1,10 +1,11 @@
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { execFile } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import { afterEach, describe, expect, it } from "vitest";
 import { branchDelta } from "../src/delta/branchDelta.js";
+import { writeBranchDeltaArtifacts } from "../src/delta/writeBranchDeltaArtifacts.js";
 
 const execFileAsync = promisify(execFile);
 const tempDirs: string[] = [];
@@ -130,10 +131,28 @@ describe("branchDelta", () => {
           added: [],
         },
       },
+      impacted_entities: {
+        capability_ids: ["CAP-001"],
+        feature_ids: [],
+        requirement_ids: [],
+        acceptance_criterion_ids: [],
+        test_ids: [],
+      },
+      contextual_changes: {
+        capabilities: [
+          {
+            capability_id: "CAP-001",
+            capability_name: "Branch delta reporting",
+            description: "Reports product events unique to the working branch.",
+            change_notes: ["added"],
+            features: [],
+          },
+        ],
+      },
     });
   });
 
-// AC: AC-020
+// AC: AC-020, AC-022
   it("reports the changed entities grouped by entity type and change kind", async () => {
     const repoRoot = await mkdtemp(path.join(os.tmpdir(), "branch-delta-changed-entities-"));
     tempDirs.push(repoRoot);
@@ -302,6 +321,13 @@ describe("branchDelta", () => {
       tests: {
         added: [],
       },
+    });
+    expect(report.impacted_entities).toEqual({
+      capability_ids: ["CAP-001", "CAP-002"],
+      feature_ids: ["FEAT-001"],
+      requirement_ids: ["REQ-001"],
+      acceptance_criterion_ids: ["AC-001"],
+      test_ids: [],
     });
   });
 
@@ -485,6 +511,64 @@ describe("branchDelta", () => {
     ]);
   });
 
+// AC: AC-022, AC-023
+  it("writes standard branch-delta artifacts to product-model", async () => {
+    const repoRoot = await mkdtemp(path.join(os.tmpdir(), "branch-delta-artifacts-"));
+    tempDirs.push(repoRoot);
+
+    await execGit(["init", "-b", "main"], repoRoot);
+    await execGit(["config", "user.name", "Test User"], repoRoot);
+    await execGit(["config", "user.email", "test@example.com"], repoRoot);
+
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0001-product-created.yaml", [
+      "id: EVT-20260601-0001",
+      "type: ProductCreated",
+      "occurred_at: 2026-06-01T09:00:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: product_model_steward",
+      "payload:",
+      "  product_id: PROD-001",
+      "  name: Product Factory",
+      "  description: Event-sourced product knowledge system for agent-driven software delivery.",
+    ]);
+
+    await execGit(["add", "."], repoRoot);
+    await execGit(["commit", "-m", "Base product events"], repoRoot);
+    await execGit(["checkout", "-b", "feature/add-capability"], repoRoot);
+
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0002-capability-added.yaml", [
+      "id: EVT-20260601-0002",
+      "type: CapabilityAdded",
+      "occurred_at: 2026-06-01T09:01:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: capability_modeller",
+      "payload:",
+      "  capability_id: CAP-001",
+      "  name: Branch delta reporting",
+      "  description: Reports product events unique to the working branch.",
+    ]);
+
+    const result = await writeBranchDeltaArtifacts({
+      baseBranch: "main",
+      cwd: repoRoot,
+    });
+
+    expect(path.basename(result.yamlPath)).toBe("branch-delta.yaml");
+    expect(path.basename(result.markdownPath)).toBe("branch-delta.md");
+
+    const yaml = await readFile(result.yamlPath, "utf8");
+    expect(yaml).toContain("# Generated from /product-events.");
+    expect(yaml).toContain("branch_only_event_count: 1");
+
+    const markdown = await readFile(result.markdownPath, "utf8");
+    expect(markdown).toContain("<!-- Generated from /product-events. -->");
+    expect(markdown).toContain("# feature/add-capability — Branch Delta");
+    expect(markdown).toContain("# Proposed Changes");
+    expect(markdown).toContain("## CAP-001 — Branch delta reporting (added)");
+  });
+
 // AC: AC-019
   it("fails when the base branch cannot be resolved", async () => {
     const repoRoot = await mkdtemp(path.join(os.tmpdir(), "branch-delta-missing-base-"));
@@ -527,5 +611,8 @@ async function writeEvent(repoRoot: string, relativePath: string, lines: string[
 async function execGit(args: string[], cwd: string): Promise<void> {
   await execFileAsync("git", args, { cwd });
 }
+
+
+
 
 

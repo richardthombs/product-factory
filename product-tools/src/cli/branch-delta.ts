@@ -2,18 +2,26 @@
 import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import YAML from "yaml";
-import { branchDelta } from "../delta/branchDelta.js";
+import { writeBranchDeltaArtifacts } from "../delta/writeBranchDeltaArtifacts.js";
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
-  const report = await branchDelta({
+  const result = await writeBranchDeltaArtifacts({
     baseBranch: requiredArg(args, "base"),
     eventsRoot: singleArg(args, "events-root"),
+    modelRoot: singleArg(args, "model-root"),
   });
 
-  const format = singleArg(args, "format") ?? "yaml";
+  console.log(`Wrote branch delta YAML to ${result.yamlPath}`);
+  console.log(`Wrote branch delta markdown to ${result.markdownPath}`);
+
+  const format = singleArg(args, "format");
+  if (!format) {
+    return;
+  }
+
   const output = singleArg(args, "output");
-  const rendered = renderReport(report, format);
+  const rendered = renderReport(result.report, format);
 
   if (output) {
     const outputPath = path.resolve(process.cwd(), output);
@@ -28,7 +36,7 @@ async function main(): Promise<void> {
   }
 }
 
-function renderReport(report: Awaited<ReturnType<typeof branchDelta>>, format: string): string {
+function renderReport(report: Awaited<ReturnType<typeof writeBranchDeltaArtifacts>>["report"], format: string): string {
   switch (format) {
     case "yaml":
       return YAML.stringify(report);

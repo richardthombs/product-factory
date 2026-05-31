@@ -1,0 +1,13 @@
+id: EVT-20260531-0077
+type: TestCreated
+occurred_at: 2026-05-31T10:41:00.000Z
+actor:
+  type: agent
+  id: test_agent
+source:
+  change_proposal_id: CHG-007
+payload:
+  test_id: TEST-025
+  acceptance_criterion_id: AC-023
+  file_path: product-tools/tests/branchDelta.test.ts
+  test_name: writes standard branch-delta artifacts to product-model

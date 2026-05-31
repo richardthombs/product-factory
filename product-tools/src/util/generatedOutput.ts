@@ -10,6 +10,15 @@ const GENERATED_DIRECTORIES = [
   "indexes",
 ] as const;
 
+const PRESERVED_ROOT_FILES = new Set([
+  "branch-delta.md",
+]);
+
+const PRESERVED_INDEX_FILES = new Set([
+  "branch-delta.yaml",
+  "branch-delta.yml",
+]);
+
 export async function prepareModelOutput(modelRoot: string): Promise<void> {
   await mkdir(modelRoot, { recursive: true });
 
@@ -32,15 +41,19 @@ export async function prepareModelOutput(modelRoot: string): Promise<void> {
           || entry.name.endsWith(".markdown")
         ),
       )
+      .filter((entry) => !PRESERVED_ROOT_FILES.has(entry.name))
       .map((entry) => rm(path.join(modelRoot, entry.name), { force: true })),
   );
 }
 
 async function clearDirectory(directory: string): Promise<void> {
   const entries = await readdir(directory, { withFileTypes: true });
+  const preservedFiles = path.basename(directory) === "indexes" ? PRESERVED_INDEX_FILES : new Set<string>();
+
   await Promise.all(
     entries
       .filter((entry) => !entry.name.startsWith("."))
+      .filter((entry) => !(entry.isFile() && preservedFiles.has(entry.name)))
       .map((entry) => rm(path.join(directory, entry.name), { recursive: true, force: true })),
   );
 }

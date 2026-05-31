@@ -2,7 +2,7 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 product_id: PROD-001
-test_count: 22
+test_count: 26
 tests:
   - acceptance_criterion_id: AC-001
     file_path: product-tools/tests/createProduct.test.ts
@@ -92,3 +92,19 @@ tests:
     file_path: product-tools/tests/branchDelta.test.ts
     id: TEST-022
     test_name: reports inferred change categories present in the branch delta
+  - acceptance_criterion_id: AC-022
+    file_path: product-tools/tests/branchDelta.test.ts
+    id: TEST-023
+    test_name: writes standard branch-delta artifacts to product-model
+  - acceptance_criterion_id: AC-022
+    file_path: product-tools/tests/branchDelta.test.ts
+    id: TEST-024
+    test_name: reports the changed entities grouped by entity type and change kind
+  - acceptance_criterion_id: AC-023
+    file_path: product-tools/tests/branchDelta.test.ts
+    id: TEST-025
+    test_name: writes standard branch-delta artifacts to product-model
+  - acceptance_criterion_id: AC-023
+    file_path: product-tools/tests/renderBranchDelta.test.ts
+    id: TEST-026
+    test_name: renders explicit labels for added, changed, moved, deprecated, and status transitions

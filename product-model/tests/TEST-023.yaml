@@ -1,0 +1,7 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-022
+file_path: product-tools/tests/branchDelta.test.ts
+id: TEST-023
+test_name: writes standard branch-delta artifacts to product-model

@@ -10,11 +10,11 @@ Event-sourced product knowledge system for agent-driven software delivery.
 - Product ID: PROD-001
 - Capabilities: 2
 - Features: 12
-- Requirements: 13
-- Acceptance Criteria: 21
-- Tests: 22
-- Projected from events: 71
-- Last event: EVT-20260531-0071 @ 2026-05-31T10:37:00.000Z
+- Requirements: 14
+- Acceptance Criteria: 23
+- Tests: 26
+- Projected from events: 80
+- Last event: EVT-20260531-0080 @ 2026-05-31T10:44:00.000Z
 
 # Capabilities
 
@@ -157,3 +157,8 @@ Requirements:
   - Acceptance criteria:
     - **AC-020**: Given branch-only product events affecting capabilities, features, requirements, acceptance criteria, or tests, when the branch-delta helper is run, then it reports the changed entities grouped by entity type and change kind. `TEST-021`.
     - **AC-021**: Given branch-only product events spanning additive, refinement, reshaping, deprecation, verification, or readiness changes, when the branch-delta helper is run, then it reports the inferred change categories present in the branch delta. `TEST-022`.
+
+- **REQ-014**: The system shall report impacted product entities and write standard branch-delta artifacts for the current branch in machine-readable YAML and human-readable contextual Markdown.
+  - Acceptance criteria:
+    - **AC-022**: Given changed entities in the branch delta, when the branch-delta helper is run, then it reports the impacted capabilities, features, requirements, acceptance criteria, and tests related to those changes. `TEST-023`, `TEST-024`.
+    - **AC-023**: Given a working branch and base branch, when the branch-delta helper is run without a custom output path, then it writes product-model/indexes/branch-delta.yaml and product-model/branch-delta.md as generated artifacts, and the markdown presents changed entities in parent context with explicit change labels. `TEST-025`, `TEST-026`.

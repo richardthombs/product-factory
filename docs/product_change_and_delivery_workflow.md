@@ -18,6 +18,12 @@ Related branch-delta tool documents:
 - `docs/branch_delta_output_schema.md`
 - `docs/branch_delta_tool_implementation_plan.md`
 
+Related work-package documents:
+
+- `docs/work_package_tool_spec.md`
+- `docs/work_package_output_schema.md`
+- `docs/work_package_tool_implementation_plan.md`
+
 ---
 
 ## Core Model

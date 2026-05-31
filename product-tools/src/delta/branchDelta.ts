@@ -3,9 +3,13 @@ import { compareLoadedEvents, validateEvents, validateLoadedEvents } from "../va
 import { replayEvents } from "../projection/replay.js";
 import { getCurrentBranchName, loadGitBranchEvents } from "./gitEvents.js";
 import type {
+  BranchDeltaCapabilityContext,
   BranchDeltaChangeCategory,
   BranchDeltaChangedEntities,
+  BranchDeltaContext,
   BranchDeltaEntityRefs,
+  BranchDeltaFeatureContext,
+  BranchDeltaImpactedEntities,
   BranchDeltaOptions,
   BranchDeltaReport,
   BranchDeltaSummary,
@@ -35,6 +39,8 @@ export async function branchDelta(options: BranchDeltaOptions): Promise<BranchDe
   const currentState = replayEvents(currentValidation.events);
   const baseState = replayEvents(baseValidation.events);
   const changedEntities = buildChangedEntities(branchOnlyEvents, baseState);
+  const impactedEntities = buildImpactedEntities(changedEntities, currentState);
+  const contextualChanges = buildContextualChanges(changedEntities, currentState);
   const summary = summarizeChangedEntities(changedEntities);
   const changeCategories = inferChangeCategories(branchOnlyEvents);
 
@@ -56,6 +62,8 @@ export async function branchDelta(options: BranchDeltaOptions): Promise<BranchDe
       entity_refs: entityRefsForEvent(event),
     })),
     changed_entities: changedEntities,
+    impacted_entities: impactedEntities,
+    contextual_changes: contextualChanges,
   };
 }
 
@@ -153,6 +161,375 @@ function buildChangedEntities(
   }
 
   return changedEntities;
+}
+
+function buildImpactedEntities(
+  changedEntities: BranchDeltaChangedEntities,
+  state: ReturnType<typeof replayEvents>,
+): BranchDeltaImpactedEntities {
+  const capabilityIds = new Set<string>();
+  const featureIds = new Set<string>();
+  const requirementIds = new Set<string>();
+  const acceptanceCriterionIds = new Set<string>();
+  const testIds = new Set<string>();
+
+  const addCapabilityImpact = (capabilityId: string): void => {
+    if (capabilityIds.has(capabilityId)) {
+      return;
+    }
+    capabilityIds.add(capabilityId);
+
+    const capability = state.capabilities.get(capabilityId);
+    if (!capability) {
+      return;
+    }
+
+    for (const featureId of capability.featureIds) {
+      addFeatureImpact(featureId);
+    }
+  };
+
+  const addFeatureImpact = (featureId: string): void => {
+    if (featureIds.has(featureId)) {
+      return;
+    }
+    featureIds.add(featureId);
+
+    const feature = state.features.get(featureId);
+    if (!feature) {
+      return;
+    }
+
+    capabilityIds.add(feature.capabilityId);
+    for (const requirementId of feature.requirementIds) {
+      addRequirementImpact(requirementId);
+    }
+  };
+
+  const addRequirementImpact = (requirementId: string): void => {
+    if (requirementIds.has(requirementId)) {
+      return;
+    }
+    requirementIds.add(requirementId);
+
+    const requirement = state.requirements.get(requirementId);
+    if (!requirement) {
+      return;
+    }
+
+    addFeatureImpact(requirement.featureId);
+    for (const acceptanceCriterionId of requirement.acceptanceCriterionIds) {
+      addAcceptanceCriterionImpact(acceptanceCriterionId);
+    }
+  };
+
+  const addAcceptanceCriterionImpact = (acceptanceCriterionId: string): void => {
+    if (acceptanceCriterionIds.has(acceptanceCriterionId)) {
+      return;
+    }
+    acceptanceCriterionIds.add(acceptanceCriterionId);
+
+    const acceptanceCriterion = state.acceptanceCriteria.get(acceptanceCriterionId);
+    if (!acceptanceCriterion) {
+      return;
+    }
+
+    addRequirementImpact(acceptanceCriterion.requirementId);
+    for (const test of state.tests.values()) {
+      if (test.acceptanceCriterionId === acceptanceCriterionId) {
+        testIds.add(test.id);
+      }
+    }
+  };
+
+  const addTestImpact = (testId: string): void => {
+    if (testIds.has(testId)) {
+      return;
+    }
+    testIds.add(testId);
+
+    const test = state.tests.get(testId);
+    if (!test) {
+      return;
+    }
+
+    addAcceptanceCriterionImpact(test.acceptanceCriterionId);
+  };
+
+  for (const capability of changedEntities.capabilities.added) {
+    addCapabilityImpact(capability.capability_id);
+  }
+  for (const capability of changedEntities.capabilities.changed) {
+    addCapabilityImpact(capability.capability_id);
+  }
+  for (const capability of changedEntities.capabilities.status_changed) {
+    addCapabilityImpact(capability.capability_id);
+  }
+
+  for (const feature of changedEntities.features.added) {
+    addFeatureImpact(feature.feature_id);
+  }
+  for (const feature of changedEntities.features.changed) {
+    addFeatureImpact(feature.feature_id);
+  }
+  for (const feature of changedEntities.features.moved) {
+    addFeatureImpact(feature.feature_id);
+    if (feature.from_capability_id) {
+      capabilityIds.add(feature.from_capability_id);
+    }
+    capabilityIds.add(feature.to_capability_id);
+  }
+  for (const feature of changedEntities.features.deprecated) {
+    addFeatureImpact(feature.feature_id);
+  }
+  for (const feature of changedEntities.features.status_changed) {
+    addFeatureImpact(feature.feature_id);
+  }
+
+  for (const requirement of changedEntities.requirements.added) {
+    addRequirementImpact(requirement.requirement_id);
+  }
+  for (const requirement of changedEntities.requirements.changed) {
+    addRequirementImpact(requirement.requirement_id);
+  }
+
+  for (const acceptanceCriterion of changedEntities.acceptance_criteria.added) {
+    addAcceptanceCriterionImpact(acceptanceCriterion.acceptance_criterion_id);
+  }
+  for (const acceptanceCriterion of changedEntities.acceptance_criteria.changed) {
+    addAcceptanceCriterionImpact(acceptanceCriterion.acceptance_criterion_id);
+  }
+
+  for (const test of changedEntities.tests.added) {
+    addTestImpact(test.test_id);
+  }
+
+  return {
+    capability_ids: [...capabilityIds].sort(),
+    feature_ids: [...featureIds].sort(),
+    requirement_ids: [...requirementIds].sort(),
+    acceptance_criterion_ids: [...acceptanceCriterionIds].sort(),
+    test_ids: [...testIds].sort(),
+  };
+}
+
+function buildContextualChanges(
+  changedEntities: BranchDeltaChangedEntities,
+  state: ReturnType<typeof replayEvents>,
+): BranchDeltaContext {
+  const changedCapabilityIds = new Set([
+    ...changedEntities.capabilities.added.map((item) => item.capability_id),
+    ...changedEntities.capabilities.changed.map((item) => item.capability_id),
+    ...changedEntities.capabilities.status_changed.map((item) => item.capability_id),
+  ]);
+  const changedFeatureIds = new Set([
+    ...changedEntities.features.added.map((item) => item.feature_id),
+    ...changedEntities.features.changed.map((item) => item.feature_id),
+    ...changedEntities.features.moved.map((item) => item.feature_id),
+    ...changedEntities.features.deprecated.map((item) => item.feature_id),
+    ...changedEntities.features.status_changed.map((item) => item.feature_id),
+  ]);
+  const changedRequirementIds = new Set([
+    ...changedEntities.requirements.added.map((item) => item.requirement_id),
+    ...changedEntities.requirements.changed.map((item) => item.requirement_id),
+  ]);
+  const changedAcceptanceCriterionIds = new Set([
+    ...changedEntities.acceptance_criteria.added.map((item) => item.acceptance_criterion_id),
+    ...changedEntities.acceptance_criteria.changed.map((item) => item.acceptance_criterion_id),
+  ]);
+  const changedTestIds = new Set(changedEntities.tests.added.map((item) => item.test_id));
+
+  const featureMoveById = new Map(changedEntities.features.moved.map((item) => [item.feature_id, item]));
+  const featureDeprecationById = new Map(changedEntities.features.deprecated.map((item) => [item.feature_id, item]));
+  const featureStatusById = new Map(changedEntities.features.status_changed.map((item) => [item.feature_id, item]));
+  const capabilityStatusById = new Map(changedEntities.capabilities.status_changed.map((item) => [item.capability_id, item]));
+
+  const capabilitiesById = new Map<string, BranchDeltaCapabilityContext>();
+  const featuresById = new Map<string, BranchDeltaFeatureContext>();
+
+  const ensureCapability = (capabilityId: string): BranchDeltaCapabilityContext => {
+    const existing = capabilitiesById.get(capabilityId);
+    if (existing) {
+      return existing;
+    }
+
+    const capability = state.capabilities.get(capabilityId);
+    if (!capability) {
+      throw new Error(`Missing capability '${capabilityId}' while building branch delta context`);
+    }
+
+    const notes: string[] = [];
+    if (changedEntities.capabilities.added.some((item) => item.capability_id === capabilityId)) {
+      notes.push("added");
+    }
+    const capabilityStatus = capabilityStatusById.get(capabilityId);
+    if (capabilityStatus) {
+      notes.push(`status -> ${capabilityStatus.status}`);
+    }
+
+    const next: BranchDeltaCapabilityContext = {
+      capability_id: capability.id,
+      capability_name: capability.name,
+      description: capability.description,
+      change_notes: notes,
+      features: [],
+    };
+    capabilitiesById.set(capabilityId, next);
+    return next;
+  };
+
+  const ensureFeature = (featureId: string): BranchDeltaFeatureContext => {
+    const existing = featuresById.get(featureId);
+    if (existing) {
+      return existing;
+    }
+
+    const feature = state.features.get(featureId);
+    if (!feature) {
+      throw new Error(`Missing feature '${featureId}' while building branch delta context`);
+    }
+
+    const capabilityContext = ensureCapability(feature.capabilityId);
+    const notes: string[] = [];
+    if (changedEntities.features.added.some((item) => item.feature_id === featureId)) {
+      notes.push("added");
+    }
+    const move = featureMoveById.get(featureId);
+    if (move) {
+      notes.push(`moved from ${move.from_capability_id ?? "unknown"} to ${move.to_capability_id}`);
+    }
+    const deprecation = featureDeprecationById.get(featureId);
+    if (deprecation) {
+      notes.push(`deprecated: ${deprecation.reason}`);
+    }
+    const status = featureStatusById.get(featureId);
+    if (status) {
+      notes.push(`status -> ${status.status}`);
+    }
+
+    const next: BranchDeltaFeatureContext = {
+      feature_id: feature.id,
+      feature_name: feature.name,
+      description: feature.description,
+      change_notes: notes,
+      requirements: [],
+    };
+    capabilityContext.features.push(next);
+    featuresById.set(featureId, next);
+    return next;
+  };
+
+  const ensureRequirement = (requirementId: string) => {
+    const requirement = state.requirements.get(requirementId);
+    if (!requirement) {
+      throw new Error(`Missing requirement '${requirementId}' while building branch delta context`);
+    }
+
+    const featureContext = ensureFeature(requirement.featureId);
+    let existing = featureContext.requirements.find((item) => item.requirement_id === requirementId);
+    if (existing) {
+      return existing;
+    }
+
+    const notes: string[] = [];
+    if (changedEntities.requirements.added.some((item) => item.requirement_id === requirementId)) {
+      notes.push("added");
+    }
+    if (changedEntities.requirements.changed.some((item) => item.requirement_id === requirementId)) {
+      notes.push("changed");
+    }
+
+    existing = {
+      requirement_id: requirement.id,
+      description: requirement.description,
+      change_notes: notes,
+      acceptance_criteria: [],
+    };
+    featureContext.requirements.push(existing);
+    return existing;
+  };
+
+  const ensureAcceptanceCriterion = (acceptanceCriterionId: string) => {
+    const acceptanceCriterion = state.acceptanceCriteria.get(acceptanceCriterionId);
+    if (!acceptanceCriterion) {
+      throw new Error(`Missing acceptance criterion '${acceptanceCriterionId}' while building branch delta context`);
+    }
+
+    const requirementContext = ensureRequirement(acceptanceCriterion.requirementId);
+    let existing = requirementContext.acceptance_criteria.find((item) => item.acceptance_criterion_id === acceptanceCriterionId);
+    if (existing) {
+      return existing;
+    }
+
+    const notes: string[] = [];
+    if (changedEntities.acceptance_criteria.added.some((item) => item.acceptance_criterion_id === acceptanceCriterionId)) {
+      notes.push("added");
+    }
+    if (changedEntities.acceptance_criteria.changed.some((item) => item.acceptance_criterion_id === acceptanceCriterionId)) {
+      notes.push("changed");
+    }
+
+    existing = {
+      acceptance_criterion_id: acceptanceCriterion.id,
+      text: acceptanceCriterion.text,
+      change_notes: notes,
+      tests: [],
+    };
+    requirementContext.acceptance_criteria.push(existing);
+    return existing;
+  };
+
+  const addTestToContext = (testId: string): void => {
+    const test = state.tests.get(testId);
+    if (!test) {
+      throw new Error(`Missing test '${testId}' while building branch delta context`);
+    }
+
+    const acceptanceCriterionContext = ensureAcceptanceCriterion(test.acceptanceCriterionId);
+    if (!acceptanceCriterionContext.tests.some((item) => item.test_id === testId)) {
+      acceptanceCriterionContext.tests.push({ test_id: test.id });
+    }
+  };
+
+  for (const capabilityId of changedCapabilityIds) {
+    ensureCapability(capabilityId);
+  }
+  for (const featureId of changedFeatureIds) {
+    ensureFeature(featureId);
+  }
+  for (const requirementId of changedRequirementIds) {
+    ensureRequirement(requirementId);
+  }
+  for (const acceptanceCriterionId of changedAcceptanceCriterionIds) {
+    ensureAcceptanceCriterion(acceptanceCriterionId);
+  }
+  for (const testId of changedTestIds) {
+    addTestToContext(testId);
+  }
+
+  const capabilities = [...capabilitiesById.values()]
+    .map((capability) => ({
+      ...capability,
+      features: [...capability.features]
+        .map((feature) => ({
+          ...feature,
+          requirements: [...feature.requirements]
+            .map((requirement) => ({
+              ...requirement,
+              acceptance_criteria: [...requirement.acceptance_criteria]
+                .map((acceptanceCriterion) => ({
+                  ...acceptanceCriterion,
+                  tests: [...acceptanceCriterion.tests].sort((a, b) => a.test_id.localeCompare(b.test_id)),
+                }))
+                .sort((a, b) => a.acceptance_criterion_id.localeCompare(b.acceptance_criterion_id)),
+            }))
+            .sort((a, b) => a.requirement_id.localeCompare(b.requirement_id)),
+        }))
+        .sort((a, b) => a.feature_id.localeCompare(b.feature_id)),
+    }))
+    .sort((a, b) => a.capability_id.localeCompare(b.capability_id));
+
+  return { capabilities };
 }
 
 function summarizeChangedEntities(changedEntities: BranchDeltaChangedEntities): BranchDeltaSummary {

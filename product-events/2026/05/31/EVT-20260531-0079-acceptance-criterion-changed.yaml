@@ -1,0 +1,15 @@
+id: EVT-20260531-0079
+type: AcceptanceCriterionChanged
+occurred_at: 2026-05-31T10:43:00.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+source:
+  change_proposal_id: CHG-007
+payload:
+  acceptance_criterion_id: AC-023
+  text: Given a working branch and base branch, when the branch-delta helper is
+    run without a custom output path, then it writes
+    product-model/indexes/branch-delta.yaml and product-model/branch-delta.md as
+    generated artifacts, and the markdown presents changed entities in parent
+    context with explicit change labels.

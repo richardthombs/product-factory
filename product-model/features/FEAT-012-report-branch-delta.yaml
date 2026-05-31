@@ -8,4 +8,5 @@ name: Report branch delta
 requirement_ids:
   - REQ-012
   - REQ-013
+  - REQ-014
 status: active

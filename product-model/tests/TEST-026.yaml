@@ -1,0 +1,7 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-023
+file_path: product-tools/tests/renderBranchDelta.test.ts
+id: TEST-026
+test_name: renders explicit labels for added, changed, moved, deprecated, and status transitions
