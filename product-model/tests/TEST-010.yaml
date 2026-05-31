@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-010
+file_path: product-tools/tests/createRequirement.test.ts
+id: TEST-010
+line_number: 19
+test_name: allocates ids automatically and creates acceptance criteria for an existing feature

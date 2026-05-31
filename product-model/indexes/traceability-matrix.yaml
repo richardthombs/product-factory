@@ -39,6 +39,20 @@ capabilities:
                 text: Given an existing capability, when the create-feature command is run with multiple acceptance criterion texts, then the system creates one acceptance criterion event for each text.
             description: The system shall create a feature, a linked requirement, and one or more linked acceptance criteria for an existing capability.
             requirement_id: REQ-003
+      - feature_id: FEAT-008
+        feature_name: Create requirement
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-010
+                tests:
+                  - TEST-010
+                text: Given an existing feature, when the create-requirement helper is run, then the system writes a RequirementAdded event and one AcceptanceCriterionAdded event per acceptance criterion and rebuilds the model.
+              - acceptance_criterion_id: AC-011
+                tests:
+                  - TEST-011
+                text: Given an existing feature, when the create-requirement helper is run with multiple acceptance criteria, then the new requirement is projected under the feature with all created acceptance criteria.
+            description: The system shall create a requirement under an existing feature and attach one or more acceptance criteria to it.
+            requirement_id: REQ-008
   - capability_id: CAP-002
     capability_name: Validate and project product model
     features:
@@ -88,7 +102,7 @@ capabilities:
             requirement_id: REQ-007
 product_id: PROD-001
 projected_from:
-  event_count: 35
-  last_event_id: EVT-20260531-0035
-  last_occurred_at: 2026-05-31T09:56:00.000Z
-  test_count: 9
+  event_count: 41
+  last_event_id: EVT-20260531-0041
+  last_occurred_at: 2026-05-31T10:05:01.000Z
+  test_count: 11

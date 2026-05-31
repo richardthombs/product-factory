@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-010
+  - AC-011
+description: The system shall create a requirement under an existing feature and attach one or more acceptance criteria to it.
+feature_id: FEAT-008
+id: REQ-008

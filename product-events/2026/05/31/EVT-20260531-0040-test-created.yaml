@@ -1,0 +1,15 @@
+id: EVT-20260531-0040
+type: TestCreated
+occurred_at: 2026-05-31T10:05:00.000Z
+actor:
+  type: agent
+  id: test_agent
+source:
+  change_proposal_id: CHG-019
+payload:
+  test_id: TEST-010
+  acceptance_criterion_id: AC-010
+  file_path: product-tools/tests/createRequirement.test.ts
+  line_number: 19
+  test_name: allocates ids automatically and creates acceptance criteria for an
+    existing feature

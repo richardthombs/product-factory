@@ -8,6 +8,7 @@ capabilities:
       - FEAT-001
       - FEAT-002
       - FEAT-003
+      - FEAT-008
   - capability_id: CAP-002
     capability_name: Validate and project product model
     feature_ids:

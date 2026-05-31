@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+id: AC-010
+requirement_id: REQ-008
+tests:
+  - TEST-010
+text: Given an existing feature, when the create-requirement helper is run, then the system writes a RequirementAdded event and one AcceptanceCriterionAdded event per acceptance criterion and rebuilds the model.

@@ -10,6 +10,7 @@
     "create-product": "tsx product-tools/src/cli/create-product.ts",
     "create-capability": "tsx product-tools/src/cli/create-capability.ts",
     "create-feature": "tsx product-tools/src/cli/create-feature.ts",
+    "create-requirement": "tsx product-tools/src/cli/create-requirement.ts",
     "create-test": "tsx product-tools/src/cli/create-test.ts",
     "test": "vitest run"
   },

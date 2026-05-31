@@ -56,6 +56,24 @@ npm run create-feature -- \
 
 These commands determine the next `PROD-*`, `CAP-*`, `FEAT-*`, `REQ-*`, `AC-*`, and `EVT-*` ids automatically and then rebuild `product-model/`.
 
+To add a requirement with one or more acceptance criteria to an existing feature:
+
+```bash
+npm run create-requirement -- \
+  --feature FEAT-001 \
+  --description "The system shall preserve heading structure when exporting requirements as Markdown." \
+  --acceptance-criterion-text "Given an exported Markdown document, when it is opened in a Markdown viewer, then headings are preserved." \
+  --acceptance-criterion-text "Given requirement content with lists, when it is exported to Markdown, then list structure is preserved."
+```
+
+What the helper does:
+
+- verifies the feature exists
+- allocates the next `REQ-*` id
+- allocates one new `AC-*` id per `--acceptance-criterion-text`
+- writes one `RequirementAdded` event and one `AcceptanceCriterionAdded` event per acceptance criterion
+- rebuilds `product-model/`
+
 To create one or more test artifacts for acceptance criteria and annotate the test source:
 
 ```bash

@@ -2,7 +2,7 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 product_id: PROD-001
-test_count: 9
+test_count: 11
 tests:
   - acceptance_criterion_id: AC-001
     file_path: product-tools/tests/createProduct.test.ts
@@ -42,10 +42,20 @@ tests:
   - acceptance_criterion_id: AC-006
     file_path: product-tools/tests/projectModel.test.ts
     id: TEST-008
-    line_number: 88
+    line_number: 89
     test_name: produces identical output across repeated rebuilds
   - acceptance_criterion_id: AC-008
     file_path: product-tools/tests/createTest.test.ts
     id: TEST-009
     line_number: 19
     test_name: annotates a test and records created test artifacts
+  - acceptance_criterion_id: AC-010
+    file_path: product-tools/tests/createRequirement.test.ts
+    id: TEST-010
+    line_number: 19
+    test_name: allocates ids automatically and creates acceptance criteria for an existing feature
+  - acceptance_criterion_id: AC-011
+    file_path: product-tools/tests/createRequirement.test.ts
+    id: TEST-011
+    line_number: 19
+    test_name: allocates ids automatically and creates acceptance criteria for an existing feature

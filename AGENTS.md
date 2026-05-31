@@ -173,7 +173,29 @@ Requirements:
 
 ---
 
-## 4. Link an acceptance criterion to test code
+## 4. Create a requirement under an existing feature
+
+```bash
+npm run create-requirement -- \
+  --feature FEAT-001 \
+  --description "The system shall preserve heading structure when exporting requirements as Markdown." \
+  --acceptance-criterion-text "Given an exported Markdown document, when it is opened in a Markdown viewer, then headings are preserved." \
+  --acceptance-criterion-text "Given requirement content with lists, when it is exported to Markdown, then list structure is preserved."
+```
+
+What it does:
+
+- verifies the feature exists
+- allocates the next `REQ-*` id
+- allocates one new `AC-*` id per `--acceptance-criterion-text`
+- writes one `RequirementAdded` event and one `AcceptanceCriterionAdded` event per acceptance criterion
+- rebuilds `product-model/`
+
+Use this when an existing feature needs more requirements without creating a new feature.
+
+---
+
+## 5. Create a test for one or more acceptance criteria
 
 ```bash
 npm run create-test -- \
@@ -231,6 +253,7 @@ Use:
 - `create-product`
 - `create-capability`
 - `create-feature`
+- `create-requirement`
 - `create-test`
 
 Prefer these over manual event authoring.
@@ -343,6 +366,9 @@ Inspect existing capabilities, then use `create-capability` if needed.
 
 ### If asked to add a new user-facing or implementation slice under a capability
 Use `create-feature`.
+
+### If asked to add more requirements to an existing feature
+Use `create-requirement`.
 
 ### If asked to create test coverage for an acceptance criterion
 Use `create-test` so the test file is annotated and the test artifact event is recorded consistently.

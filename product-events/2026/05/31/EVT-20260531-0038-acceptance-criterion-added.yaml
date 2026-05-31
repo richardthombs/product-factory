@@ -1,0 +1,14 @@
+id: EVT-20260531-0038
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T10:00:02.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-018
+payload:
+  acceptance_criterion_id: AC-010
+  requirement_id: REQ-008
+  text: Given an existing feature, when the create-requirement helper is run, then
+    the system writes a RequirementAdded event and one AcceptanceCriterionAdded
+    event per acceptance criterion and rebuilds the model.

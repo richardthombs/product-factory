@@ -9,12 +9,12 @@ Event-sourced product knowledge system for agent-driven software delivery.
 
 - Product ID: PROD-001
 - Capabilities: 2
-- Features: 7
-- Requirements: 7
-- Acceptance Criteria: 9
-- Tests: 9
-- Projected from events: 35
-- Last event: EVT-20260531-0035 @ 2026-05-31T09:56:00.000Z
+- Features: 8
+- Requirements: 8
+- Acceptance Criteria: 11
+- Tests: 11
+- Projected from events: 41
+- Last event: EVT-20260531-0041 @ 2026-05-31T10:05:01.000Z
 
 # Capabilities
 
@@ -61,6 +61,21 @@ Requirements:
       - Tests:
         - TEST-004: product-tools/tests/createFeature.test.ts:18 — allocates ids automatically and creates multiple acceptance criteria
 
+### FEAT-008 — Create requirement
+
+Adds a requirement and one or more acceptance criteria to an existing feature.
+
+Requirements:
+
+- **REQ-008**: The system shall create a requirement under an existing feature and attach one or more acceptance criteria to it.
+  - Acceptance criteria:
+    - **AC-010**: Given an existing feature, when the create-requirement helper is run, then the system writes a RequirementAdded event and one AcceptanceCriterionAdded event per acceptance criterion and rebuilds the model.
+      - Tests:
+        - TEST-010: product-tools/tests/createRequirement.test.ts:19 — allocates ids automatically and creates acceptance criteria for an existing feature
+    - **AC-011**: Given an existing feature, when the create-requirement helper is run with multiple acceptance criteria, then the new requirement is projected under the feature with all created acceptance criteria.
+      - Tests:
+        - TEST-011: product-tools/tests/createRequirement.test.ts:19 — allocates ids automatically and creates acceptance criteria for an existing feature
+
 ## CAP-002 — Validate and project product model
 
 Enables users to validate product events and regenerate the current-state product model.
@@ -88,7 +103,7 @@ Requirements:
     - **AC-006**: Given a valid event stream, when project-model is run, then the system generates deterministic YAML files for the product, capabilities, features, requirements, acceptance criteria, and indexes.
       - Tests:
         - TEST-006: product-tools/tests/projectModel.test.ts:15 — projects the current self-described event stream into deterministic YAML files
-        - TEST-008: product-tools/tests/projectModel.test.ts:88 — produces identical output across repeated rebuilds
+        - TEST-008: product-tools/tests/projectModel.test.ts:89 — produces identical output across repeated rebuilds
 
 ### FEAT-006 — Rebuild product model
 
