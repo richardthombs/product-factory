@@ -1,0 +1,18 @@
+id: EVT-20260601-0016
+type: FeatureAdded
+occurred_at: 2026-06-01T09:20:00.000Z
+actor:
+  type: agent
+  id: feature_specifier
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: capability
+        entity_id: CAP-002
+        expected_revision: 7
+payload:
+  feature_id: FEAT-015
+  capability_id: CAP-002
+  name: Reconcile branch-only events
+  description: Replays branch-only product events against the latest accepted
+    entity state and reports stale or conflicting proposals before merge.

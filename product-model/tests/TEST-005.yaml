@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-005
 file_path: product-tools/tests/validateEvents.test.ts
 id: TEST-005
+last_event_id: EVT-20260531-0031
+revision: 1
 test_name: validates the current self-described event stream

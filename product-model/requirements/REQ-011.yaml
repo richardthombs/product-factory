@@ -7,3 +7,5 @@ acceptance_criterion_ids:
 description: The system shall record capability and feature status changes and project the resulting readiness metadata.
 feature_id: FEAT-011
 id: REQ-011
+last_event_id: EVT-20260531-0056
+revision: 3

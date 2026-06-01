@@ -1,0 +1,17 @@
+id: EVT-20260601-0029
+type: TestCreated
+occurred_at: 2026-06-01T09:24:00.000Z
+actor:
+  type: agent
+  id: test_agent
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: acceptance_criterion
+        entity_id: AC-034
+        expected_revision: 1
+payload:
+  test_id: TEST-030
+  acceptance_criterion_id: AC-034
+  file_path: product-tools/tests/revisionReplay.test.ts
+  test_name: it("derives deterministic revisions and last entity event ids from replay"

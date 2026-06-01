@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-015
 file_path: product-tools/tests/deprecateFeature.test.ts
 id: TEST-016
+last_event_id: EVT-20260531-0058
+revision: 1
 test_name: marks an existing feature as deprecated and projects the deprecation metadata

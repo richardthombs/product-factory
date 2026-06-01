@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-017
 file_path: product-tools/tests/setCapabilityStatus.test.ts
 id: TEST-018
+last_event_id: EVT-20260531-0060
+revision: 1
 test_name: records a capability status transition and projects the updated capability state

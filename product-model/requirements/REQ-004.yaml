@@ -6,3 +6,5 @@ acceptance_criterion_ids:
 description: The system shall validate product event files against schemas and repository-level consistency rules.
 feature_id: FEAT-004
 id: REQ-004
+last_event_id: EVT-20260531-0016
+revision: 2

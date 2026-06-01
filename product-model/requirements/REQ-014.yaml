@@ -7,3 +7,5 @@ acceptance_criterion_ids:
 description: The system shall report impacted product entities and write standard branch-delta artifacts for the current branch based on the net branch delta.
 feature_id: FEAT-012
 id: REQ-014
+last_event_id: EVT-20260601-0005
+revision: 5

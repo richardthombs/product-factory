@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-014
+last_event_id: EVT-20260531-0057
 requirement_id: REQ-010
+revision: 2
 tests:
   - TEST-015
 text: Given an existing feature and a target capability, when the move-feature helper is run, then the system records a FeatureMovedToCapability event and projects the feature under the target capability.

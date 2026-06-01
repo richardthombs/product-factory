@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-005
+last_event_id: EVT-20260531-0031
 requirement_id: REQ-004
+revision: 2
 tests:
   - TEST-005
 text: Given a set of product event files, when validate-events is run, then the system reports schema or reference errors and succeeds only when the event stream is valid.

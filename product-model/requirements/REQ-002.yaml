@@ -6,3 +6,5 @@ acceptance_criterion_ids:
 description: The system shall create a capability under an existing product model.
 feature_id: FEAT-002
 id: REQ-002
+last_event_id: EVT-20260531-0008
+revision: 2

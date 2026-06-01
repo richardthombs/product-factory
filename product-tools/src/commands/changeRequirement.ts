@@ -7,6 +7,7 @@ import { nextEventId } from "../util/ids.js";
 import { slugify } from "../util/slug.js";
 import { DEFAULT_EVENTS_ROOT, validateEvents } from "../validation/validateEvents.js";
 import type { ProductEvent } from "../schemas/events.js";
+import { buildConcurrencyMetadata, currentEntityPrecondition } from "./concurrency.js";
 
 export type ChangeRequirementOptions = {
   requirementId: string;
@@ -50,12 +51,16 @@ export async function changeRequirement(options: ChangeRequirementOptions): Prom
   }
 
   const source = buildSource(options.changeProposalId, options.conversationId);
+  const metadata = buildConcurrencyMetadata([
+    currentEntityPrecondition(state, "requirement", requirement.id),
+  ]);
   const event: ProductEvent = {
     id: nextEventId(validation.events, occurredAt),
     type: "RequirementChanged",
     occurred_at: occurredAt,
     actor: { type: actorType, id: actorId },
     ...(source ? { source } : {}),
+    ...(metadata ? { metadata } : {}),
     payload: {
       requirement_id: requirement.id,
       description: options.description,

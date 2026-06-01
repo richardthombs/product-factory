@@ -4,7 +4,10 @@
 capability_id: CAP-002
 description: Validates the product event stream against schemas and repository rules.
 id: FEAT-004
+last_event_id: EVT-20260601-0024
 name: Validate product events
 requirement_ids:
   - REQ-004
+  - REQ-019
+revision: 3
 status: active

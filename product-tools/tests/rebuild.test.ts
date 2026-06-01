@@ -20,19 +20,19 @@ describe("rebuildModel", () => {
     const summary = await rebuildModel(eventsRoot, modelRoot);
 
     expect(summary).toEqual({
-      eventCount: 101,
+      eventCount: 126,
       capabilityCount: 2,
-      featureCount: 14,
-      requirementCount: 16,
-      acceptanceCriterionCount: 26,
-      testCount: 29,
-      lastEventId: "EVT-20260601-0015",
-      lastOccurredAt: "2026-06-01T07:12:03.000Z",
+      featureCount: 15,
+      requirementCount: 20,
+      acceptanceCriterionCount: 34,
+      testCount: 39,
+      lastEventId: "EVT-20260601-0040",
+      lastOccurredAt: "2026-06-01T09:26:30.000Z",
     });
 
     const productYaml = await readFile(path.join(modelRoot, "product.yaml"), "utf8");
     expect(productYaml).toContain("id: PROD-001");
-    expect(productYaml).toContain("tests: 29");
+    expect(productYaml).toContain("tests: 39");
 
     const projectMarkdown = await readFile(path.join(modelRoot, "project.md"), "utf8");
     expect(projectMarkdown).toContain("# Product Factory");
@@ -41,6 +41,7 @@ describe("rebuildModel", () => {
     expect(projectMarkdown).toContain("### FEAT-011 — Track capability and feature readiness");
     expect(projectMarkdown).toContain("### FEAT-012 — Report branch delta");
     expect(projectMarkdown).toContain("### FEAT-014 — Change existing feature descriptions");
+    expect(projectMarkdown).toContain("### FEAT-015 — Reconcile branch-only events");
     expect(projectMarkdown).toContain("Reports the net product delta between a working branch and a base branch.");
     expect(projectMarkdown).toContain("### FEAT-013 — Derive work packages from branch delta");
     expect(projectMarkdown).toContain("Derives deterministic implementation work packages from the net branch-delta report.");
@@ -49,6 +50,9 @@ describe("rebuildModel", () => {
     expect(projectMarkdown).toContain("**AC-024**: Given a net branch delta with changed entities under one feature, when the derive-work-packages helper is run, then it emits a work-package proposal that groups that net changed scope under that feature. `TEST-027`.");
     expect(projectMarkdown).toContain("**AC-025**: Given a net branch delta with changed entities, when the derive-work-packages helper is run, then each derived work package includes its scoped capability, feature, requirement, acceptance-criterion, and test ids together with rationale and dependency information for that net changed scope. `TEST-028`.");
     expect(projectMarkdown).toContain("**AC-026**: Given an existing feature, when the change-feature helper is run with a new description, then the system records a FeatureChanged event and projects the updated feature description. `TEST-029`.");
+    expect(projectMarkdown).toContain("**AC-030**: Given reconcile-events finds reconciliation conflicts and is run without a custom output path, when it completes, then it writes branch-delta/reconciliation.yaml and branch-delta/reconciliation.md as gitignored branch-local artifacts. `TEST-034`, `TEST-039`.");
+    expect(projectMarkdown).toContain("**AC-031**: Given reconciliation against the latest target branch fails, when reconcile-events is run in local workflow or CI, then it exits non-zero so merge gating can block acceptance. `TEST-035`.");
+    expect(projectMarkdown).toContain("**AC-034**: Given accepted events affecting capabilities, features, requirements, acceptance criteria, or tests, when project-model is run, then the projected model includes deterministic derived revision metadata for those entities. `TEST-030`.");
 
     const traceabilityMatrix = await readFile(path.join(modelRoot, "indexes", "traceability-matrix.yaml"), "utf8");
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-007");
@@ -60,6 +64,8 @@ describe("rebuildModel", () => {
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-024");
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-025");
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-026");
+    expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-032");
+    expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-034");
     expect(traceabilityMatrix).toContain("- TEST-012");
     expect(traceabilityMatrix).toContain("- TEST-014");
     expect(traceabilityMatrix).toContain("- TEST-018");
@@ -70,6 +76,11 @@ describe("rebuildModel", () => {
     expect(traceabilityMatrix).toContain("- TEST-027");
     expect(traceabilityMatrix).toContain("- TEST-028");
     expect(traceabilityMatrix).toContain("- TEST-029");
+    expect(traceabilityMatrix).toContain("- TEST-030");
+    expect(traceabilityMatrix).toContain("- TEST-034");
+    expect(traceabilityMatrix).toContain("- TEST-037");
+    expect(traceabilityMatrix).toContain("- TEST-038");
+    expect(traceabilityMatrix).toContain("- TEST-039");
   });
 });
 

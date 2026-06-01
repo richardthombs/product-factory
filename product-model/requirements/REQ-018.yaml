@@ -1,0 +1,11 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-030
+  - AC-031
+description: The system shall write standard reconciliation artifacts and support merge-gate enforcement for stale branch proposals.
+feature_id: FEAT-015
+id: REQ-018
+last_event_id: EVT-20260601-0023
+revision: 3

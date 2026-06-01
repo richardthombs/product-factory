@@ -3,11 +3,24 @@ import path from "node:path";
 import YAML from "yaml";
 import { ZodError } from "zod";
 import { CAPABILITY_STATUSES, FEATURE_STATUSES } from "../domain/status.js";
-import { eventSchema, type ProductEvent } from "../schemas/events.js";
+import { eventSchema, type EntityType, type ProductEvent } from "../schemas/events.js";
 import { listFilesRecursive } from "../util/fs.js";
 import type { LoadedEvent, ValidationError, ValidationResult } from "./types.js";
 
 export const DEFAULT_EVENTS_ROOT = path.resolve(process.cwd(), "product-events");
+
+type EntityIdMaps = {
+  product: Map<string, string>;
+  capability: Map<string, string>;
+  feature: Map<string, string>;
+  requirement: Map<string, string>;
+  acceptance_criterion: Map<string, string>;
+  test: Map<string, string>;
+};
+
+type EntityEventHistory = {
+  [K in EntityType]: Map<string, string[]>;
+};
 
 export async function validateEvents(eventsRoot = DEFAULT_EVENTS_ROOT): Promise<ValidationResult> {
   const files = await listEventFiles(eventsRoot);
@@ -89,12 +102,16 @@ export function compareLoadedEvents(a: LoadedEvent, b: LoadedEvent): number {
 async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string): Promise<ValidationError[]> {
   const errors: ValidationError[] = [];
   const eventIds = new Map<string, string>();
-  const capabilityIds = new Map<string, string>();
-  const featureIds = new Map<string, string>();
+  const entityIds: EntityIdMaps = {
+    product: new Map<string, string>(),
+    capability: new Map<string, string>(),
+    feature: new Map<string, string>(),
+    requirement: new Map<string, string>(),
+    acceptance_criterion: new Map<string, string>(),
+    test: new Map<string, string>(),
+  };
+  const eventHistory = createEntityEventHistory();
   const currentFeatureCapabilities = new Map<string, string>();
-  const requirementIds = new Map<string, string>();
-  const acceptanceCriterionIds = new Map<string, string>();
-  const testIds = new Map<string, string>();
   const testSignatures = new Set<string>();
   let productCreated: LoadedEvent | null = null;
   let productCount = 0;
@@ -110,6 +127,8 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
       eventIds.set(loaded.event.id, loaded.path);
     }
 
+    validateConcurrencyPreconditions(loaded, entityIds, eventHistory, errors);
+
     switch (loaded.event.type) {
       case "ProductCreated": {
         productCount += 1;
@@ -122,6 +141,8 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: "Exactly one ProductCreated event is allowed",
           });
         }
+        recordUniqueEntity(entityIds.product, loaded.event.payload.product_id, loaded.path, "product", errors);
+        recordEventImpact(eventHistory, "product", loaded.event.payload.product_id, loaded.event.id);
         break;
       }
       case "CapabilityAdded": {
@@ -131,7 +152,8 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: "CapabilityAdded requires ProductCreated to exist first",
           });
         }
-        recordUniqueEntity(capabilityIds, loaded.event.payload.capability_id, loaded.path, "capability", errors);
+        recordUniqueEntity(entityIds.capability, loaded.event.payload.capability_id, loaded.path, "capability", errors);
+        recordEventImpact(eventHistory, "capability", loaded.event.payload.capability_id, loaded.event.id);
         break;
       }
       case "FeatureAdded": {
@@ -141,14 +163,18 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: "FeatureAdded requires ProductCreated to exist first",
           });
         }
-        recordUniqueEntity(featureIds, loaded.event.payload.feature_id, loaded.path, "feature", errors);
-        if (!capabilityIds.has(loaded.event.payload.capability_id)) {
+        recordUniqueEntity(entityIds.feature, loaded.event.payload.feature_id, loaded.path, "feature", errors);
+        if (!entityIds.capability.has(loaded.event.payload.capability_id)) {
           errors.push({
             path: loaded.path,
             message: `FeatureAdded references missing capability '${loaded.event.payload.capability_id}'`,
           });
         } else {
           currentFeatureCapabilities.set(loaded.event.payload.feature_id, loaded.event.payload.capability_id);
+        }
+        recordEventImpact(eventHistory, "feature", loaded.event.payload.feature_id, loaded.event.id);
+        if (entityIds.capability.has(loaded.event.payload.capability_id)) {
+          recordEventImpact(eventHistory, "capability", loaded.event.payload.capability_id, loaded.event.id);
         }
         break;
       }
@@ -159,12 +185,16 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: "RequirementAdded requires ProductCreated to exist first",
           });
         }
-        recordUniqueEntity(requirementIds, loaded.event.payload.requirement_id, loaded.path, "requirement", errors);
-        if (!featureIds.has(loaded.event.payload.feature_id)) {
+        recordUniqueEntity(entityIds.requirement, loaded.event.payload.requirement_id, loaded.path, "requirement", errors);
+        if (!entityIds.feature.has(loaded.event.payload.feature_id)) {
           errors.push({
             path: loaded.path,
             message: `RequirementAdded references missing feature '${loaded.event.payload.feature_id}'`,
           });
+        }
+        recordEventImpact(eventHistory, "requirement", loaded.event.payload.requirement_id, loaded.event.id);
+        if (entityIds.feature.has(loaded.event.payload.feature_id)) {
+          recordEventImpact(eventHistory, "feature", loaded.event.payload.feature_id, loaded.event.id);
         }
         break;
       }
@@ -176,17 +206,21 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
           });
         }
         recordUniqueEntity(
-          acceptanceCriterionIds,
+          entityIds.acceptance_criterion,
           loaded.event.payload.acceptance_criterion_id,
           loaded.path,
           "acceptance criterion",
           errors,
         );
-        if (!requirementIds.has(loaded.event.payload.requirement_id)) {
+        if (!entityIds.requirement.has(loaded.event.payload.requirement_id)) {
           errors.push({
             path: loaded.path,
             message: `AcceptanceCriterionAdded references missing requirement '${loaded.event.payload.requirement_id}'`,
           });
+        }
+        recordEventImpact(eventHistory, "acceptance_criterion", loaded.event.payload.acceptance_criterion_id, loaded.event.id);
+        if (entityIds.requirement.has(loaded.event.payload.requirement_id)) {
+          recordEventImpact(eventHistory, "requirement", loaded.event.payload.requirement_id, loaded.event.id);
         }
         break;
       }
@@ -197,11 +231,13 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: "FeatureChanged requires ProductCreated to exist first",
           });
         }
-        if (!featureIds.has(loaded.event.payload.feature_id)) {
+        if (!entityIds.feature.has(loaded.event.payload.feature_id)) {
           errors.push({
             path: loaded.path,
             message: `FeatureChanged references missing feature '${loaded.event.payload.feature_id}'`,
           });
+        } else {
+          recordEventImpact(eventHistory, "feature", loaded.event.payload.feature_id, loaded.event.id);
         }
         break;
       }
@@ -212,11 +248,13 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: "RequirementChanged requires ProductCreated to exist first",
           });
         }
-        if (!requirementIds.has(loaded.event.payload.requirement_id)) {
+        if (!entityIds.requirement.has(loaded.event.payload.requirement_id)) {
           errors.push({
             path: loaded.path,
             message: `RequirementChanged references missing requirement '${loaded.event.payload.requirement_id}'`,
           });
+        } else {
+          recordEventImpact(eventHistory, "requirement", loaded.event.payload.requirement_id, loaded.event.id);
         }
         break;
       }
@@ -227,11 +265,13 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: "AcceptanceCriterionChanged requires ProductCreated to exist first",
           });
         }
-        if (!acceptanceCriterionIds.has(loaded.event.payload.acceptance_criterion_id)) {
+        if (!entityIds.acceptance_criterion.has(loaded.event.payload.acceptance_criterion_id)) {
           errors.push({
             path: loaded.path,
             message: `AcceptanceCriterionChanged references missing acceptance criterion '${loaded.event.payload.acceptance_criterion_id}'`,
           });
+        } else {
+          recordEventImpact(eventHistory, "acceptance_criterion", loaded.event.payload.acceptance_criterion_id, loaded.event.id);
         }
         break;
       }
@@ -242,26 +282,37 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: "FeatureMovedToCapability requires ProductCreated to exist first",
           });
         }
-        if (!featureIds.has(loaded.event.payload.feature_id)) {
+        if (!entityIds.feature.has(loaded.event.payload.feature_id)) {
           errors.push({
             path: loaded.path,
             message: `FeatureMovedToCapability references missing feature '${loaded.event.payload.feature_id}'`,
           });
         }
-        if (!capabilityIds.has(loaded.event.payload.capability_id)) {
+        if (!entityIds.capability.has(loaded.event.payload.capability_id)) {
           errors.push({
             path: loaded.path,
             message: `FeatureMovedToCapability references missing capability '${loaded.event.payload.capability_id}'`,
           });
         }
+
         const currentCapabilityId = currentFeatureCapabilities.get(loaded.event.payload.feature_id);
         if (currentCapabilityId === loaded.event.payload.capability_id) {
           errors.push({
             path: loaded.path,
             message: `FeatureMovedToCapability would not change the capability for feature '${loaded.event.payload.feature_id}'`,
           });
-        } else if (currentCapabilityId && capabilityIds.has(loaded.event.payload.capability_id)) {
+        } else if (currentCapabilityId && entityIds.capability.has(loaded.event.payload.capability_id)) {
           currentFeatureCapabilities.set(loaded.event.payload.feature_id, loaded.event.payload.capability_id);
+        }
+
+        if (entityIds.feature.has(loaded.event.payload.feature_id)) {
+          recordEventImpact(eventHistory, "feature", loaded.event.payload.feature_id, loaded.event.id);
+        }
+        if (currentCapabilityId && entityIds.capability.has(currentCapabilityId)) {
+          recordEventImpact(eventHistory, "capability", currentCapabilityId, loaded.event.id);
+        }
+        if (entityIds.capability.has(loaded.event.payload.capability_id)) {
+          recordEventImpact(eventHistory, "capability", loaded.event.payload.capability_id, loaded.event.id);
         }
         break;
       }
@@ -272,11 +323,13 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: "FeatureDeprecated requires ProductCreated to exist first",
           });
         }
-        if (!featureIds.has(loaded.event.payload.feature_id)) {
+        if (!entityIds.feature.has(loaded.event.payload.feature_id)) {
           errors.push({
             path: loaded.path,
             message: `FeatureDeprecated references missing feature '${loaded.event.payload.feature_id}'`,
           });
+        } else {
+          recordEventImpact(eventHistory, "feature", loaded.event.payload.feature_id, loaded.event.id);
         }
         break;
       }
@@ -287,7 +340,7 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: "FeatureStatusChanged requires ProductCreated to exist first",
           });
         }
-        if (!featureIds.has(loaded.event.payload.feature_id)) {
+        if (!entityIds.feature.has(loaded.event.payload.feature_id)) {
           errors.push({
             path: loaded.path,
             message: `FeatureStatusChanged references missing feature '${loaded.event.payload.feature_id}'`,
@@ -299,6 +352,9 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: `FeatureStatusChanged uses invalid status '${loaded.event.payload.status}'`,
           });
         }
+        if (entityIds.feature.has(loaded.event.payload.feature_id)) {
+          recordEventImpact(eventHistory, "feature", loaded.event.payload.feature_id, loaded.event.id);
+        }
         break;
       }
       case "CapabilityStatusChanged": {
@@ -308,7 +364,7 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: "CapabilityStatusChanged requires ProductCreated to exist first",
           });
         }
-        if (!capabilityIds.has(loaded.event.payload.capability_id)) {
+        if (!entityIds.capability.has(loaded.event.payload.capability_id)) {
           errors.push({
             path: loaded.path,
             message: `CapabilityStatusChanged references missing capability '${loaded.event.payload.capability_id}'`,
@@ -320,6 +376,9 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: `CapabilityStatusChanged uses invalid status '${loaded.event.payload.status}'`,
           });
         }
+        if (entityIds.capability.has(loaded.event.payload.capability_id)) {
+          recordEventImpact(eventHistory, "capability", loaded.event.payload.capability_id, loaded.event.id);
+        }
         break;
       }
       case "TestCreated": {
@@ -329,8 +388,8 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
             message: "TestCreated requires ProductCreated to exist first",
           });
         }
-        recordUniqueEntity(testIds, loaded.event.payload.test_id, loaded.path, "test", errors);
-        if (!acceptanceCriterionIds.has(loaded.event.payload.acceptance_criterion_id)) {
+        recordUniqueEntity(entityIds.test, loaded.event.payload.test_id, loaded.path, "test", errors);
+        if (!entityIds.acceptance_criterion.has(loaded.event.payload.acceptance_criterion_id)) {
           errors.push({
             path: loaded.path,
             message: `TestCreated references missing acceptance criterion '${loaded.event.payload.acceptance_criterion_id}'`,
@@ -349,6 +408,11 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
           });
         } else {
           testSignatures.add(signature);
+        }
+
+        recordEventImpact(eventHistory, "test", loaded.event.payload.test_id, loaded.event.id);
+        if (entityIds.acceptance_criterion.has(loaded.event.payload.acceptance_criterion_id)) {
+          recordEventImpact(eventHistory, "acceptance_criterion", loaded.event.payload.acceptance_criterion_id, loaded.event.id);
         }
 
         errors.push(...await validateTestSource(loaded));
@@ -370,25 +434,87 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
   return errors;
 }
 
+function validateConcurrencyPreconditions(
+  loaded: LoadedEvent,
+  entityIds: EntityIdMaps,
+  eventHistory: EntityEventHistory,
+  errors: ValidationError[],
+): void {
+  const preconditions = loaded.event.metadata?.concurrency?.preconditions ?? [];
+  const seen = new Set<string>();
+
+  for (const precondition of preconditions) {
+    const key = `${precondition.entity_type}:${precondition.entity_id}`;
+    if (seen.has(key)) {
+      errors.push({
+        path: loaded.path,
+        message: `Duplicate concurrency precondition for ${precondition.entity_type} '${precondition.entity_id}'`,
+      });
+      continue;
+    }
+    seen.add(key);
+
+    if (!entityIds[precondition.entity_type].has(precondition.entity_id)) {
+      errors.push({
+        path: loaded.path,
+        message: `Concurrency precondition references missing ${precondition.entity_type} '${precondition.entity_id}'`,
+      });
+      continue;
+    }
+
+    if (precondition.expected_last_entity_event_id) {
+      const affectingEventIds = eventHistory[precondition.entity_type].get(precondition.entity_id) ?? [];
+      if (!affectingEventIds.includes(precondition.expected_last_entity_event_id)) {
+        errors.push({
+          path: loaded.path,
+          message: `Concurrency precondition expected_last_entity_event_id '${precondition.expected_last_entity_event_id}' does not reference a prior event affecting ${precondition.entity_type} '${precondition.entity_id}'`,
+        });
+      }
+    }
+  }
+}
+
+function createEntityEventHistory(): EntityEventHistory {
+  return {
+    product: new Map<string, string[]>(),
+    capability: new Map<string, string[]>(),
+    feature: new Map<string, string[]>(),
+    requirement: new Map<string, string[]>(),
+    acceptance_criterion: new Map<string, string[]>(),
+    test: new Map<string, string[]>(),
+  };
+}
+
+function recordEventImpact(
+  history: EntityEventHistory,
+  entityType: EntityType,
+  entityId: string,
+  eventId: string,
+): void {
+  const current = history[entityType].get(entityId) ?? [];
+  history[entityType].set(entityId, [...current, eventId]);
+}
+
 async function validateTestSource(loaded: LoadedEvent): Promise<ValidationError[]> {
   if (loaded.event.type !== "TestCreated") {
     return [];
   }
 
   const errors: ValidationError[] = [];
-  const filePath = path.resolve(process.cwd(), loaded.event.payload.file_path);
+  const payload = loaded.event.payload;
+  const filePath = path.resolve(process.cwd(), payload.file_path);
 
   try {
     const content = await readFile(filePath, "utf8");
     const lines = content.split(/\r?\n/);
     const match = lines
       .map((line, index) => ({ line, index }))
-      .filter(({ line }) => line.includes(loaded.event.payload.test_name));
+      .filter(({ line }) => line.includes(payload.test_name));
 
     if (match.length === 0) {
       errors.push({
         path: loaded.path,
-        message: `Could not find a test line containing '${loaded.event.payload.test_name}' in '${loaded.event.payload.file_path}'`,
+        message: `Could not find a test line containing '${payload.test_name}' in '${payload.file_path}'`,
       });
       return errors;
     }
@@ -396,27 +522,27 @@ async function validateTestSource(loaded: LoadedEvent): Promise<ValidationError[
     if (match.length > 1) {
       errors.push({
         path: loaded.path,
-        message: `Found multiple test lines containing '${loaded.event.payload.test_name}' in '${loaded.event.payload.file_path}'`,
+        message: `Found multiple test lines containing '${payload.test_name}' in '${payload.file_path}'`,
       });
       return errors;
     }
 
     const testLineIndex = match[0].index;
     const annotationLine = lines[testLineIndex - 1] ?? "";
-    const acceptanceCriterionId = loaded.event.payload.acceptance_criterion_id;
+    const acceptanceCriterionId = payload.acceptance_criterion_id;
     if (!annotationLine.includes(`AC: ${acceptanceCriterionId}`)
       && !annotationLine.includes(`, ${acceptanceCriterionId}`)
       && !annotationLine.includes(`${acceptanceCriterionId},`)) {
       errors.push({
         path: loaded.path,
-        message: `Expected AC annotation immediately above test '${loaded.event.payload.test_name}' in '${loaded.event.payload.file_path}'`,
+        message: `Expected AC annotation immediately above test '${payload.test_name}' in '${payload.file_path}'`,
       });
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     errors.push({
       path: loaded.path,
-      message: `Could not validate linked test source '${loaded.event.payload.file_path}': ${message}`,
+      message: `Could not validate linked test source '${payload.file_path}': ${message}`,
     });
   }
 

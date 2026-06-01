@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-020
+last_event_id: EVT-20260601-0003
 requirement_id: REQ-013
+revision: 3
 tests:
   - TEST-021
 text: Given branch-only product events affecting capabilities, features, requirements, acceptance criteria, or tests, when the branch-delta helper is run, then it reports changed entities grouped by entity type and change kind based on their net difference from the base branch.

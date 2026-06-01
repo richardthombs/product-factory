@@ -1,0 +1,18 @@
+id: EVT-20260601-0039
+type: TestCreated
+occurred_at: 2026-06-01T09:26:20.000Z
+actor:
+  type: agent
+  id: test_agent
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: acceptance_criterion
+        entity_id: AC-027
+        expected_revision: 3
+payload:
+  test_id: TEST-038
+  acceptance_criterion_id: AC-027
+  file_path: product-tools/tests/reconciliation.test.ts
+  test_name: it("exits cleanly without stdout, stderr, or artifacts when
+    reconciliation is clean"

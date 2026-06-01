@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-002
 file_path: product-tools/tests/createCapability.test.ts
 id: TEST-002
+last_event_id: EVT-20260531-0028
+revision: 1
 test_name: allocates the next capability id and rebuilds the model

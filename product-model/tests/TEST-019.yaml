@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-018
 file_path: product-tools/tests/branchDelta.test.ts
 id: TEST-019
+last_event_id: EVT-20260531-0065
+revision: 1
 test_name: reports product events unique to the current branch relative to a base branch

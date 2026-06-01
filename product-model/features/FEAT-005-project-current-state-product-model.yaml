@@ -4,7 +4,10 @@
 capability_id: CAP-002
 description: Projects accepted product events into generated YAML that represents the current product state.
 id: FEAT-005
+last_event_id: EVT-20260601-0027
 name: Project current-state product model
 requirement_ids:
   - REQ-005
+  - REQ-020
+revision: 3
 status: active

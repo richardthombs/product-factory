@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-007
+last_event_id: EVT-20260531-0042
 requirement_id: REQ-006
+revision: 2
 tests:
   - TEST-012
 text: Given a valid event stream, when rebuild is run, then the system validates events and regenerates the product model successfully.

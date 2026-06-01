@@ -1,0 +1,18 @@
+id: EVT-20260601-0035
+type: TestCreated
+occurred_at: 2026-06-01T09:25:00.000Z
+actor:
+  type: agent
+  id: test_agent
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: acceptance_criterion
+        entity_id: AC-032
+        expected_revision: 1
+payload:
+  test_id: TEST-036
+  acceptance_criterion_id: AC-032
+  file_path: product-tools/tests/validateEvents.test.ts
+  test_name: it("accepts valid concurrency preconditions that reference prior
+    events for the same entity"

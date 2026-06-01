@@ -4,7 +4,9 @@
 capability_id: CAP-001
 description: Adds a feature, requirement, and one or more acceptance criteria under an existing capability.
 id: FEAT-003
+last_event_id: EVT-20260531-0010
 name: Create feature with requirements and acceptance criteria
 requirement_ids:
   - REQ-003
+revision: 2
 status: active

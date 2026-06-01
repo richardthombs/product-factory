@@ -7,3 +7,5 @@ acceptance_criterion_ids:
 description: The system shall create a requirement under an existing feature and attach one or more acceptance criteria to it.
 feature_id: FEAT-008
 id: REQ-008
+last_event_id: EVT-20260531-0039
+revision: 3

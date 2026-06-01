@@ -1,0 +1,17 @@
+id: EVT-20260601-0017
+type: RequirementAdded
+occurred_at: 2026-06-01T09:20:01.000Z
+actor:
+  type: agent
+  id: feature_specifier
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: feature
+        entity_id: FEAT-015
+        expected_revision: 1
+payload:
+  requirement_id: REQ-017
+  feature_id: FEAT-015
+  description: The system shall reconcile branch-only product events against the
+    latest accepted entity revisions on a chosen base branch.

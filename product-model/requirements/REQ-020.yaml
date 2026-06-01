@@ -1,0 +1,10 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-034
+description: The system shall derive deterministic entity revisions and last affecting event ids during replay and projection for accepted entities.
+feature_id: FEAT-005
+id: REQ-020
+last_event_id: EVT-20260601-0028
+revision: 2

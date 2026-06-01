@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-021
 file_path: product-tools/tests/branchDelta.test.ts
 id: TEST-022
+last_event_id: EVT-20260531-0071
+revision: 1
 test_name: reports inferred change categories present in the branch delta

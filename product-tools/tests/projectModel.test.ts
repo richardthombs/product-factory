@@ -20,14 +20,14 @@ describe("projectModel", () => {
     const summary = await projectModel(eventsRoot, modelRoot);
 
     expect(summary).toEqual({
-      eventCount: 101,
+      eventCount: 126,
       capabilityCount: 2,
-      featureCount: 14,
-      requirementCount: 16,
-      acceptanceCriterionCount: 26,
-      testCount: 29,
-      lastEventId: "EVT-20260601-0015",
-      lastOccurredAt: "2026-06-01T07:12:03.000Z",
+      featureCount: 15,
+      requirementCount: 20,
+      acceptanceCriterionCount: 34,
+      testCount: 39,
+      lastEventId: "EVT-20260601-0040",
+      lastOccurredAt: "2026-06-01T09:26:30.000Z",
     });
 
     const productYaml = await readFile(path.join(modelRoot, "product.yaml"), "utf8");
@@ -41,7 +41,7 @@ describe("projectModel", () => {
     expect(projectMarkdown).toContain("<!-- Generated from /product-events. -->");
     expect(projectMarkdown).toContain("# Product Factory");
     expect(projectMarkdown).toContain("# Summary");
-    expect(projectMarkdown).toContain("- Tests: 29");
+    expect(projectMarkdown).toContain("- Tests: 39");
     expect(projectMarkdown).toContain("## CAP-001 — Manage product model structure");
     expect(projectMarkdown).toContain("### FEAT-008 — Create requirement");
     expect(projectMarkdown).toContain("### FEAT-009 — Change existing requirements and acceptance criteria");
@@ -53,6 +53,8 @@ describe("projectModel", () => {
     expect(projectMarkdown).toContain("Derives deterministic implementation work packages from the net branch-delta report.");
     expect(projectMarkdown).toContain("### FEAT-014 — Change existing feature descriptions");
     expect(projectMarkdown).toContain("Updates existing feature descriptions incrementally as the product evolves.");
+    expect(projectMarkdown).toContain("### FEAT-015 — Reconcile branch-only events");
+    expect(projectMarkdown).toContain("Replays branch-only product events against the latest accepted entity state and reports stale or conflicting proposals before merge.");
     expect(projectMarkdown).toContain("**AC-006**: Given a valid event stream, when project-model is run, then the system generates deterministic YAML files for the product, capabilities, features, requirements, acceptance criteria, and indexes. `TEST-006`, `TEST-008`.");
     expect(projectMarkdown).toContain("**AC-011**: Given an existing feature, when the create-requirement helper is run with multiple acceptance criteria, then the new requirement is projected under the feature with all created acceptance criteria. `TEST-011`.");
     expect(projectMarkdown).toContain("**AC-012**: Given an existing requirement, when the change-requirement helper is run with a new description, then the system records a RequirementChanged event and projects the updated requirement description. `TEST-013`.");
@@ -70,6 +72,12 @@ describe("projectModel", () => {
     expect(projectMarkdown).toContain("**AC-024**: Given a net branch delta with changed entities under one feature, when the derive-work-packages helper is run, then it emits a work-package proposal that groups that net changed scope under that feature. `TEST-027`.");
     expect(projectMarkdown).toContain("**AC-025**: Given a net branch delta with changed entities, when the derive-work-packages helper is run, then each derived work package includes its scoped capability, feature, requirement, acceptance-criterion, and test ids together with rationale and dependency information for that net changed scope. `TEST-028`.");
     expect(projectMarkdown).toContain("**AC-026**: Given an existing feature, when the change-feature helper is run with a new description, then the system records a FeatureChanged event and projects the updated feature description. `TEST-029`.");
+    expect(projectMarkdown).toContain("**AC-027**: Given branch-only events whose concurrency preconditions match the latest accepted state, when the reconcile-events helper is run against a base branch, then it exits successfully without writing reconciliation artifacts and without producing stdout or stderr. `TEST-031`, `TEST-038`.");
+    expect(projectMarkdown).toContain("**AC-030**: Given reconcile-events finds reconciliation conflicts and is run without a custom output path, when it completes, then it writes branch-delta/reconciliation.yaml and branch-delta/reconciliation.md as gitignored branch-local artifacts. `TEST-034`, `TEST-039`.");
+    expect(projectMarkdown).toContain("**AC-031**: Given reconciliation against the latest target branch fails, when reconcile-events is run in local workflow or CI, then it exits non-zero so merge gating can block acceptance. `TEST-035`.");
+    expect(projectMarkdown).toContain("**AC-032**: Given concurrency preconditions that reference existing entities and prior events affecting those same entities, when validate-events is run, then the event stream is accepted as valid structured concurrency metadata. `TEST-036`.");
+    expect(projectMarkdown).toContain("**AC-033**: Given concurrency preconditions that reference missing entities or last-event ids that did not affect the referenced entity, when validate-events is run, then it reports validation errors. `TEST-037`.");
+    expect(projectMarkdown).toContain("**AC-034**: Given accepted events affecting capabilities, features, requirements, acceptance criteria, or tests, when project-model is run, then the projected model includes deterministic derived revision metadata for those entities. `TEST-030`.");
     expect(projectMarkdown).toContain("**AC-007**: Given a valid event stream, when rebuild is run, then the system validates events and regenerates the product model successfully. `TEST-012`.");
     expect(projectMarkdown).not.toContain("product-tools/tests/createRequirement.test.ts");
     expect(projectMarkdown).not.toContain("product-tools/tests/rebuild.test.ts");
@@ -97,6 +105,7 @@ describe("projectModel", () => {
       "FEAT-012-report-branch-delta.yaml",
       "FEAT-013-derive-work-packages-from-branch-delta.yaml",
       "FEAT-014-change-existing-feature-descriptions.yaml",
+      "FEAT-015-reconcile-branch-only-events.yaml",
     ]);
 
     const traceabilityMatrix = await readFile(path.join(modelRoot, "indexes", "traceability-matrix.yaml"), "utf8");
@@ -116,6 +125,7 @@ describe("projectModel", () => {
     expect(traceabilityMatrix).toContain("requirement_id: REQ-014");
     expect(traceabilityMatrix).toContain("requirement_id: REQ-015");
     expect(traceabilityMatrix).toContain("requirement_id: REQ-016");
+    expect(traceabilityMatrix).toContain("requirement_id: REQ-020");
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-007");
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-011");
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-013");
@@ -126,6 +136,7 @@ describe("projectModel", () => {
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-024");
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-025");
     expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-026");
+    expect(traceabilityMatrix).toContain("acceptance_criterion_id: AC-034");
     expect(traceabilityMatrix).toContain("- TEST-012");
     expect(traceabilityMatrix).toContain("- TEST-011");
     expect(traceabilityMatrix).toContain("- TEST-014");
@@ -137,6 +148,11 @@ describe("projectModel", () => {
     expect(traceabilityMatrix).toContain("- TEST-027");
     expect(traceabilityMatrix).toContain("- TEST-028");
     expect(traceabilityMatrix).toContain("- TEST-029");
+    expect(traceabilityMatrix).toContain("- TEST-030");
+    expect(traceabilityMatrix).toContain("- TEST-034");
+    expect(traceabilityMatrix).toContain("- TEST-037");
+    expect(traceabilityMatrix).toContain("- TEST-038");
+    expect(traceabilityMatrix).toContain("- TEST-039");
 
     const testsIndex = await readFile(path.join(modelRoot, "indexes", "tests.yaml"), "utf8");
     expect(testsIndex).toContain("id: TEST-012");
@@ -149,14 +165,32 @@ describe("projectModel", () => {
     expect(testsIndex).toContain("id: TEST-027");
     expect(testsIndex).toContain("id: TEST-028");
     expect(testsIndex).toContain("id: TEST-029");
-    expect(testsIndex).toContain("test_count: 29");
+    expect(testsIndex).toContain("id: TEST-030");
+    expect(testsIndex).toContain("id: TEST-035");
+    expect(testsIndex).toContain("id: TEST-037");
+    expect(testsIndex).toContain("id: TEST-038");
+    expect(testsIndex).toContain("id: TEST-039");
+    expect(testsIndex).toContain("test_count: 39");
 
     const readinessIndex = await readFile(path.join(modelRoot, "indexes", "readiness.yaml"), "utf8");
     expect(readinessIndex).toContain("implementation_ready_features: []");
     expect(readinessIndex).toContain("feature_id: FEAT-011");
 
+    const featureFile = await readFile(
+      path.join(modelRoot, "features", "FEAT-014-change-existing-feature-descriptions.yaml"),
+      "utf8",
+    );
+    expect(featureFile).toContain("revision: 2");
+    expect(featureFile).toContain("last_event_id: EVT-20260601-0013");
+
+    const requirementFile = await readFile(path.join(modelRoot, "requirements", "REQ-016.yaml"), "utf8");
+    expect(requirementFile).toContain("revision: 2");
+    expect(requirementFile).toContain("last_event_id: EVT-20260601-0014");
+
     const testFile = await readFile(path.join(modelRoot, "tests", "TEST-029.yaml"), "utf8");
     expect(testFile).toContain("acceptance_criterion_id: AC-026");
+    expect(testFile).toContain("revision: 1");
+    expect(testFile).toContain("last_event_id: EVT-20260601-0015");
     expect(testFile).not.toContain("line_number:");
   });
 

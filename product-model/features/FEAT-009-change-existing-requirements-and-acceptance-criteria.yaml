@@ -4,7 +4,9 @@
 capability_id: CAP-001
 description: Updates existing requirement and acceptance criterion definitions incrementally as the product evolves.
 id: FEAT-009
+last_event_id: EVT-20260531-0044
 name: Change existing requirements and acceptance criteria
 requirement_ids:
   - REQ-009
+revision: 2
 status: active

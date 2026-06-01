@@ -1,0 +1,12 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-027
+  - AC-028
+  - AC-029
+description: The system shall reconcile branch-only product events against the latest accepted entity revisions on a chosen base branch.
+feature_id: FEAT-015
+id: REQ-017
+last_event_id: EVT-20260601-0020
+revision: 4

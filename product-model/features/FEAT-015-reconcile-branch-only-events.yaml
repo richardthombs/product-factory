@@ -1,0 +1,13 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capability_id: CAP-002
+description: Replays branch-only product events against the latest accepted entity state and reports stale or conflicting proposals before merge.
+id: FEAT-015
+last_event_id: EVT-20260601-0021
+name: Reconcile branch-only events
+requirement_ids:
+  - REQ-017
+  - REQ-018
+revision: 3
+status: active

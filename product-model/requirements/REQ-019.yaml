@@ -1,0 +1,11 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-032
+  - AC-033
+description: The system shall validate optional concurrency metadata for product events, including entity-specific revision and last-entity-event preconditions.
+feature_id: FEAT-004
+id: REQ-019
+last_event_id: EVT-20260601-0026
+revision: 3

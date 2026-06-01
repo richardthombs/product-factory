@@ -4,7 +4,9 @@
 capability_id: CAP-001
 description: Represents capability and feature status transitions for planning and delivery workflow.
 id: FEAT-011
+last_event_id: EVT-20260531-0054
 name: Track capability and feature readiness
 requirement_ids:
   - REQ-011
+revision: 2
 status: active

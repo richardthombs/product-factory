@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-011
 file_path: product-tools/tests/createRequirement.test.ts
 id: TEST-011
+last_event_id: EVT-20260531-0041
+revision: 1
 test_name: allocates ids automatically and creates acceptance criteria for an existing feature

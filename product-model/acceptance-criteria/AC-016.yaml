@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-016
+last_event_id: EVT-20260531-0059
 requirement_id: REQ-011
+revision: 2
 tests:
   - TEST-017
 text: Given an existing feature, when the set-feature-status helper is run with a new status, then the system records a FeatureStatusChanged event and projects the updated feature readiness state.

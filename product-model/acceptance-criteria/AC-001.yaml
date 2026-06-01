@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-001
+last_event_id: EVT-20260531-0027
 requirement_id: REQ-001
+revision: 2
 tests:
   - TEST-001
 text: Given an empty event store, when the create-product command is run, then a ProductCreated event is written and the product model is rebuilt.

@@ -1,0 +1,18 @@
+id: EVT-20260601-0025
+type: AcceptanceCriterionAdded
+occurred_at: 2026-06-01T09:22:01.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: requirement
+        entity_id: REQ-019
+        expected_revision: 1
+payload:
+  acceptance_criterion_id: AC-032
+  requirement_id: REQ-019
+  text: Given concurrency preconditions that reference existing entities and prior
+    events affecting those same entities, when validate-events is run, then the
+    event stream is accepted as valid structured concurrency metadata.

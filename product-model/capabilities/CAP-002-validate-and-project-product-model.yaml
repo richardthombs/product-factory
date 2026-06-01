@@ -9,6 +9,9 @@ feature_ids:
   - FEAT-007
   - FEAT-012
   - FEAT-013
+  - FEAT-015
 id: CAP-002
+last_event_id: EVT-20260601-0016
 name: Validate and project product model
+revision: 8
 status: active

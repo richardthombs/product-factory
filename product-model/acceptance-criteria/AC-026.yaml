@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-026
+last_event_id: EVT-20260601-0015
 requirement_id: REQ-016
+revision: 2
 tests:
   - TEST-029
 text: Given an existing feature, when the change-feature helper is run with a new description, then the system records a FeatureChanged event and projects the updated feature description.

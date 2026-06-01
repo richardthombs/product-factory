@@ -12,5 +12,7 @@ feature_ids:
   - FEAT-011
   - FEAT-014
 id: CAP-001
+last_event_id: EVT-20260601-0012
 name: Manage product model structure
+revision: 9
 status: active

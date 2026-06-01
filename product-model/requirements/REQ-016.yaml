@@ -6,3 +6,5 @@ acceptance_criterion_ids:
 description: The system shall provide a helper to change an existing feature description without rewriting accepted history.
 feature_id: FEAT-014
 id: REQ-016
+last_event_id: EVT-20260601-0014
+revision: 2

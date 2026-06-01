@@ -1,0 +1,10 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+id: AC-031
+last_event_id: EVT-20260601-0034
+requirement_id: REQ-018
+revision: 2
+tests:
+  - TEST-035
+text: Given reconciliation against the latest target branch fails, when reconcile-events is run in local workflow or CI, then it exits non-zero so merge gating can block acceptance.

@@ -7,3 +7,5 @@ acceptance_criterion_ids:
 description: The system shall provide helpers to change existing requirements and acceptance criteria without rewriting accepted history.
 feature_id: FEAT-009
 id: REQ-009
+last_event_id: EVT-20260531-0046
+revision: 3

@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-020
 file_path: product-tools/tests/branchDelta.test.ts
 id: TEST-021
+last_event_id: EVT-20260531-0070
+revision: 1
 test_name: reports the changed entities grouped by entity type and change kind

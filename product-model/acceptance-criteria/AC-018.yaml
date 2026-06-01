@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-018
+last_event_id: EVT-20260531-0065
 requirement_id: REQ-012
+revision: 2
 tests:
   - TEST-019
 text: Given a working branch with product events not contained in the base branch, when the branch-delta helper is run, then it reports the branch-only product events relative to the base branch.

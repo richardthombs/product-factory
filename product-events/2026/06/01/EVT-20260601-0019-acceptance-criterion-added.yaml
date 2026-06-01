@@ -1,0 +1,19 @@
+id: EVT-20260601-0019
+type: AcceptanceCriterionAdded
+occurred_at: 2026-06-01T09:20:03.000Z
+actor:
+  type: agent
+  id: feature_specifier
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: requirement
+        entity_id: REQ-017
+        expected_revision: 2
+payload:
+  acceptance_criterion_id: AC-028
+  requirement_id: REQ-017
+  text: Given a branch-only event whose expected entity revision or expected last
+    entity event id no longer matches the latest accepted state for that same
+    entity, when reconcile-events is run, then it reports a reconciliation
+    conflict and fails.

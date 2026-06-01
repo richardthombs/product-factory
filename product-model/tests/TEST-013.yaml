@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-012
 file_path: product-tools/tests/changeRequirement.test.ts
 id: TEST-013
+last_event_id: EVT-20260531-0047
+revision: 1
 test_name: records a RequirementChanged event and projects the updated requirement description

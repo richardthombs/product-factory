@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-025
+last_event_id: EVT-20260601-0009
 requirement_id: REQ-015
+revision: 3
 tests:
   - TEST-028
 text: Given a net branch delta with changed entities, when the derive-work-packages helper is run, then each derived work package includes its scoped capability, feature, requirement, acceptance-criterion, and test ids together with rationale and dependency information for that net changed scope.

@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-016
 file_path: product-tools/tests/setFeatureStatus.test.ts
 id: TEST-017
+last_event_id: EVT-20260531-0059
+revision: 1
 test_name: records a feature status transition and projects readiness metadata

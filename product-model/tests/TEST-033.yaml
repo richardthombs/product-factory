@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-029
+file_path: product-tools/tests/reconciliation.test.ts
+id: TEST-033
+last_event_id: EVT-20260601-0032
+revision: 1
+test_name: it("treats expected_last_entity_event_id as entity-specific rather than stream-global"

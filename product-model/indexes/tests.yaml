@@ -2,7 +2,7 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 product_id: PROD-001
-test_count: 29
+test_count: 39
 tests:
   - acceptance_criterion_id: AC-001
     file_path: product-tools/tests/createProduct.test.ts
@@ -120,3 +120,43 @@ tests:
     file_path: product-tools/tests/changeFeature.test.ts
     id: TEST-029
     test_name: records a FeatureChanged event and projects the updated feature description
+  - acceptance_criterion_id: AC-034
+    file_path: product-tools/tests/revisionReplay.test.ts
+    id: TEST-030
+    test_name: it("derives deterministic revisions and last entity event ids from replay"
+  - acceptance_criterion_id: AC-027
+    file_path: product-tools/tests/reconciliation.test.ts
+    id: TEST-031
+    test_name: it("reconciles a clean branch against the latest main entity revisions"
+  - acceptance_criterion_id: AC-028
+    file_path: product-tools/tests/reconciliation.test.ts
+    id: TEST-032
+    test_name: it("detects a stale branch event when the accepted entity revision has advanced on main"
+  - acceptance_criterion_id: AC-029
+    file_path: product-tools/tests/reconciliation.test.ts
+    id: TEST-033
+    test_name: it("treats expected_last_entity_event_id as entity-specific rather than stream-global"
+  - acceptance_criterion_id: AC-030
+    file_path: product-tools/tests/reconciliation.test.ts
+    id: TEST-034
+    test_name: it("writes reconciliation artifacts to branch-delta by default"
+  - acceptance_criterion_id: AC-031
+    file_path: product-tools/tests/reconciliation.test.ts
+    id: TEST-035
+    test_name: it("returns a non-zero exit code when reconciliation conflicts are found"
+  - acceptance_criterion_id: AC-032
+    file_path: product-tools/tests/validateEvents.test.ts
+    id: TEST-036
+    test_name: it("accepts valid concurrency preconditions that reference prior events for the same entity"
+  - acceptance_criterion_id: AC-033
+    file_path: product-tools/tests/validateEvents.test.ts
+    id: TEST-037
+    test_name: it("reports invalid concurrency preconditions that reference missing entities or unrelated last events"
+  - acceptance_criterion_id: AC-027
+    file_path: product-tools/tests/reconciliation.test.ts
+    id: TEST-038
+    test_name: it("exits cleanly without stdout, stderr, or artifacts when reconciliation is clean"
+  - acceptance_criterion_id: AC-030
+    file_path: product-tools/tests/reconciliation.test.ts
+    id: TEST-039
+    test_name: it("returns a non-zero exit code when reconciliation conflicts are found"

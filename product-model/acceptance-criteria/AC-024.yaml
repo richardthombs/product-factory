@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-024
+last_event_id: EVT-20260601-0008
 requirement_id: REQ-015
+revision: 3
 tests:
   - TEST-027
 text: Given a net branch delta with changed entities under one feature, when the derive-work-packages helper is run, then it emits a work-package proposal that groups that net changed scope under that feature.

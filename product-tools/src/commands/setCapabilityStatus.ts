@@ -8,6 +8,7 @@ import { nextEventId } from "../util/ids.js";
 import { slugify } from "../util/slug.js";
 import { DEFAULT_EVENTS_ROOT, validateEvents } from "../validation/validateEvents.js";
 import type { ProductEvent } from "../schemas/events.js";
+import { buildConcurrencyMetadata, currentEntityPrecondition } from "./concurrency.js";
 
 export type SetCapabilityStatusOptions = {
   capabilityId: string;
@@ -61,12 +62,16 @@ export async function setCapabilityStatus(options: SetCapabilityStatusOptions): 
   }
 
   const source = buildSource(options.changeProposalId, options.conversationId);
+  const metadata = buildConcurrencyMetadata([
+    currentEntityPrecondition(state, "capability", capability.id),
+  ]);
   const event: ProductEvent = {
     id: nextEventId(validation.events, occurredAt),
     type: "CapabilityStatusChanged",
     occurred_at: occurredAt,
     actor: { type: actorType, id: actorId },
     ...(source ? { source } : {}),
+    ...(metadata ? { metadata } : {}),
     payload: {
       capability_id: capability.id,
       status: options.status,

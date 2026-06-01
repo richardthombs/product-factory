@@ -8,6 +8,7 @@ import { slugify } from "../util/slug.js";
 import { DEFAULT_EVENTS_ROOT, validateEvents } from "../validation/validateEvents.js";
 import type { ProductEvent } from "../schemas/events.js";
 import type { LoadedEvent } from "../validation/types.js";
+import { buildConcurrencyMetadata, currentEntityPrecondition } from "./concurrency.js";
 
 export type CreateTestOptions = {
   acceptanceCriterionIds: string[];
@@ -92,19 +93,26 @@ export async function createTest(options: CreateTestOptions): Promise<CreateTest
   const source = buildSource(options.changeProposalId, options.conversationId);
   const reservedEventIds: string[] = [];
 
-  const events: ProductEvent[] = uniqueAcceptanceCriterionIds.map((acceptanceCriterionId, index) => ({
-    id: reserveEventId(validation.events, occurredAts[index], reservedEventIds),
-    type: "TestCreated",
-    occurred_at: occurredAts[index],
-    actor: { type: actorType, id: actorId },
-    ...(source ? { source } : {}),
-    payload: {
-      test_id: testIds[index],
-      acceptance_criterion_id: acceptanceCriterionId,
-      file_path: relativeFilePath,
-      test_name: options.testName,
-    },
-  }));
+  const events: ProductEvent[] = uniqueAcceptanceCriterionIds.map((acceptanceCriterionId, index) => {
+    const metadata = buildConcurrencyMetadata([
+      currentEntityPrecondition(state, "acceptance_criterion", acceptanceCriterionId),
+    ]);
+
+    return {
+      id: reserveEventId(validation.events, occurredAts[index], reservedEventIds),
+      type: "TestCreated",
+      occurred_at: occurredAts[index],
+      actor: { type: actorType, id: actorId },
+      ...(source ? { source } : {}),
+      ...(metadata ? { metadata } : {}),
+      payload: {
+        test_id: testIds[index],
+        acceptance_criterion_id: acceptanceCriterionId,
+        file_path: relativeFilePath,
+        test_name: options.testName,
+      },
+    };
+  });
 
   const files = buildEventFilePaths(eventsRoot, events);
   const writtenFiles: string[] = [];

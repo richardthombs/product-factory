@@ -1,0 +1,18 @@
+id: EVT-20260601-0031
+type: TestCreated
+occurred_at: 2026-06-01T09:24:20.000Z
+actor:
+  type: agent
+  id: test_agent
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: acceptance_criterion
+        entity_id: AC-028
+        expected_revision: 1
+payload:
+  test_id: TEST-032
+  acceptance_criterion_id: AC-028
+  file_path: product-tools/tests/reconciliation.test.ts
+  test_name: it("detects a stale branch event when the accepted entity revision
+    has advanced on main"

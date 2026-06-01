@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-023
 file_path: product-tools/tests/renderBranchDelta.test.ts
 id: TEST-026
+last_event_id: EVT-20260531-0080
+revision: 1
 test_name: renders explicit labels for added, changed, moved, deprecated, and status transitions

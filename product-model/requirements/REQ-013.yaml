@@ -7,3 +7,5 @@ acceptance_criterion_ids:
 description: The system shall summarize net changed product entities and inferred change categories in the branch-delta report relative to the base branch.
 feature_id: FEAT-012
 id: REQ-013
+last_event_id: EVT-20260601-0002
+revision: 4

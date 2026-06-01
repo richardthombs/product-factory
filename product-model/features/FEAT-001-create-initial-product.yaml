@@ -4,7 +4,9 @@
 capability_id: CAP-001
 description: Creates the first product record in an empty event store.
 id: FEAT-001
+last_event_id: EVT-20260531-0004
 name: Create initial product
 requirement_ids:
   - REQ-001
+revision: 2
 status: active

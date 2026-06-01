@@ -6,3 +6,5 @@ acceptance_criterion_ids:
 description: The system shall create an initial product record when the event store is empty.
 feature_id: FEAT-001
 id: REQ-001
+last_event_id: EVT-20260531-0005
+revision: 2

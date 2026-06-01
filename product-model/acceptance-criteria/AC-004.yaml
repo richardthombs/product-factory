@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-004
+last_event_id: EVT-20260531-0030
 requirement_id: REQ-003
+revision: 2
 tests:
   - TEST-004
 text: Given an existing capability, when the create-feature command is run with multiple acceptance criterion texts, then the system creates one acceptance criterion event for each text.

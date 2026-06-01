@@ -1,0 +1,17 @@
+id: EVT-20260601-0034
+type: TestCreated
+occurred_at: 2026-06-01T09:24:50.000Z
+actor:
+  type: agent
+  id: test_agent
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: acceptance_criterion
+        entity_id: AC-031
+        expected_revision: 1
+payload:
+  test_id: TEST-035
+  acceptance_criterion_id: AC-031
+  file_path: product-tools/tests/reconciliation.test.ts
+  test_name: it("returns a non-zero exit code when reconciliation conflicts are found"

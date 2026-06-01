@@ -4,7 +4,9 @@
 capability_id: CAP-002
 description: Derives deterministic implementation work packages from the net branch-delta report.
 id: FEAT-013
+last_event_id: EVT-20260601-0011
 name: Derive work packages from branch delta
 requirement_ids:
   - REQ-015
+revision: 3
 status: active

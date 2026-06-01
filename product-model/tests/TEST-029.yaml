@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-026
 file_path: product-tools/tests/changeFeature.test.ts
 id: TEST-029
+last_event_id: EVT-20260601-0015
+revision: 1
 test_name: records a FeatureChanged event and projects the updated feature description

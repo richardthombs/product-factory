@@ -58,6 +58,11 @@ export async function getCurrentBranchName(cwd: string): Promise<string> {
   return stdout.trim();
 }
 
+export async function resolveGitRevision(ref: string, cwd: string): Promise<string> {
+  const { stdout } = await execGit(["rev-parse", ref], cwd);
+  return stdout.trim();
+}
+
 async function getRepoRoot(cwd: string): Promise<string> {
   const { stdout } = await execGit(["rev-parse", "--show-toplevel"], cwd);
   return path.resolve(stdout.trim());

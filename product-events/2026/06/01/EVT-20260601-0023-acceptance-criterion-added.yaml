@@ -1,0 +1,18 @@
+id: EVT-20260601-0023
+type: AcceptanceCriterionAdded
+occurred_at: 2026-06-01T09:21:02.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: requirement
+        entity_id: REQ-018
+        expected_revision: 2
+payload:
+  acceptance_criterion_id: AC-031
+  requirement_id: REQ-018
+  text: Given reconciliation against the latest target branch fails, when
+    reconcile-events is run in local workflow or CI, then it exits non-zero so
+    merge gating can block acceptance.

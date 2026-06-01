@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-023
 file_path: product-tools/tests/branchDelta.test.ts
 id: TEST-025
+last_event_id: EVT-20260531-0077
+revision: 1
 test_name: writes standard branch-delta artifacts to product-model

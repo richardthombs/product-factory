@@ -1,4 +1,5 @@
 import type { CapabilityStatus, FeatureStatus } from "../domain/status.js";
+import type { EntityType } from "../schemas/events.js";
 
 export type ProductState = {
   id: string;
@@ -46,6 +47,22 @@ export type TestState = {
   testName: string;
 };
 
+export type EntityRevisionState = {
+  entityType: EntityType;
+  entityId: string;
+  revision: number;
+  lastEventId: string;
+};
+
+export type EntityRevisionMap = {
+  product: Map<string, EntityRevisionState>;
+  capability: Map<string, EntityRevisionState>;
+  feature: Map<string, EntityRevisionState>;
+  requirement: Map<string, EntityRevisionState>;
+  acceptance_criterion: Map<string, EntityRevisionState>;
+  test: Map<string, EntityRevisionState>;
+};
+
 export type ProductModelState = {
   product: ProductState;
   capabilities: Map<string, CapabilityState>;
@@ -53,6 +70,7 @@ export type ProductModelState = {
   requirements: Map<string, RequirementState>;
   acceptanceCriteria: Map<string, AcceptanceCriterionState>;
   tests: Map<string, TestState>;
+  entityRevisions: EntityRevisionMap;
 };
 
 export type ProjectionSummary = {

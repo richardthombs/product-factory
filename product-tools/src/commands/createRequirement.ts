@@ -2,6 +2,7 @@ import { mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import YAML from "yaml";
 import { replayEvents } from "../projection/replay.js";
+import { buildConcurrencyMetadata, currentEntityPrecondition, revisionPrecondition } from "./concurrency.js";
 import { DEFAULT_MODEL_ROOT, projectModel } from "../projection/projectModel.js";
 import { nextEntityId, nextEventId } from "../util/ids.js";
 import { slugify } from "../util/slug.js";
@@ -54,12 +55,12 @@ export async function createRequirement(options: CreateRequirementOptions): Prom
   const requirementId = nextEntityId(
     "REQ",
     validation.events
-      .filter(({ event }) => event.type === "RequirementAdded")
+      .filter((loaded): loaded is LoadedEvent & { event: Extract<ProductEvent, { type: "RequirementAdded" }> } => loaded.event.type === "RequirementAdded")
       .map(({ event }) => event.payload.requirement_id),
   );
 
   const existingAcceptanceCriterionIds = validation.events
-    .filter(({ event }) => event.type === "AcceptanceCriterionAdded")
+    .filter((loaded): loaded is LoadedEvent & { event: Extract<ProductEvent, { type: "AcceptanceCriterionAdded" }> } => loaded.event.type === "AcceptanceCriterionAdded")
     .map(({ event }) => event.payload.acceptance_criterion_id);
 
   const acceptanceCriterionIds: string[] = [];
@@ -74,6 +75,9 @@ export async function createRequirement(options: CreateRequirementOptions): Prom
   const occurredAts = buildOccurredAtSequence(baseOccurredAt, 1 + acceptanceCriterionIds.length);
   const source = buildSource(options.changeProposalId, options.conversationId);
   const reservedEventIds: string[] = [];
+  const requirementAddedMetadata = buildConcurrencyMetadata([
+    currentEntityPrecondition(state, "feature", feature.id),
+  ]);
 
   const events: ProductEvent[] = [
     {
@@ -82,24 +86,32 @@ export async function createRequirement(options: CreateRequirementOptions): Prom
       occurred_at: occurredAts[0],
       actor: { type: actorType, id: actorId },
       ...(source ? { source } : {}),
+      ...(requirementAddedMetadata ? { metadata: requirementAddedMetadata } : {}),
       payload: {
         requirement_id: requirementId,
         feature_id: feature.id,
         description: options.description,
       },
     },
-    ...acceptanceCriterionIds.map((acceptanceCriterionId, index) => ({
-      id: reserveEventId(validation.events, occurredAts[index + 1], reservedEventIds),
-      type: "AcceptanceCriterionAdded" as const,
-      occurred_at: occurredAts[index + 1],
-      actor: { type: actorType, id: actorId },
-      ...(source ? { source } : {}),
-      payload: {
-        acceptance_criterion_id: acceptanceCriterionId,
-        requirement_id: requirementId,
-        text: options.acceptanceCriterionTexts[index],
-      },
-    })),
+    ...acceptanceCriterionIds.map((acceptanceCriterionId, index) => {
+      const metadata = buildConcurrencyMetadata([
+        revisionPrecondition("requirement", requirementId, index + 1),
+      ]);
+
+      return {
+        id: reserveEventId(validation.events, occurredAts[index + 1], reservedEventIds),
+        type: "AcceptanceCriterionAdded" as const,
+        occurred_at: occurredAts[index + 1],
+        actor: { type: actorType, id: actorId },
+        ...(source ? { source } : {}),
+        ...(metadata ? { metadata } : {}),
+        payload: {
+          acceptance_criterion_id: acceptanceCriterionId,
+          requirement_id: requirementId,
+          text: options.acceptanceCriterionTexts[index],
+        },
+      };
+    }),
   ];
 
   const files = buildEventFilePaths(eventsRoot, events);

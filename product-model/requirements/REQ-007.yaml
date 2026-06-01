@@ -7,3 +7,5 @@ acceptance_criterion_ids:
 description: The system shall provide a create-test helper that annotates tests with acceptance criterion ids and records test artifacts with test id, file path, and test name.
 feature_id: FEAT-007
 id: REQ-007
+last_event_id: EVT-20260531-0026
+revision: 3

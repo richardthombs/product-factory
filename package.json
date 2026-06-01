@@ -7,6 +7,7 @@
     "validate-events": "tsx product-tools/src/cli/validate-events.ts",
     "project-model": "tsx product-tools/src/cli/project-model.ts",
     "branch-delta": "tsx product-tools/src/cli/branch-delta.ts",
+    "reconcile-events": "tsx product-tools/src/cli/reconcile-events.ts",
     "derive-work-packages": "tsx product-tools/src/cli/derive-work-packages.ts",
     "rebuild": "tsx product-tools/src/cli/rebuild.ts",
     "create-product": "tsx product-tools/src/cli/create-product.ts",

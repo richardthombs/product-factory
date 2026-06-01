@@ -1,0 +1,18 @@
+id: EVT-20260601-0037
+type: AcceptanceCriterionChanged
+occurred_at: 2026-06-01T09:26:00.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: acceptance_criterion
+        entity_id: AC-027
+        expected_revision: 2
+payload:
+  acceptance_criterion_id: AC-027
+  text: Given branch-only events whose concurrency preconditions match the latest
+    accepted state, when the reconcile-events helper is run against a base
+    branch, then it exits successfully without writing reconciliation artifacts
+    and without producing stdout or stderr.

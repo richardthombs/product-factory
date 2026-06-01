@@ -4,7 +4,9 @@
 capability_id: CAP-001
 description: Adds a new capability to an existing product model.
 id: FEAT-002
+last_event_id: EVT-20260531-0007
 name: Create capability
 requirement_ids:
   - REQ-002
+revision: 2
 status: active

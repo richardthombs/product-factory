@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-027
+file_path: product-tools/tests/reconciliation.test.ts
+id: TEST-038
+last_event_id: EVT-20260601-0039
+revision: 1
+test_name: it("exits cleanly without stdout, stderr, or artifacts when reconciliation is clean"

@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-021
+last_event_id: EVT-20260601-0004
 requirement_id: REQ-013
+revision: 3
 tests:
   - TEST-022
 text: Given entities that are added and then further refined only on the working branch, when the branch-delta helper is run, then it reports them as added and infers change categories from the net branch delta rather than intermediate branch-only churn.

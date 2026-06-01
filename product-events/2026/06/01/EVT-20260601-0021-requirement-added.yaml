@@ -1,0 +1,17 @@
+id: EVT-20260601-0021
+type: RequirementAdded
+occurred_at: 2026-06-01T09:21:00.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: feature
+        entity_id: FEAT-015
+        expected_revision: 2
+payload:
+  requirement_id: REQ-018
+  feature_id: FEAT-015
+  description: The system shall write standard reconciliation artifacts and
+    support merge-gate enforcement for stale branch proposals.

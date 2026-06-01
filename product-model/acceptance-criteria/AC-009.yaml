@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-009
+last_event_id: EVT-20260531-0033
 requirement_id: REQ-007
+revision: 2
 tests:
   - TEST-007
 text: Given created tests and acceptance criteria, when project-model is run, then the generated model includes test ids under the relevant acceptance criteria and projects each test artifact with file path and test name.

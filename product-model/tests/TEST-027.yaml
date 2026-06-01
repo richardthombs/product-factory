@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-024
 file_path: product-tools/tests/deriveWorkPackages.test.ts
 id: TEST-027
+last_event_id: EVT-20260531-0085
+revision: 1
 test_name: groups changed scope under one feature into a deterministic work package

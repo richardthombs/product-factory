@@ -4,9 +4,11 @@
 capability_id: CAP-002
 description: Reports the net product delta between a working branch and a base branch.
 id: FEAT-012
+last_event_id: EVT-20260601-0010
 name: Report branch delta
 requirement_ids:
   - REQ-012
   - REQ-013
   - REQ-014
+revision: 5
 status: active

@@ -1,0 +1,17 @@
+id: EVT-20260601-0027
+type: RequirementAdded
+occurred_at: 2026-06-01T09:23:00.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: feature
+        entity_id: FEAT-005
+        expected_revision: 2
+payload:
+  requirement_id: REQ-020
+  feature_id: FEAT-005
+  description: The system shall derive deterministic entity revisions and last
+    affecting event ids during replay and projection for accepted entities.

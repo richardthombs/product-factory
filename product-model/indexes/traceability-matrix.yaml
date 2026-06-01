@@ -126,6 +126,17 @@ capabilities:
                 text: Given a set of product event files, when validate-events is run, then the system reports schema or reference errors and succeeds only when the event stream is valid.
             description: The system shall validate product event files against schemas and repository-level consistency rules.
             requirement_id: REQ-004
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-032
+                tests:
+                  - TEST-036
+                text: Given concurrency preconditions that reference existing entities and prior events affecting those same entities, when validate-events is run, then the event stream is accepted as valid structured concurrency metadata.
+              - acceptance_criterion_id: AC-033
+                tests:
+                  - TEST-037
+                text: Given concurrency preconditions that reference missing entities or last-event ids that did not affect the referenced entity, when validate-events is run, then it reports validation errors.
+            description: The system shall validate optional concurrency metadata for product events, including entity-specific revision and last-entity-event preconditions.
+            requirement_id: REQ-019
         status: active
       - feature_id: FEAT-005
         feature_name: Project current-state product model
@@ -138,6 +149,13 @@ capabilities:
                 text: Given a valid event stream, when project-model is run, then the system generates deterministic YAML files for the product, capabilities, features, requirements, acceptance criteria, and indexes.
             description: The system shall deterministically project accepted product events into generated YAML documentation of current state.
             requirement_id: REQ-005
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-034
+                tests:
+                  - TEST-030
+                text: Given accepted events affecting capabilities, features, requirements, acceptance criteria, or tests, when project-model is run, then the projected model includes deterministic derived revision metadata for those entities.
+            description: The system shall derive deterministic entity revisions and last affecting event ids during replay and projection for accepted entities.
+            requirement_id: REQ-020
         status: active
       - feature_id: FEAT-006
         feature_name: Rebuild product model
@@ -219,9 +237,41 @@ capabilities:
             description: The system shall derive deterministic work-package proposals from the net branch delta by grouping net changed scope into coherent implementation slices.
             requirement_id: REQ-015
         status: active
+      - feature_id: FEAT-015
+        feature_name: Reconcile branch-only events
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-027
+                tests:
+                  - TEST-031
+                  - TEST-038
+                text: Given branch-only events whose concurrency preconditions match the latest accepted state, when the reconcile-events helper is run against a base branch, then it exits successfully without writing reconciliation artifacts and without producing stdout or stderr.
+              - acceptance_criterion_id: AC-028
+                tests:
+                  - TEST-032
+                text: Given a branch-only event whose expected entity revision or expected last entity event id no longer matches the latest accepted state for that same entity, when reconcile-events is run, then it reports a reconciliation conflict and fails.
+              - acceptance_criterion_id: AC-029
+                tests:
+                  - TEST-033
+                text: Given an unrelated accepted event for another entity, when reconcile-events compares expected_last_entity_event_id for a branch event, then it compares only against the most recent accepted event that affected the referenced entity.
+            description: The system shall reconcile branch-only product events against the latest accepted entity revisions on a chosen base branch.
+            requirement_id: REQ-017
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-030
+                tests:
+                  - TEST-034
+                  - TEST-039
+                text: Given reconcile-events finds reconciliation conflicts and is run without a custom output path, when it completes, then it writes branch-delta/reconciliation.yaml and branch-delta/reconciliation.md as gitignored branch-local artifacts.
+              - acceptance_criterion_id: AC-031
+                tests:
+                  - TEST-035
+                text: Given reconciliation against the latest target branch fails, when reconcile-events is run in local workflow or CI, then it exits non-zero so merge gating can block acceptance.
+            description: The system shall write standard reconciliation artifacts and support merge-gate enforcement for stale branch proposals.
+            requirement_id: REQ-018
+        status: active
 product_id: PROD-001
 projected_from:
-  event_count: 101
-  last_event_id: EVT-20260601-0015
-  last_occurred_at: 2026-06-01T07:12:03.000Z
-  test_count: 29
+  event_count: 126
+  last_event_id: EVT-20260601-0040
+  last_occurred_at: 2026-06-01T09:26:30.000Z
+  test_count: 39

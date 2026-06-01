@@ -1,0 +1,10 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+id: AC-034
+last_event_id: EVT-20260601-0029
+requirement_id: REQ-020
+revision: 2
+tests:
+  - TEST-030
+text: Given accepted events affecting capabilities, features, requirements, acceptance criteria, or tests, when project-model is run, then the projected model includes deterministic derived revision metadata for those entities.

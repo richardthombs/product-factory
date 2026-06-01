@@ -1,0 +1,18 @@
+id: EVT-20260601-0022
+type: AcceptanceCriterionAdded
+occurred_at: 2026-06-01T09:21:01.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: requirement
+        entity_id: REQ-018
+        expected_revision: 1
+payload:
+  acceptance_criterion_id: AC-030
+  requirement_id: REQ-018
+  text: Given reconcile-events is run without a custom output path, when it
+    completes, then it writes branch-delta/reconciliation.yaml and
+    branch-delta/reconciliation.md as gitignored branch-local artifacts.

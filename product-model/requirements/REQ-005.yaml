@@ -6,3 +6,5 @@ acceptance_criterion_ids:
 description: The system shall deterministically project accepted product events into generated YAML documentation of current state.
 feature_id: FEAT-005
 id: REQ-005
+last_event_id: EVT-20260531-0019
+revision: 2

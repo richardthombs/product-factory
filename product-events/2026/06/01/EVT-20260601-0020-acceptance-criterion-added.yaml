@@ -1,0 +1,19 @@
+id: EVT-20260601-0020
+type: AcceptanceCriterionAdded
+occurred_at: 2026-06-01T09:20:04.000Z
+actor:
+  type: agent
+  id: feature_specifier
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: requirement
+        entity_id: REQ-017
+        expected_revision: 3
+payload:
+  acceptance_criterion_id: AC-029
+  requirement_id: REQ-017
+  text: Given an unrelated accepted event for another entity, when
+    reconcile-events compares expected_last_entity_event_id for a branch event,
+    then it compares only against the most recent accepted event that affected
+    the referenced entity.

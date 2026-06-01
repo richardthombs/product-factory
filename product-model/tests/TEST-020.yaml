@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-019
 file_path: product-tools/tests/branchDelta.test.ts
 id: TEST-020
+last_event_id: EVT-20260531-0066
+revision: 1
 test_name: fails when the base branch cannot be resolved

@@ -4,7 +4,9 @@
 capability_id: CAP-002
 description: Validates events and regenerates the product model in one command.
 id: FEAT-006
+last_event_id: EVT-20260531-0021
 name: Rebuild product model
 requirement_ids:
   - REQ-006
+revision: 2
 status: active

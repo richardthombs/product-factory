@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-002
+last_event_id: EVT-20260531-0028
 requirement_id: REQ-002
+revision: 2
 tests:
   - TEST-002
 text: Given an existing product model, when the create-capability command is run, then a CapabilityAdded event is written and the product model is rebuilt.

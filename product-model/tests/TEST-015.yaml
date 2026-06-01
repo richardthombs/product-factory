@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-014
 file_path: product-tools/tests/moveFeature.test.ts
 id: TEST-015
+last_event_id: EVT-20260531-0057
+revision: 1
 test_name: moves an existing feature to another capability and projects the updated hierarchy

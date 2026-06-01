@@ -1,0 +1,11 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+id: AC-027
+last_event_id: EVT-20260601-0039
+requirement_id: REQ-017
+revision: 4
+tests:
+  - TEST-031
+  - TEST-038
+text: Given branch-only events whose concurrency preconditions match the latest accepted state, when the reconcile-events helper is run against a base branch, then it exits successfully without writing reconciliation artifacts and without producing stdout or stderr.

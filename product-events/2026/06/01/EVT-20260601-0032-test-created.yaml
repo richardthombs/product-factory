@@ -1,0 +1,18 @@
+id: EVT-20260601-0032
+type: TestCreated
+occurred_at: 2026-06-01T09:24:30.000Z
+actor:
+  type: agent
+  id: test_agent
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: acceptance_criterion
+        entity_id: AC-029
+        expected_revision: 1
+payload:
+  test_id: TEST-033
+  acceptance_criterion_id: AC-029
+  file_path: product-tools/tests/reconciliation.test.ts
+  test_name: it("treats expected_last_entity_event_id as entity-specific rather
+    than stream-global"

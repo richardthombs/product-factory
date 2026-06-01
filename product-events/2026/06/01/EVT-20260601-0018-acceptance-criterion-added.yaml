@@ -1,0 +1,18 @@
+id: EVT-20260601-0018
+type: AcceptanceCriterionAdded
+occurred_at: 2026-06-01T09:20:02.000Z
+actor:
+  type: agent
+  id: feature_specifier
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: requirement
+        entity_id: REQ-017
+        expected_revision: 1
+payload:
+  acceptance_criterion_id: AC-027
+  requirement_id: REQ-017
+  text: Given branch-only events whose concurrency preconditions match the latest
+    accepted state, when the reconcile-events helper is run against a base
+    branch, then reconciliation succeeds and reports a clean result.

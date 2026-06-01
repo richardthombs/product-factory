@@ -7,6 +7,7 @@ import { nextEventId } from "../util/ids.js";
 import { slugify } from "../util/slug.js";
 import { DEFAULT_EVENTS_ROOT, validateEvents } from "../validation/validateEvents.js";
 import type { ProductEvent } from "../schemas/events.js";
+import { buildConcurrencyMetadata, currentEntityPrecondition } from "./concurrency.js";
 
 export type DeprecateFeatureOptions = {
   featureId: string;
@@ -50,12 +51,16 @@ export async function deprecateFeature(options: DeprecateFeatureOptions): Promis
   }
 
   const source = buildSource(options.changeProposalId, options.conversationId);
+  const metadata = buildConcurrencyMetadata([
+    currentEntityPrecondition(state, "feature", feature.id),
+  ]);
   const event: ProductEvent = {
     id: nextEventId(validation.events, occurredAt),
     type: "FeatureDeprecated",
     occurred_at: occurredAt,
     actor: { type: actorType, id: actorId },
     ...(source ? { source } : {}),
+    ...(metadata ? { metadata } : {}),
     payload: {
       feature_id: feature.id,
       reason: options.reason,

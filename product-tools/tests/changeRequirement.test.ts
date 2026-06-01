@@ -80,8 +80,18 @@ describe("changeRequirement", () => {
       "EVT-20260601-0001-requirement-changed.yaml",
     ]);
 
+    const changedEventYaml = await readFile(
+      path.join(eventsRoot, "2026", "06", "01", "EVT-20260601-0001-requirement-changed.yaml"),
+      "utf8",
+    );
+    expect(changedEventYaml).toContain("entity_type: requirement");
+    expect(changedEventYaml).toContain("entity_id: REQ-001");
+    expect(changedEventYaml).toContain("expected_revision: 2");
+
     const requirementYaml = await readFile(path.join(modelRoot, "requirements", "REQ-001.yaml"), "utf8");
     expect(requirementYaml).toContain("description: The system shall preserve heading structure when exporting generated requirements as Markdown.");
+    expect(requirementYaml).toContain("revision: 3");
+    expect(requirementYaml).toContain("last_event_id: EVT-20260601-0001");
 
     const projectMarkdown = await readFile(path.join(modelRoot, "project.md"), "utf8");
     expect(projectMarkdown).toContain("**REQ-001**: The system shall preserve heading structure when exporting generated requirements as Markdown.");

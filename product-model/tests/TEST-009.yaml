@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-008
 file_path: product-tools/tests/createTest.test.ts
 id: TEST-009
+last_event_id: EVT-20260531-0035
+revision: 1
 test_name: annotates a test and records created test artifacts

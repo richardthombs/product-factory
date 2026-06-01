@@ -6,6 +6,7 @@ import { nextEntityId, nextEventId } from "../util/ids.js";
 import { slugify } from "../util/slug.js";
 import { DEFAULT_EVENTS_ROOT, validateEvents } from "../validation/validateEvents.js";
 import type { ProductEvent } from "../schemas/events.js";
+import type { LoadedEvent } from "../validation/types.js";
 
 export type CreateCapabilityOptions = {
   name: string;
@@ -41,7 +42,7 @@ export async function createCapability(options: CreateCapabilityOptions): Promis
   const capabilityId = nextEntityId(
     "CAP",
     validation.events
-      .filter(({ event }) => event.type === "CapabilityAdded")
+      .filter((loaded): loaded is LoadedEvent & { event: Extract<ProductEvent, { type: "CapabilityAdded" }> } => loaded.event.type === "CapabilityAdded")
       .map(({ event }) => event.payload.capability_id),
   );
   const eventId = nextEventId(validation.events, occurredAt);

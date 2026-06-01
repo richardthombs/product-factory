@@ -1,0 +1,10 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+id: AC-028
+last_event_id: EVT-20260601-0031
+requirement_id: REQ-017
+revision: 2
+tests:
+  - TEST-032
+text: Given a branch-only event whose expected entity revision or expected last entity event id no longer matches the latest accepted state for that same entity, when reconcile-events is run, then it reports a reconciliation conflict and fails.

@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-032
+file_path: product-tools/tests/validateEvents.test.ts
+id: TEST-036
+last_event_id: EVT-20260601-0035
+revision: 1
+test_name: it("accepts valid concurrency preconditions that reference prior events for the same entity"

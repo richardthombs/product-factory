@@ -16,6 +16,7 @@ From the repository root:
 npm install
 npm run validate-events
 npm run project-model
+npm run reconcile-events -- --base main
 npm run rebuild
 ```
 
@@ -37,6 +38,27 @@ To report the product events unique to the current branch relative to a base bra
 ```bash
 npm run branch-delta -- --base main
 ```
+
+To reconcile branch-only events against the latest accepted entity revisions on a base branch:
+
+```bash
+npm run reconcile-events -- --base main
+```
+
+What the helper does in its current version:
+
+- loads product events from the current working tree
+- loads product events from the base branch using Git
+- validates both event streams
+- derives entity-specific revisions and last accepted entity event ids by deterministic replay
+- replays branch-only events against the latest base state
+- fails when any branch event precondition no longer matches the relevant entity state on the base branch
+- writes gitignored reconciliation artifacts under `branch-delta/` by default
+
+Important concurrency semantics:
+
+- `expected_last_entity_event_id` means the most recent accepted event that affected that specific entity
+- it does not mean the most recent event anywhere in the full event stream
 
 To derive deterministic implementation work packages from the current branch delta:
 
@@ -270,6 +292,8 @@ Implemented checks:
 - linked test names resolve uniquely in source
 - linked tests are annotated with nearby `// AC: ...` comments
 - test ids are unique
+- concurrency preconditions reference existing entities in replay order
+- `expected_last_entity_event_id`, when present, references a prior event that affected that same entity
 
 Implemented projection output:
 
@@ -288,4 +312,5 @@ Implemented projection output:
 Additional reporting commands:
 
 - `npm run branch-delta -- --base main` prints a first-class branch-delta report for the current branch and writes gitignored artifacts under `branch-delta/`
+- `npm run reconcile-events -- --base main` checks branch-only events against latest accepted entity revisions on the base branch and writes gitignored artifacts under `branch-delta/`
 - `npm run derive-work-packages -- --base main` derives feature-grouped work-package proposals and writes gitignored artifacts under `branch-delta/`

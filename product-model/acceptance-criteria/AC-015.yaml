@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-015
+last_event_id: EVT-20260531-0058
 requirement_id: REQ-010
+revision: 2
 tests:
   - TEST-016
 text: Given an existing feature, when the deprecate-feature helper is run with a reason, then the system records a FeatureDeprecated event and projects the feature as deprecated with its deprecation reason.

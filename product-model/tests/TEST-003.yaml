@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-003
 file_path: product-tools/tests/createFeature.test.ts
 id: TEST-003
+last_event_id: EVT-20260531-0029
+revision: 1
 test_name: allocates ids automatically and creates multiple acceptance criteria

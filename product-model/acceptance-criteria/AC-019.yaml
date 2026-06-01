@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-019
+last_event_id: EVT-20260531-0066
 requirement_id: REQ-012
+revision: 2
 tests:
   - TEST-020
 text: Given a base branch that cannot be resolved, when the branch-delta helper is run, then it fails instead of emitting a trusted branch-delta report.

@@ -91,6 +91,14 @@ describe("createRequirement", () => {
       "EVT-20260601-0003-acceptance-criterion-added.yaml",
     ]);
 
+    const requirementEventYaml = await readFile(
+      path.join(eventsRoot, "2026", "06", "01", "EVT-20260601-0001-requirement-added.yaml"),
+      "utf8",
+    );
+    expect(requirementEventYaml).toContain("entity_type: feature");
+    expect(requirementEventYaml).toContain("entity_id: FEAT-001");
+    expect(requirementEventYaml).toContain("expected_revision: 2");
+
     const featureYaml = await readFile(
       path.join(modelRoot, "features", "FEAT-001-export-requirements-to-markdown.yaml"),
       "utf8",
@@ -98,6 +106,11 @@ describe("createRequirement", () => {
     expect(featureYaml).toContain("requirement_ids:");
     expect(featureYaml).toContain("- REQ-001");
     expect(featureYaml).toContain("- REQ-002");
+    expect(featureYaml).toContain("revision: 3");
+
+    const requirementYaml = await readFile(path.join(modelRoot, "requirements", "REQ-002.yaml"), "utf8");
+    expect(requirementYaml).toContain("revision: 3");
+    expect(requirementYaml).toContain("last_event_id: EVT-20260601-0003");
 
     const traceabilityMatrix = await readFile(path.join(modelRoot, "indexes", "traceability-matrix.yaml"), "utf8");
     expect(traceabilityMatrix).toContain("requirement_id: REQ-002");

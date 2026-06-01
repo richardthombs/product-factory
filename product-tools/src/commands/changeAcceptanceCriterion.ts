@@ -7,6 +7,7 @@ import { nextEventId } from "../util/ids.js";
 import { slugify } from "../util/slug.js";
 import { DEFAULT_EVENTS_ROOT, validateEvents } from "../validation/validateEvents.js";
 import type { ProductEvent } from "../schemas/events.js";
+import { buildConcurrencyMetadata, currentEntityPrecondition } from "./concurrency.js";
 
 export type ChangeAcceptanceCriterionOptions = {
   acceptanceCriterionId: string;
@@ -50,12 +51,16 @@ export async function changeAcceptanceCriterion(options: ChangeAcceptanceCriteri
   }
 
   const source = buildSource(options.changeProposalId, options.conversationId);
+  const metadata = buildConcurrencyMetadata([
+    currentEntityPrecondition(state, "acceptance_criterion", acceptanceCriterion.id),
+  ]);
   const event: ProductEvent = {
     id: nextEventId(validation.events, occurredAt),
     type: "AcceptanceCriterionChanged",
     occurred_at: occurredAt,
     actor: { type: actorType, id: actorId },
     ...(source ? { source } : {}),
+    ...(metadata ? { metadata } : {}),
     payload: {
       acceptance_criterion_id: acceptanceCriterion.id,
       text: options.text,

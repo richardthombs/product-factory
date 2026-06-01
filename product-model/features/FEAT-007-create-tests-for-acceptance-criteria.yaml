@@ -4,7 +4,9 @@
 capability_id: CAP-002
 description: Creates test artifacts for acceptance criteria using filename and test name, and annotates tests with AC ids.
 id: FEAT-007
+last_event_id: EVT-20260531-0024
 name: Create tests for acceptance criteria
 requirement_ids:
   - REQ-007
+revision: 2
 status: active

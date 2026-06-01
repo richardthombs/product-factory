@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-030
+file_path: product-tools/tests/reconciliation.test.ts
+id: TEST-039
+last_event_id: EVT-20260601-0040
+revision: 1
+test_name: it("returns a non-zero exit code when reconciliation conflicts are found"

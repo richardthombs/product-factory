@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-011
+last_event_id: EVT-20260531-0041
 requirement_id: REQ-008
+revision: 2
 tests:
   - TEST-011
 text: Given an existing feature, when the create-requirement helper is run with multiple acceptance criteria, then the new requirement is projected under the feature with all created acceptance criteria.

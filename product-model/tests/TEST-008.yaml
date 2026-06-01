@@ -4,4 +4,6 @@
 acceptance_criterion_id: AC-006
 file_path: product-tools/tests/projectModel.test.ts
 id: TEST-008
+last_event_id: EVT-20260531-0034
+revision: 1
 test_name: produces identical output across repeated rebuilds

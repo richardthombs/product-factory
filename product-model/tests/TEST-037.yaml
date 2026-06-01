@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-033
+file_path: product-tools/tests/validateEvents.test.ts
+id: TEST-037
+last_event_id: EVT-20260601-0036
+revision: 1
+test_name: it("reports invalid concurrency preconditions that reference missing entities or unrelated last events"

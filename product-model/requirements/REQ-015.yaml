@@ -7,3 +7,5 @@ acceptance_criterion_ids:
 description: The system shall derive deterministic work-package proposals from the net branch delta by grouping net changed scope into coherent implementation slices.
 feature_id: FEAT-013
 id: REQ-015
+last_event_id: EVT-20260601-0007
+revision: 4

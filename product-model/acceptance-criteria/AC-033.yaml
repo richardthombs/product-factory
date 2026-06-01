@@ -1,0 +1,10 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+id: AC-033
+last_event_id: EVT-20260601-0036
+requirement_id: REQ-019
+revision: 2
+tests:
+  - TEST-037
+text: Given concurrency preconditions that reference missing entities or last-event ids that did not affect the referenced entity, when validate-events is run, then it reports validation errors.

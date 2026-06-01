@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-008
+last_event_id: EVT-20260531-0035
 requirement_id: REQ-007
+revision: 2
 tests:
   - TEST-009
 text: Given one or more acceptance criterion ids, a test file, and a test name, when the create-test helper is run, then the test is annotated with the acceptance criterion ids and one TestCreated event is recorded for each id.

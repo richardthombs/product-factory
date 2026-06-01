@@ -7,3 +7,5 @@ acceptance_criterion_ids:
 description: The system shall support moving an existing feature to another capability and deprecating an existing feature without deleting its history.
 feature_id: FEAT-010
 id: REQ-010
+last_event_id: EVT-20260531-0052
+revision: 3

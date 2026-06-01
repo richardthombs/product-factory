@@ -1,0 +1,10 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+id: AC-029
+last_event_id: EVT-20260601-0032
+requirement_id: REQ-017
+revision: 2
+tests:
+  - TEST-033
+text: Given an unrelated accepted event for another entity, when reconcile-events compares expected_last_entity_event_id for a branch event, then it compares only against the most recent accepted event that affected the referenced entity.

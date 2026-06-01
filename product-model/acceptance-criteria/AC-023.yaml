@@ -2,7 +2,9 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 id: AC-023
+last_event_id: EVT-20260601-0001
 requirement_id: REQ-014
+revision: 5
 tests:
   - TEST-025
   - TEST-026

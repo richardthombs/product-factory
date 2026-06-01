@@ -1,0 +1,11 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+id: AC-030
+last_event_id: EVT-20260601-0040
+requirement_id: REQ-018
+revision: 4
+tests:
+  - TEST-034
+  - TEST-039
+text: Given reconcile-events finds reconciliation conflicts and is run without a custom output path, when it completes, then it writes branch-delta/reconciliation.yaml and branch-delta/reconciliation.md as gitignored branch-local artifacts.

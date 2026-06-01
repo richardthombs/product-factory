@@ -1,0 +1,18 @@
+id: EVT-20260601-0026
+type: AcceptanceCriterionAdded
+occurred_at: 2026-06-01T09:22:02.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: requirement
+        entity_id: REQ-019
+        expected_revision: 2
+payload:
+  acceptance_criterion_id: AC-033
+  requirement_id: REQ-019
+  text: Given concurrency preconditions that reference missing entities or
+    last-event ids that did not affect the referenced entity, when
+    validate-events is run, then it reports validation errors.

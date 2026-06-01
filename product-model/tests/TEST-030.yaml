@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-034
+file_path: product-tools/tests/revisionReplay.test.ts
+id: TEST-030
+last_event_id: EVT-20260601-0029
+revision: 1
+test_name: it("derives deterministic revisions and last entity event ids from replay"

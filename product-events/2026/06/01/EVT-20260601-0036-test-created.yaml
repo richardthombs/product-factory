@@ -1,0 +1,18 @@
+id: EVT-20260601-0036
+type: TestCreated
+occurred_at: 2026-06-01T09:25:10.000Z
+actor:
+  type: agent
+  id: test_agent
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: acceptance_criterion
+        entity_id: AC-033
+        expected_revision: 1
+payload:
+  test_id: TEST-037
+  acceptance_criterion_id: AC-033
+  file_path: product-tools/tests/validateEvents.test.ts
+  test_name: it("reports invalid concurrency preconditions that reference missing
+    entities or unrelated last events"

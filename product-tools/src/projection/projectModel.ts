@@ -6,7 +6,7 @@ import { prepareModelOutput } from "../util/generatedOutput.js";
 import { slugify } from "../util/slug.js";
 import { toGeneratedMarkdown } from "../util/markdown.js";
 import { toGeneratedYaml } from "../util/yaml.js";
-import { replayEvents } from "./replay.js";
+import { replayEvents, requireEntityRevision } from "./replay.js";
 import { renderProjectDocument } from "./projectDocument.js";
 import type {
   ProductModelState,
@@ -106,10 +106,13 @@ async function writeCapabilityFiles(modelRoot: string, state: ProductModelState)
 
   await Promise.all(
     capabilities.map(async (capability) => {
+      const revision = requireEntityRevision(state, "capability", capability.id);
       const document = {
         id: capability.id,
         name: capability.name,
         description: capability.description,
+        revision: revision.revision,
+        last_event_id: revision.lastEventId,
         status: capability.status,
         ...(capability.statusReason ? { status_reason: capability.statusReason } : {}),
         feature_ids: [...capability.featureIds].sort(),
@@ -128,11 +131,14 @@ async function writeFeatureFiles(modelRoot: string, state: ProductModelState): P
 
   await Promise.all(
     features.map(async (feature) => {
+      const revision = requireEntityRevision(state, "feature", feature.id);
       const document = {
         id: feature.id,
         capability_id: feature.capabilityId,
         name: feature.name,
         description: feature.description,
+        revision: revision.revision,
+        last_event_id: revision.lastEventId,
         status: feature.status,
         ...(feature.statusReason ? { status_reason: feature.statusReason } : {}),
         ...(feature.deprecatedReason ? { deprecated_reason: feature.deprecatedReason } : {}),
@@ -152,10 +158,13 @@ async function writeRequirementFiles(modelRoot: string, state: ProductModelState
 
   await Promise.all(
     requirements.map(async (requirement) => {
+      const revision = requireEntityRevision(state, "requirement", requirement.id);
       const document = {
         id: requirement.id,
         feature_id: requirement.featureId,
         description: requirement.description,
+        revision: revision.revision,
+        last_event_id: revision.lastEventId,
         acceptance_criterion_ids: [...requirement.acceptanceCriterionIds].sort(),
       };
 
@@ -169,10 +178,13 @@ async function writeAcceptanceCriterionFiles(modelRoot: string, state: ProductMo
 
   await Promise.all(
     acceptanceCriteria.map(async (acceptanceCriterion) => {
+      const revision = requireEntityRevision(state, "acceptance_criterion", acceptanceCriterion.id);
       const document = {
         id: acceptanceCriterion.id,
         requirement_id: acceptanceCriterion.requirementId,
         text: acceptanceCriterion.text,
+        revision: revision.revision,
+        last_event_id: revision.lastEventId,
         tests: buildTestIdsForAcceptanceCriterion(state, acceptanceCriterion.id),
       };
 
@@ -189,11 +201,14 @@ async function writeTestFiles(modelRoot: string, state: ProductModelState): Prom
 
   await Promise.all(
     tests.map(async (test) => {
+      const revision = requireEntityRevision(state, "test", test.id);
       const document = {
         id: test.id,
         acceptance_criterion_id: test.acceptanceCriterionId,
         file_path: test.filePath,
         test_name: test.testName,
+        revision: revision.revision,
+        last_event_id: revision.lastEventId,
       };
 
       await writeGeneratedYaml(path.join(modelRoot, "tests", `${test.id}.yaml`), document);

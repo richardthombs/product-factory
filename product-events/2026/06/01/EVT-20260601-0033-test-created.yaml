@@ -1,0 +1,17 @@
+id: EVT-20260601-0033
+type: TestCreated
+occurred_at: 2026-06-01T09:24:40.000Z
+actor:
+  type: agent
+  id: test_agent
+metadata:
+  concurrency:
+    preconditions:
+      - entity_type: acceptance_criterion
+        entity_id: AC-030
+        expected_revision: 1
+payload:
+  test_id: TEST-034
+  acceptance_criterion_id: AC-030
+  file_path: product-tools/tests/reconciliation.test.ts
+  test_name: it("writes reconciliation artifacts to branch-delta by default"
