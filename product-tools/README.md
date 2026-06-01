@@ -20,6 +20,16 @@ npm run reconcile-events -- --base main
 npm run rebuild
 ```
 
+Local Git hook setup for gating merges to `main` is documented in:
+
+- `docs/local_git_hooks.md`
+
+Install the committed local hooks with:
+
+```bash
+git config core.hooksPath .githooks
+```
+
 You can also validate or project a different event folder:
 
 ```bash
@@ -312,5 +322,10 @@ Implemented projection output:
 Additional reporting commands:
 
 - `npm run branch-delta -- --base main` prints a first-class branch-delta report for the current branch and writes gitignored artifacts under `branch-delta/`
-- `npm run reconcile-events -- --base main` checks branch-only events against latest accepted entity revisions on the base branch and writes gitignored artifacts under `branch-delta/`
+- `npm run reconcile-events -- --base main` checks branch-only events against latest accepted entity revisions on the base branch; when reconciliation is not clean it writes gitignored artifacts under `branch-delta/`
 - `npm run derive-work-packages -- --base main` derives feature-grouped work-package proposals and writes gitignored artifacts under `branch-delta/`
+
+Local merge-gating hooks included in this repository:
+
+- `.githooks/pre-push` gates pushes targeting `main`
+- `.githooks/pre-merge-commit` gates local merge commits created on `main`

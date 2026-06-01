@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+set -eu
+
+CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+TARGET_BRANCH="${GIT_MAIN_GATE_BRANCH:-main}"
+REMOTE_NAME="${GIT_MAIN_GATE_REMOTE:-origin}"
+
+if [ "${CURRENT_BRANCH}" != "${TARGET_BRANCH}" ]; then
+  exit 0
+fi
+
+printf '%s\n' "pre-merge-commit: gating merge commit on ${CURRENT_BRANCH} against ${REMOTE_NAME}/${TARGET_BRANCH}" >&2
+
+git fetch "${REMOTE_NAME}" "${TARGET_BRANCH}" --quiet
+npm test
+npm run rebuild
+npm run reconcile-events -- --base "${REMOTE_NAME}/${TARGET_BRANCH}"
