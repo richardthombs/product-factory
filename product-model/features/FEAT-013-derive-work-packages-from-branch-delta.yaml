@@ -1,0 +1,10 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capability_id: CAP-002
+description: Derives deterministic implementation work packages from the net branch-delta report.
+id: FEAT-013
+name: Derive work packages from branch delta
+requirement_ids:
+  - REQ-015
+status: active

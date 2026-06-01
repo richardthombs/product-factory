@@ -38,6 +38,12 @@ To report the product events unique to the current branch relative to a base bra
 npm run branch-delta -- --base main
 ```
 
+To derive deterministic implementation work packages from the current branch delta:
+
+```bash
+npm run derive-work-packages -- --base main
+```
+
 What the helper does in its current version:
 
 - loads product events from the current working tree
@@ -93,6 +99,21 @@ What the helper does:
 - allocates the next `REQ-*` id
 - allocates one new `AC-*` id per `--acceptance-criterion-text`
 - writes one `RequirementAdded` event and one `AcceptanceCriterionAdded` event per acceptance criterion
+- rebuilds `product-model/`
+
+To change an existing feature description:
+
+```bash
+npm run change-feature -- \
+  --feature FEAT-001 \
+  --description "Reports the net product delta between a working branch and a base branch."
+```
+
+What the helper does:
+
+- verifies the feature exists
+- allocates the next `EVT-*` id
+- writes a `FeatureChanged` event
 - rebuilds `product-model/`
 
 To change an existing requirement description:
@@ -220,6 +241,7 @@ Implemented event types:
 - `FeatureAdded`
 - `RequirementAdded`
 - `AcceptanceCriterionAdded`
+- `FeatureChanged`
 - `RequirementChanged`
 - `AcceptanceCriterionChanged`
 - `FeatureMovedToCapability`
@@ -236,6 +258,7 @@ Implemented checks:
 - exactly one `ProductCreated` exists
 - references resolve in replay order
 - entity IDs are unique within their type
+- changed features must already exist
 - changed requirements must already exist
 - changed acceptance criteria must already exist
 - moved features must already exist and reference an existing target capability
@@ -264,4 +287,5 @@ Implemented projection output:
 
 Additional reporting commands:
 
-- `npm run branch-delta -- --base main` prints a first-class branch-delta report for the current branch
+- `npm run branch-delta -- --base main` prints a first-class branch-delta report for the current branch and writes gitignored artifacts under `branch-delta/`
+- `npm run derive-work-packages -- --base main` derives feature-grouped work-package proposals and writes gitignored artifacts under `branch-delta/`

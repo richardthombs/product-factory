@@ -1,0 +1,11 @@
+id: EVT-20260601-0012
+type: FeatureAdded
+occurred_at: 2026-06-01T07:12:00.000Z
+actor:
+  type: agent
+  id: feature_specifier
+payload:
+  feature_id: FEAT-014
+  capability_id: CAP-001
+  name: Change existing feature descriptions
+  description: Updates existing feature descriptions incrementally as the product evolves.

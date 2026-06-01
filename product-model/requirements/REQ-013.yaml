@@ -4,6 +4,6 @@
 acceptance_criterion_ids:
   - AC-020
   - AC-021
-description: The system shall summarize changed product entities and inferred change categories in the branch-delta report.
+description: The system shall summarize net changed product entities and inferred change categories in the branch-delta report relative to the base branch.
 feature_id: FEAT-012
 id: REQ-013

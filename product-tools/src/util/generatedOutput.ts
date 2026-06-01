@@ -10,14 +10,9 @@ const GENERATED_DIRECTORIES = [
   "indexes",
 ] as const;
 
-const PRESERVED_ROOT_FILES = new Set([
-  "branch-delta.md",
-]);
+const PRESERVED_ROOT_FILES = new Set<string>();
 
-const PRESERVED_INDEX_FILES = new Set([
-  "branch-delta.yaml",
-  "branch-delta.yml",
-]);
+const PRESERVED_INDEX_FILES = new Set<string>();
 
 export async function prepareModelOutput(modelRoot: string): Promise<void> {
   await mkdir(modelRoot, { recursive: true });

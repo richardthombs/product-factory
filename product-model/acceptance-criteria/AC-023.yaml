@@ -6,4 +6,4 @@ requirement_id: REQ-014
 tests:
   - TEST-025
   - TEST-026
-text: Given a working branch and base branch, when the branch-delta helper is run without a custom output path, then it writes product-model/indexes/branch-delta.yaml and product-model/branch-delta.md as generated artifacts, and the markdown presents changed entities in parent context with explicit change labels.
+text: Given a working branch and base branch, when the branch-delta helper is run without a custom output path, then it writes branch-delta/branch-delta.yaml and branch-delta/branch-delta.md as gitignored branch-local artifacts, and the markdown presents changed entities in parent context with explicit change labels.

@@ -457,6 +457,7 @@ The current vertical slice supports:
 - `FeatureAdded`
 - `RequirementAdded`
 - `AcceptanceCriterionAdded`
+- `FeatureChanged`
 - `RequirementChanged`
 - `AcceptanceCriterionChanged`
 - `FeatureMovedToCapability`

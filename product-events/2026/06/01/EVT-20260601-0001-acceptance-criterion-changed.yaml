@@ -1,0 +1,13 @@
+id: EVT-20260601-0001
+type: AcceptanceCriterionChanged
+occurred_at: 2026-06-01T05:48:56.093Z
+actor:
+  type: agent
+  id: requirement_analyst
+payload:
+  acceptance_criterion_id: AC-023
+  text: Given a working branch and base branch, when the branch-delta helper is
+    run without a custom output path, then it writes
+    branch-delta/branch-delta.yaml and branch-delta/branch-delta.md as
+    gitignored branch-local artifacts, and the markdown presents changed
+    entities in parent context with explicit change labels.

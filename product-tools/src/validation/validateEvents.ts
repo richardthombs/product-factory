@@ -190,6 +190,21 @@ async function validateRepositoryRules(events: LoadedEvent[], eventsRoot: string
         }
         break;
       }
+      case "FeatureChanged": {
+        if (!productCreated) {
+          errors.push({
+            path: loaded.path,
+            message: "FeatureChanged requires ProductCreated to exist first",
+          });
+        }
+        if (!featureIds.has(loaded.event.payload.feature_id)) {
+          errors.push({
+            path: loaded.path,
+            message: `FeatureChanged references missing feature '${loaded.event.payload.feature_id}'`,
+          });
+        }
+        break;
+      }
       case "RequirementChanged": {
         if (!productCreated) {
           errors.push({
@@ -443,6 +458,7 @@ export function summarizeEvents(events: LoadedEvent[]): Record<ProductEvent["typ
       FeatureAdded: 0,
       RequirementAdded: 0,
       AcceptanceCriterionAdded: 0,
+      FeatureChanged: 0,
       RequirementChanged: 0,
       AcceptanceCriterionChanged: 0,
       FeatureMovedToCapability: 0,

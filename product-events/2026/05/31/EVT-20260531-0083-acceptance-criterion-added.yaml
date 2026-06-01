@@ -1,0 +1,14 @@
+id: EVT-20260531-0083
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T10:45:02.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-008
+payload:
+  acceptance_criterion_id: AC-024
+  requirement_id: REQ-015
+  text: Given a branch delta with changed entities under one feature, when the
+    derive-work-packages helper is run, then it emits a work-package proposal
+    that groups the changed scope under that feature.

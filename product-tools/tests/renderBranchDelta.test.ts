@@ -111,5 +111,106 @@ describe("renderBranchDeltaDocument", () => {
     expect(markdown).toContain("**REQ-001** *(changed)*");
     expect(markdown).toContain("**AC-001** *(changed)*");
   });
+
+  it("renders added entities refined on the branch as added with their latest content", () => {
+    const report: BranchDeltaReport = {
+      base_branch: "main",
+      current_branch: "feature/example",
+      product_id: "PROD-001",
+      events_root: "product-events",
+      base_event_count: 10,
+      current_event_count: 14,
+      branch_only_event_count: 4,
+      summary: {
+        capabilities_added: 0,
+        capabilities_changed: 0,
+        capabilities_status_changed: 0,
+        features_added: 0,
+        features_changed: 0,
+        features_moved: 0,
+        features_deprecated: 0,
+        features_status_changed: 0,
+        requirements_added: 1,
+        requirements_changed: 0,
+        acceptance_criteria_added: 1,
+        acceptance_criteria_changed: 0,
+        tests_added: 0,
+      },
+      change_categories: ["extend"],
+      branch_only_events: [],
+      changed_entities: {
+        capabilities: {
+          added: [],
+          changed: [],
+          status_changed: [],
+        },
+        features: {
+          added: [],
+          changed: [],
+          moved: [],
+          deprecated: [],
+          status_changed: [],
+        },
+        requirements: {
+          added: [{ requirement_id: "REQ-001" }],
+          changed: [],
+        },
+        acceptance_criteria: {
+          added: [{ acceptance_criterion_id: "AC-001" }],
+          changed: [],
+        },
+        tests: {
+          added: [],
+        },
+      },
+      impacted_entities: {
+        capability_ids: ["CAP-001"],
+        feature_ids: ["FEAT-001"],
+        requirement_ids: ["REQ-001"],
+        acceptance_criterion_ids: ["AC-001"],
+        test_ids: [],
+      },
+      contextual_changes: {
+        capabilities: [
+          {
+            capability_id: "CAP-001",
+            capability_name: "Validate and project product model",
+            description: "Enables users to validate product events and regenerate the current-state product model.",
+            change_notes: [],
+            features: [
+              {
+                feature_id: "FEAT-001",
+                feature_name: "Example feature",
+                description: "Example feature description.",
+                change_notes: [],
+                requirements: [
+                  {
+                    requirement_id: "REQ-001",
+                    description: "The system shall report gitignored branch-local artifacts.",
+                    change_notes: ["added", "changed"],
+                    acceptance_criteria: [
+                      {
+                        acceptance_criterion_id: "AC-001",
+                        text: "Given a branch delta, when artifacts are written, then they are stored in a gitignored branch-local folder.",
+                        change_notes: ["added", "changed"],
+                        tests: [],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    };
+
+    const markdown = renderBranchDeltaDocument(report);
+
+    expect(markdown).toContain("**REQ-001** *(added)*: The system shall report gitignored branch-local artifacts.");
+    expect(markdown).toContain("**AC-001** *(added)*: Given a branch delta, when artifacts are written, then they are stored in a gitignored branch-local folder.");
+    expect(markdown).not.toContain("**REQ-001** *(added; changed)*");
+    expect(markdown).not.toContain("**AC-001** *(added; changed)*");
+  });
 });
 

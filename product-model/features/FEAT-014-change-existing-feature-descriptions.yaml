@@ -1,0 +1,10 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+capability_id: CAP-001
+description: Updates existing feature descriptions incrementally as the product evolves.
+id: FEAT-014
+name: Change existing feature descriptions
+requirement_ids:
+  - REQ-016
+status: active

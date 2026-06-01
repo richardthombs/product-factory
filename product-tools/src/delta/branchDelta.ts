@@ -42,7 +42,7 @@ export async function branchDelta(options: BranchDeltaOptions): Promise<BranchDe
   const impactedEntities = buildImpactedEntities(changedEntities, currentState);
   const contextualChanges = buildContextualChanges(changedEntities, currentState);
   const summary = summarizeChangedEntities(changedEntities);
-  const changeCategories = inferChangeCategories(branchOnlyEvents);
+  const changeCategories = inferChangeCategories(branchOnlyEvents, changedEntities);
 
   return {
     base_branch: options.baseBranch,
@@ -118,6 +118,9 @@ function buildChangedEntities(
       case "AcceptanceCriterionAdded":
         changedEntities.acceptance_criteria.added.push({ acceptance_criterion_id: event.payload.acceptance_criterion_id });
         break;
+      case "FeatureChanged":
+        changedEntities.features.changed.push({ feature_id: event.payload.feature_id });
+        break;
       case "RequirementChanged":
         changedEntities.requirements.changed.push({ requirement_id: event.payload.requirement_id });
         break;
@@ -159,6 +162,37 @@ function buildChangedEntities(
         assertNever(event);
     }
   }
+
+  const addedCapabilityIds = new Set(changedEntities.capabilities.added.map((item) => item.capability_id));
+  changedEntities.capabilities.status_changed = changedEntities.capabilities.status_changed.filter(
+    (item) => !addedCapabilityIds.has(item.capability_id),
+  );
+
+  const addedFeatureIds = new Set(changedEntities.features.added.map((item) => item.feature_id));
+  changedEntities.features.changed = changedEntities.features.changed.filter(
+    (item) => !addedFeatureIds.has(item.feature_id),
+  );
+  changedEntities.features.moved = changedEntities.features.moved.filter(
+    (item) => !addedFeatureIds.has(item.feature_id),
+  );
+  changedEntities.features.deprecated = changedEntities.features.deprecated.filter(
+    (item) => !addedFeatureIds.has(item.feature_id),
+  );
+  changedEntities.features.status_changed = changedEntities.features.status_changed.filter(
+    (item) => !addedFeatureIds.has(item.feature_id),
+  );
+
+  const addedRequirementIds = new Set(changedEntities.requirements.added.map((item) => item.requirement_id));
+  changedEntities.requirements.changed = changedEntities.requirements.changed.filter(
+    (item) => !addedRequirementIds.has(item.requirement_id),
+  );
+
+  const addedAcceptanceCriterionIds = new Set(
+    changedEntities.acceptance_criteria.added.map((item) => item.acceptance_criterion_id),
+  );
+  changedEntities.acceptance_criteria.changed = changedEntities.acceptance_criteria.changed.filter(
+    (item) => !addedAcceptanceCriterionIds.has(item.acceptance_criterion_id),
+  );
 
   return changedEntities;
 }
@@ -552,6 +586,7 @@ function summarizeChangedEntities(changedEntities: BranchDeltaChangedEntities): 
 
 function inferChangeCategories(
   branchOnlyEvents: Awaited<ReturnType<typeof validateEvents>>["events"],
+  changedEntities: BranchDeltaChangedEntities,
 ): BranchDeltaChangeCategory[] {
   const categoryOrder: BranchDeltaChangeCategory[] = [
     "extend",
@@ -571,22 +606,19 @@ function inferChangeCategories(
       case "AcceptanceCriterionAdded":
         categories.add("extend");
         break;
+      case "FeatureChanged":
       case "RequirementChanged":
       case "AcceptanceCriterionChanged":
-        categories.add("refine");
         break;
       case "FeatureMovedToCapability":
-        categories.add("reshape");
         break;
       case "FeatureDeprecated":
-        categories.add("deprecate");
         break;
       case "TestCreated":
         categories.add("verify");
         break;
       case "FeatureStatusChanged":
       case "CapabilityStatusChanged":
-        categories.add("readiness");
         break;
       case "ProductCreated":
         categories.add("extend");
@@ -594,6 +626,26 @@ function inferChangeCategories(
       default:
         assertNever(event);
     }
+  }
+
+  if (
+    changedEntities.features.changed.length > 0
+    || changedEntities.requirements.changed.length > 0
+    || changedEntities.acceptance_criteria.changed.length > 0
+  ) {
+    categories.add("refine");
+  }
+  if (changedEntities.features.moved.length > 0) {
+    categories.add("reshape");
+  }
+  if (changedEntities.features.deprecated.length > 0) {
+    categories.add("deprecate");
+  }
+  if (
+    changedEntities.features.status_changed.length > 0
+    || changedEntities.capabilities.status_changed.length > 0
+  ) {
+    categories.add("readiness");
   }
 
   return categoryOrder.filter((category) => categories.has(category));
@@ -626,6 +678,11 @@ function entityRefsForEvent(event: Awaited<ReturnType<typeof validateEvents>>["e
         ...emptyEntityRefs(),
         requirement_ids: [event.payload.requirement_id],
         acceptance_criterion_ids: [event.payload.acceptance_criterion_id],
+      };
+    case "FeatureChanged":
+      return {
+        ...emptyEntityRefs(),
+        feature_ids: [event.payload.feature_id],
       };
     case "RequirementChanged":
       return {

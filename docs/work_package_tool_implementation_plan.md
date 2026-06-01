@@ -102,11 +102,11 @@ product-tools/src/cli/derive-work-packages.ts
 npm run derive-work-packages -- --base main
 ```
 
-Optional standard generated artifact path:
+Optional standard branch-local gitignored artifact path:
 
 ```text
-product-model/indexes/work-packages.yaml
-product-model/work-packages.md
+branch-delta/work-packages.yaml
+branch-delta/work-packages.md
 ```
 
 ---

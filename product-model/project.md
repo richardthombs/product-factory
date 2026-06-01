@@ -9,12 +9,12 @@ Event-sourced product knowledge system for agent-driven software delivery.
 
 - Product ID: PROD-001
 - Capabilities: 2
-- Features: 12
-- Requirements: 14
-- Acceptance Criteria: 23
-- Tests: 26
-- Projected from events: 80
-- Last event: EVT-20260531-0080 @ 2026-05-31T10:44:00.000Z
+- Features: 14
+- Requirements: 16
+- Acceptance Criteria: 26
+- Tests: 29
+- Projected from events: 101
+- Last event: EVT-20260601-0015 @ 2026-06-01T07:12:03.000Z
 
 # Capabilities
 
@@ -97,6 +97,16 @@ Requirements:
     - **AC-016**: Given an existing feature, when the set-feature-status helper is run with a new status, then the system records a FeatureStatusChanged event and projects the updated feature readiness state. `TEST-017`.
     - **AC-017**: Given an existing capability, when the set-capability-status helper is run with a new status, then the system records a CapabilityStatusChanged event and projects the updated capability readiness state. `TEST-018`.
 
+### FEAT-014 — Change existing feature descriptions
+
+Updates existing feature descriptions incrementally as the product evolves.
+
+Requirements:
+
+- **REQ-016**: The system shall provide a helper to change an existing feature description without rewriting accepted history.
+  - Acceptance criteria:
+    - **AC-026**: Given an existing feature, when the change-feature helper is run with a new description, then the system records a FeatureChanged event and projects the updated feature description. `TEST-029`.
+
 ## CAP-002 — Validate and project product model
 
 Enables users to validate product events and regenerate the current-state product model.
@@ -144,7 +154,7 @@ Requirements:
 
 ### FEAT-012 — Report branch delta
 
-Reports product events unique to a working branch relative to a base branch.
+Reports the net product delta between a working branch and a base branch.
 
 Requirements:
 
@@ -153,12 +163,23 @@ Requirements:
     - **AC-018**: Given a working branch with product events not contained in the base branch, when the branch-delta helper is run, then it reports the branch-only product events relative to the base branch. `TEST-019`.
     - **AC-019**: Given a base branch that cannot be resolved, when the branch-delta helper is run, then it fails instead of emitting a trusted branch-delta report. `TEST-020`.
 
-- **REQ-013**: The system shall summarize changed product entities and inferred change categories in the branch-delta report.
+- **REQ-013**: The system shall summarize net changed product entities and inferred change categories in the branch-delta report relative to the base branch.
   - Acceptance criteria:
-    - **AC-020**: Given branch-only product events affecting capabilities, features, requirements, acceptance criteria, or tests, when the branch-delta helper is run, then it reports the changed entities grouped by entity type and change kind. `TEST-021`.
-    - **AC-021**: Given branch-only product events spanning additive, refinement, reshaping, deprecation, verification, or readiness changes, when the branch-delta helper is run, then it reports the inferred change categories present in the branch delta. `TEST-022`.
+    - **AC-020**: Given branch-only product events affecting capabilities, features, requirements, acceptance criteria, or tests, when the branch-delta helper is run, then it reports changed entities grouped by entity type and change kind based on their net difference from the base branch. `TEST-021`.
+    - **AC-021**: Given entities that are added and then further refined only on the working branch, when the branch-delta helper is run, then it reports them as added and infers change categories from the net branch delta rather than intermediate branch-only churn. `TEST-022`.
 
-- **REQ-014**: The system shall report impacted product entities and write standard branch-delta artifacts for the current branch in machine-readable YAML and human-readable contextual Markdown.
+- **REQ-014**: The system shall report impacted product entities and write standard branch-delta artifacts for the current branch based on the net branch delta.
   - Acceptance criteria:
-    - **AC-022**: Given changed entities in the branch delta, when the branch-delta helper is run, then it reports the impacted capabilities, features, requirements, acceptance criteria, and tests related to those changes. `TEST-023`, `TEST-024`.
-    - **AC-023**: Given a working branch and base branch, when the branch-delta helper is run without a custom output path, then it writes product-model/indexes/branch-delta.yaml and product-model/branch-delta.md as generated artifacts, and the markdown presents changed entities in parent context with explicit change labels. `TEST-025`, `TEST-026`.
+    - **AC-022**: Given net changed entities in the branch delta, when the branch-delta helper is run, then it reports the impacted capabilities, features, requirements, acceptance criteria, and tests related to those changes. `TEST-023`, `TEST-024`.
+    - **AC-023**: Given a working branch and base branch, when the branch-delta helper is run without a custom output path, then it writes branch-delta/branch-delta.yaml and branch-delta/branch-delta.md as gitignored branch-local artifacts, and the markdown presents changed entities in parent context with explicit change labels. `TEST-025`, `TEST-026`.
+
+### FEAT-013 — Derive work packages from branch delta
+
+Derives deterministic implementation work packages from the net branch-delta report.
+
+Requirements:
+
+- **REQ-015**: The system shall derive deterministic work-package proposals from the net branch delta by grouping net changed scope into coherent implementation slices.
+  - Acceptance criteria:
+    - **AC-024**: Given a net branch delta with changed entities under one feature, when the derive-work-packages helper is run, then it emits a work-package proposal that groups that net changed scope under that feature. `TEST-027`.
+    - **AC-025**: Given a net branch delta with changed entities, when the derive-work-packages helper is run, then each derived work package includes its scoped capability, feature, requirement, acceptance-criterion, and test ids together with rationale and dependency information for that net changed scope. `TEST-028`.

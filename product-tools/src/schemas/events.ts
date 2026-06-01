@@ -61,6 +61,13 @@ export const acceptanceCriterionAddedPayloadSchema = z
   })
   .strict();
 
+export const featureChangedPayloadSchema = z
+  .object({
+    feature_id: z.string().regex(/^FEAT-[A-Z0-9-]+$/),
+    description: z.string().min(1),
+  })
+  .strict();
+
 export const requirementChangedPayloadSchema = z
   .object({
     requirement_id: z.string().regex(/^REQ-[A-Z0-9-]+$/),
@@ -123,6 +130,7 @@ const baseEventSchema = z
       "FeatureAdded",
       "RequirementAdded",
       "AcceptanceCriterionAdded",
+      "FeatureChanged",
       "RequirementChanged",
       "AcceptanceCriterionChanged",
       "FeatureMovedToCapability",
@@ -159,6 +167,10 @@ export const eventSchema = z.discriminatedUnion("type", [
   baseEventSchema.extend({
     type: z.literal("AcceptanceCriterionAdded"),
     payload: acceptanceCriterionAddedPayloadSchema,
+  }),
+  baseEventSchema.extend({
+    type: z.literal("FeatureChanged"),
+    payload: featureChangedPayloadSchema,
   }),
   baseEventSchema.extend({
     type: z.literal("RequirementChanged"),

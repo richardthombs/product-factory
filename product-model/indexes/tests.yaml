@@ -2,7 +2,7 @@
 # Do not edit directly.
 # To change this file, add or modify product events.
 product_id: PROD-001
-test_count: 26
+test_count: 29
 tests:
   - acceptance_criterion_id: AC-001
     file_path: product-tools/tests/createProduct.test.ts
@@ -108,3 +108,15 @@ tests:
     file_path: product-tools/tests/renderBranchDelta.test.ts
     id: TEST-026
     test_name: renders explicit labels for added, changed, moved, deprecated, and status transitions
+  - acceptance_criterion_id: AC-024
+    file_path: product-tools/tests/deriveWorkPackages.test.ts
+    id: TEST-027
+    test_name: groups changed scope under one feature into a deterministic work package
+  - acceptance_criterion_id: AC-025
+    file_path: product-tools/tests/deriveWorkPackages.test.ts
+    id: TEST-028
+    test_name: writes deterministic work-package artifacts for multiple derived packages
+  - acceptance_criterion_id: AC-026
+    file_path: product-tools/tests/changeFeature.test.ts
+    id: TEST-029
+    test_name: records a FeatureChanged event and projects the updated feature description

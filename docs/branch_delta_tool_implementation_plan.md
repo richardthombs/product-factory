@@ -175,10 +175,10 @@ Support:
 - JSON output
 - optional `--output <path>`
 
-Recommended generated path for checked-in or temporary artefacts:
+Recommended generated path for branch-local gitignored artefacts:
 
 ```text
-product-model/indexes/branch-delta.yaml
+branch-delta/branch-delta.yaml
 ```
 
 Only do this if it fits the repo’s generated-output policy.

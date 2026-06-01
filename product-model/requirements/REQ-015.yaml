@@ -1,0 +1,9 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-024
+  - AC-025
+description: The system shall derive deterministic work-package proposals from the net branch delta by grouping net changed scope into coherent implementation slices.
+feature_id: FEAT-013
+id: REQ-015

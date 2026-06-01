@@ -8,6 +8,7 @@ feature_ids:
   - FEAT-006
   - FEAT-007
   - FEAT-012
+  - FEAT-013
 id: CAP-002
 name: Validate and project product model
 status: active

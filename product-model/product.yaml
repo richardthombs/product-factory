@@ -5,15 +5,15 @@ capability_ids:
   - CAP-001
   - CAP-002
 counts:
-  acceptance_criteria: 23
+  acceptance_criteria: 26
   capabilities: 2
-  events: 80
-  features: 12
-  requirements: 14
-  tests: 26
+  events: 101
+  features: 14
+  requirements: 16
+  tests: 29
 description: Event-sourced product knowledge system for agent-driven software delivery.
 id: PROD-001
 name: Product Factory
 projection:
-  last_event_id: EVT-20260531-0080
-  last_occurred_at: 2026-05-31T10:44:00.000Z
+  last_event_id: EVT-20260601-0015
+  last_occurred_at: 2026-06-01T07:12:03.000Z

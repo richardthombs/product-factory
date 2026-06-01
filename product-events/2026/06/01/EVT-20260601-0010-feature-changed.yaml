@@ -1,0 +1,9 @@
+id: EVT-20260601-0010
+type: FeatureChanged
+occurred_at: 2026-06-01T06:58:09.000Z
+actor:
+  type: agent
+  id: feature_specifier
+payload:
+  feature_id: FEAT-012
+  description: Reports the net product delta between a working branch and a base branch.

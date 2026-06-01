@@ -10,6 +10,7 @@ feature_ids:
   - FEAT-009
   - FEAT-010
   - FEAT-011
+  - FEAT-014
 id: CAP-001
 name: Manage product model structure
 status: active

@@ -4,6 +4,6 @@
 acceptance_criterion_ids:
   - AC-022
   - AC-023
-description: The system shall report impacted product entities and write standard branch-delta artifacts for the current branch in machine-readable YAML and human-readable contextual Markdown.
+description: The system shall report impacted product entities and write standard branch-delta artifacts for the current branch based on the net branch delta.
 feature_id: FEAT-012
 id: REQ-014

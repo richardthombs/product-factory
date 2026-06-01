@@ -1,0 +1,14 @@
+id: EVT-20260531-0081
+type: FeatureAdded
+occurred_at: 2026-05-31T10:45:00.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-008
+payload:
+  feature_id: FEAT-013
+  capability_id: CAP-002
+  name: Derive work packages from branch delta
+  description: Derives deterministic implementation work packages from the
+    branch-delta report.

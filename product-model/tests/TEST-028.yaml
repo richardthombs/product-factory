@@ -1,0 +1,7 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_id: AC-025
+file_path: product-tools/tests/deriveWorkPackages.test.ts
+id: TEST-028
+test_name: writes deterministic work-package artifacts for multiple derived packages

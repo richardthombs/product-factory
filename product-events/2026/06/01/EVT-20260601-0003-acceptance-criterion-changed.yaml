@@ -1,0 +1,12 @@
+id: EVT-20260601-0003
+type: AcceptanceCriterionChanged
+occurred_at: 2026-06-01T06:58:02.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+payload:
+  acceptance_criterion_id: AC-020
+  text: Given branch-only product events affecting capabilities, features,
+    requirements, acceptance criteria, or tests, when the branch-delta helper is
+    run, then it reports changed entities grouped by entity type and change kind
+    based on their net difference from the base branch.

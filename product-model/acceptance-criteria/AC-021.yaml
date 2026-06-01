@@ -5,4 +5,4 @@ id: AC-021
 requirement_id: REQ-013
 tests:
   - TEST-022
-text: Given branch-only product events spanning additive, refinement, reshaping, deprecation, verification, or readiness changes, when the branch-delta helper is run, then it reports the inferred change categories present in the branch delta.
+text: Given entities that are added and then further refined only on the working branch, when the branch-delta helper is run, then it reports them as added and infers change categories from the net branch delta rather than intermediate branch-only churn.

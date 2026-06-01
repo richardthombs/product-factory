@@ -331,6 +331,310 @@ describe("branchDelta", () => {
     });
   });
 
+  it("treats requirements and acceptance criteria added then refined on the branch as added in the delta report", async () => {
+    const repoRoot = await mkdtemp(path.join(os.tmpdir(), "branch-delta-added-then-refined-"));
+    tempDirs.push(repoRoot);
+
+    await execGit(["init", "-b", "main"], repoRoot);
+    await execGit(["config", "user.name", "Test User"], repoRoot);
+    await execGit(["config", "user.email", "test@example.com"], repoRoot);
+
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0001-product-created.yaml", [
+      "id: EVT-20260601-0001",
+      "type: ProductCreated",
+      "occurred_at: 2026-06-01T09:00:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: product_model_steward",
+      "payload:",
+      "  product_id: PROD-001",
+      "  name: Product Factory",
+      "  description: Event-sourced product knowledge system for agent-driven software delivery.",
+    ]);
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0002-capability-added.yaml", [
+      "id: EVT-20260601-0002",
+      "type: CapabilityAdded",
+      "occurred_at: 2026-06-01T09:01:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: capability_modeller",
+      "payload:",
+      "  capability_id: CAP-001",
+      "  name: Capability A",
+      "  description: First capability.",
+    ]);
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0003-feature-added.yaml", [
+      "id: EVT-20260601-0003",
+      "type: FeatureAdded",
+      "occurred_at: 2026-06-01T09:02:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: feature_specifier",
+      "payload:",
+      "  feature_id: FEAT-001",
+      "  capability_id: CAP-001",
+      "  name: Feature A",
+      "  description: First feature.",
+    ]);
+
+    await execGit(["add", "."], repoRoot);
+    await execGit(["commit", "-m", "Base branch state"], repoRoot);
+    await execGit(["checkout", "-b", "feature/add-and-refine"], repoRoot);
+
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0004-requirement-added.yaml", [
+      "id: EVT-20260601-0004",
+      "type: RequirementAdded",
+      "occurred_at: 2026-06-01T09:03:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: requirement_analyst",
+      "payload:",
+      "  requirement_id: REQ-001",
+      "  feature_id: FEAT-001",
+      "  description: The system shall report branch-local artifacts.",
+    ]);
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0005-acceptance-criterion-added.yaml", [
+      "id: EVT-20260601-0005",
+      "type: AcceptanceCriterionAdded",
+      "occurred_at: 2026-06-01T09:04:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: requirement_analyst",
+      "payload:",
+      "  acceptance_criterion_id: AC-001",
+      "  requirement_id: REQ-001",
+      "  text: Given a branch delta, when artifacts are written, then they are stored locally.",
+    ]);
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0006-requirement-changed.yaml", [
+      "id: EVT-20260601-0006",
+      "type: RequirementChanged",
+      "occurred_at: 2026-06-01T09:05:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: requirement_analyst",
+      "payload:",
+      "  requirement_id: REQ-001",
+      "  description: The system shall report gitignored branch-local artifacts.",
+    ]);
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0007-acceptance-criterion-changed.yaml", [
+      "id: EVT-20260601-0007",
+      "type: AcceptanceCriterionChanged",
+      "occurred_at: 2026-06-01T09:06:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: requirement_analyst",
+      "payload:",
+      "  acceptance_criterion_id: AC-001",
+      "  text: Given a branch delta, when artifacts are written, then they are stored in a gitignored branch-local folder.",
+    ]);
+
+    const report = await branchDelta({
+      baseBranch: "main",
+      cwd: repoRoot,
+    });
+
+    expect(report.summary).toEqual({
+      capabilities_added: 0,
+      capabilities_changed: 0,
+      capabilities_status_changed: 0,
+      features_added: 0,
+      features_changed: 0,
+      features_moved: 0,
+      features_deprecated: 0,
+      features_status_changed: 0,
+      requirements_added: 1,
+      requirements_changed: 0,
+      acceptance_criteria_added: 1,
+      acceptance_criteria_changed: 0,
+      tests_added: 0,
+    });
+    expect(report.change_categories).toEqual(["extend"]);
+    expect(report.changed_entities.requirements).toEqual({
+      added: [{ requirement_id: "REQ-001" }],
+      changed: [],
+    });
+    expect(report.changed_entities.acceptance_criteria).toEqual({
+      added: [{ acceptance_criterion_id: "AC-001" }],
+      changed: [],
+    });
+    expect(report.contextual_changes.capabilities[0].features[0].requirements[0].change_notes).toEqual(["added"]);
+    expect(report.contextual_changes.capabilities[0].features[0].requirements[0].description).toBe(
+      "The system shall report gitignored branch-local artifacts.",
+    );
+    expect(report.contextual_changes.capabilities[0].features[0].requirements[0].acceptance_criteria[0].change_notes).toEqual(["added"]);
+    expect(report.contextual_changes.capabilities[0].features[0].requirements[0].acceptance_criteria[0].text).toBe(
+      "Given a branch delta, when artifacts are written, then they are stored in a gitignored branch-local folder.",
+    );
+  });
+
+  it("treats capabilities and features added then evolved on the branch as added in the delta report", async () => {
+    const repoRoot = await mkdtemp(path.join(os.tmpdir(), "branch-delta-added-feature-evolved-"));
+    tempDirs.push(repoRoot);
+
+    await execGit(["init", "-b", "main"], repoRoot);
+    await execGit(["config", "user.name", "Test User"], repoRoot);
+    await execGit(["config", "user.email", "test@example.com"], repoRoot);
+
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0001-product-created.yaml", [
+      "id: EVT-20260601-0001",
+      "type: ProductCreated",
+      "occurred_at: 2026-06-01T09:00:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: product_model_steward",
+      "payload:",
+      "  product_id: PROD-001",
+      "  name: Product Factory",
+      "  description: Event-sourced product knowledge system for agent-driven software delivery.",
+    ]);
+
+    await execGit(["add", "."], repoRoot);
+    await execGit(["commit", "-m", "Base branch state"], repoRoot);
+    await execGit(["checkout", "-b", "feature/add-and-evolve-feature"], repoRoot);
+
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0002-capability-added.yaml", [
+      "id: EVT-20260601-0002",
+      "type: CapabilityAdded",
+      "occurred_at: 2026-06-01T09:01:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: capability_modeller",
+      "payload:",
+      "  capability_id: CAP-001",
+      "  name: Capability A",
+      "  description: First capability.",
+    ]);
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0003-capability-status-changed.yaml", [
+      "id: EVT-20260601-0003",
+      "type: CapabilityStatusChanged",
+      "occurred_at: 2026-06-01T09:02:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: product_model_steward",
+      "payload:",
+      "  capability_id: CAP-001",
+      "  status: scoped",
+      "  reason: Scoped on branch.",
+    ]);
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0004-capability-added.yaml", [
+      "id: EVT-20260601-0004",
+      "type: CapabilityAdded",
+      "occurred_at: 2026-06-01T09:03:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: capability_modeller",
+      "payload:",
+      "  capability_id: CAP-002",
+      "  name: Capability B",
+      "  description: Second capability.",
+    ]);
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0005-feature-added.yaml", [
+      "id: EVT-20260601-0005",
+      "type: FeatureAdded",
+      "occurred_at: 2026-06-01T09:04:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: feature_specifier",
+      "payload:",
+      "  feature_id: FEAT-001",
+      "  capability_id: CAP-001",
+      "  name: Feature A",
+      "  description: Initial feature description.",
+    ]);
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0006-feature-changed.yaml", [
+      "id: EVT-20260601-0006",
+      "type: FeatureChanged",
+      "occurred_at: 2026-06-01T09:05:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: feature_specifier",
+      "payload:",
+      "  feature_id: FEAT-001",
+      "  description: Final feature description.",
+    ]);
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0007-feature-moved-to-capability.yaml", [
+      "id: EVT-20260601-0007",
+      "type: FeatureMovedToCapability",
+      "occurred_at: 2026-06-01T09:06:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: product_model_steward",
+      "payload:",
+      "  feature_id: FEAT-001",
+      "  capability_id: CAP-002",
+    ]);
+    await writeEvent(repoRoot, "product-events/2026/06/01/EVT-20260601-0008-feature-status-changed.yaml", [
+      "id: EVT-20260601-0008",
+      "type: FeatureStatusChanged",
+      "occurred_at: 2026-06-01T09:07:00.000Z",
+      "actor:",
+      "  type: agent",
+      "  id: product_model_steward",
+      "payload:",
+      "  feature_id: FEAT-001",
+      "  status: implementation_ready",
+      "  reason: Ready on branch.",
+    ]);
+
+    const report = await branchDelta({
+      baseBranch: "main",
+      cwd: repoRoot,
+    });
+
+    expect(report.summary).toEqual({
+      capabilities_added: 2,
+      capabilities_changed: 0,
+      capabilities_status_changed: 0,
+      features_added: 1,
+      features_changed: 0,
+      features_moved: 0,
+      features_deprecated: 0,
+      features_status_changed: 0,
+      requirements_added: 0,
+      requirements_changed: 0,
+      acceptance_criteria_added: 0,
+      acceptance_criteria_changed: 0,
+      tests_added: 0,
+    });
+    expect(report.change_categories).toEqual(["extend"]);
+    expect(report.changed_entities.capabilities).toEqual({
+      added: [{ capability_id: "CAP-001" }, { capability_id: "CAP-002" }],
+      changed: [],
+      status_changed: [],
+    });
+    expect(report.changed_entities.features).toEqual({
+      added: [{ feature_id: "FEAT-001" }],
+      changed: [],
+      moved: [],
+      deprecated: [],
+      status_changed: [],
+    });
+    expect(report.contextual_changes.capabilities).toEqual([
+      {
+        capability_id: "CAP-001",
+        capability_name: "Capability A",
+        description: "First capability.",
+        change_notes: ["added"],
+        features: [],
+      },
+      {
+        capability_id: "CAP-002",
+        capability_name: "Capability B",
+        description: "Second capability.",
+        change_notes: ["added"],
+        features: [
+          {
+            feature_id: "FEAT-001",
+            feature_name: "Feature A",
+            description: "Final feature description.",
+            change_notes: ["added"],
+            requirements: [],
+          },
+        ],
+      },
+    ]);
+  });
+
 // AC: AC-021
   it("reports inferred change categories present in the branch delta", async () => {
     const repoRoot = await mkdtemp(path.join(os.tmpdir(), "branch-delta-categories-"));
@@ -557,6 +861,8 @@ describe("branchDelta", () => {
 
     expect(path.basename(result.yamlPath)).toBe("branch-delta.yaml");
     expect(path.basename(result.markdownPath)).toBe("branch-delta.md");
+    expect(path.dirname(result.yamlPath)).toBe(path.join(repoRoot, "branch-delta"));
+    expect(path.dirname(result.markdownPath)).toBe(path.join(repoRoot, "branch-delta"));
 
     const yaml = await readFile(result.yamlPath, "utf8");
     expect(yaml).toContain("# Generated from /product-events.");

@@ -1,0 +1,14 @@
+id: EVT-20260531-0082
+type: RequirementAdded
+occurred_at: 2026-05-31T10:45:01.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-008
+payload:
+  requirement_id: REQ-015
+  feature_id: FEAT-013
+  description: The system shall derive deterministic work-package proposals from
+    the branch delta by grouping changed scope into coherent implementation
+    slices.

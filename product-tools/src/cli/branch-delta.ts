@@ -9,7 +9,7 @@ async function main(): Promise<void> {
   const result = await writeBranchDeltaArtifacts({
     baseBranch: requiredArg(args, "base"),
     eventsRoot: singleArg(args, "events-root"),
-    modelRoot: singleArg(args, "model-root"),
+    outputRoot: singleArg(args, "output-root") ?? singleArg(args, "model-root"),
   });
 
   console.log(`Wrote branch delta YAML to ${result.yamlPath}`);

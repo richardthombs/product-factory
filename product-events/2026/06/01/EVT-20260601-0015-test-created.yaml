@@ -1,0 +1,11 @@
+id: EVT-20260601-0015
+type: TestCreated
+occurred_at: 2026-06-01T07:12:03.000Z
+actor:
+  type: agent
+  id: test_agent
+payload:
+  test_id: TEST-029
+  acceptance_criterion_id: AC-026
+  file_path: product-tools/tests/changeFeature.test.ts
+  test_name: records a FeatureChanged event and projects the updated feature description

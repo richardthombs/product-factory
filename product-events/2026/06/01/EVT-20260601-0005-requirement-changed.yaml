@@ -1,0 +1,11 @@
+id: EVT-20260601-0005
+type: RequirementChanged
+occurred_at: 2026-06-01T06:58:04.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+payload:
+  requirement_id: REQ-014
+  description: The system shall report impacted product entities and write
+    standard branch-delta artifacts for the current branch based on the net
+    branch delta.

@@ -1,0 +1,11 @@
+id: EVT-20260531-0086
+type: TestCreated
+occurred_at: 2026-05-31T10:46:01.000Z
+actor:
+  type: agent
+  id: test_agent
+payload:
+  test_id: TEST-028
+  acceptance_criterion_id: AC-025
+  file_path: product-tools/tests/deriveWorkPackages.test.ts
+  test_name: writes deterministic work-package artifacts for multiple derived packages

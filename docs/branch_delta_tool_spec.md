@@ -43,7 +43,7 @@ npm run branch-delta -- \
   --base main \
   --events-root ./product-events \
   --format yaml \
-  --output ./product-model/indexes/branch-delta.yaml
+  --output ./branch-delta/branch-delta.yaml
 ```
 
 ---

@@ -1,0 +1,11 @@
+id: EVT-20260601-0013
+type: RequirementAdded
+occurred_at: 2026-06-01T07:12:01.000Z
+actor:
+  type: agent
+  id: feature_specifier
+payload:
+  requirement_id: REQ-016
+  feature_id: FEAT-014
+  description: The system shall provide a helper to change an existing feature
+    description without rewriting accepted history.

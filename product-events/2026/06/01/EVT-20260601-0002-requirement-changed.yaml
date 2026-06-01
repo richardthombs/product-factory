@@ -1,0 +1,11 @@
+id: EVT-20260601-0002
+type: RequirementChanged
+occurred_at: 2026-06-01T06:58:01.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+payload:
+  requirement_id: REQ-013
+  description: The system shall summarize net changed product entities and
+    inferred change categories in the branch-delta report relative to the base
+    branch.

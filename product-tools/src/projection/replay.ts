@@ -95,6 +95,17 @@ export function replayEvents(events: LoadedEvent[]): ProductModelState {
         requirement.acceptanceCriterionIds = [...requirement.acceptanceCriterionIds, nextAcceptanceCriterion.id].sort();
         break;
       }
+      case "FeatureChanged": {
+        const feature = features.get(event.payload.feature_id);
+        if (!feature) {
+          throw new Error(
+            `Cannot replay FeatureChanged from ${path}: missing feature '${event.payload.feature_id}'`,
+          );
+        }
+
+        feature.description = event.payload.description;
+        break;
+      }
       case "RequirementChanged": {
         const requirement = requirements.get(event.payload.requirement_id);
         if (!requirement) {

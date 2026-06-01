@@ -11,7 +11,7 @@ afterEach(async () => {
 });
 
 describe("validateEvents evolution events", () => {
-  it("reports missing references for RequirementChanged and AcceptanceCriterionChanged", async () => {
+  it("reports missing references for FeatureChanged, RequirementChanged, and AcceptanceCriterionChanged", async () => {
     const tempRoot = await mkdtemp(path.join(os.tmpdir(), "validate-evolution-events-"));
     const eventsRoot = path.join(tempRoot, "product-events");
     tempDirs.push(tempRoot);
@@ -37,11 +37,28 @@ describe("validateEvents evolution events", () => {
     );
 
     await writeFile(
-      path.join(eventsRoot, "2026", "06", "01", "EVT-20260601-0002-requirement-changed.yaml"),
+      path.join(eventsRoot, "2026", "06", "01", "EVT-20260601-0002-feature-changed.yaml"),
       [
         "id: EVT-20260601-0002",
-        "type: RequirementChanged",
+        "type: FeatureChanged",
         "occurred_at: 2026-06-01T09:01:00.000Z",
+        "actor:",
+        "  type: agent",
+        "  id: feature_specifier",
+        "payload:",
+        "  feature_id: FEAT-999",
+        "  description: Reports the branch delta in final net form.",
+        "",
+      ].join("\n"),
+      "utf8",
+    );
+
+    await writeFile(
+      path.join(eventsRoot, "2026", "06", "01", "EVT-20260601-0003-requirement-changed.yaml"),
+      [
+        "id: EVT-20260601-0003",
+        "type: RequirementChanged",
+        "occurred_at: 2026-06-01T09:02:00.000Z",
         "actor:",
         "  type: agent",
         "  id: requirement_analyst",
@@ -54,11 +71,11 @@ describe("validateEvents evolution events", () => {
     );
 
     await writeFile(
-      path.join(eventsRoot, "2026", "06", "01", "EVT-20260601-0003-acceptance-criterion-changed.yaml"),
+      path.join(eventsRoot, "2026", "06", "01", "EVT-20260601-0004-acceptance-criterion-changed.yaml"),
       [
-        "id: EVT-20260601-0003",
+        "id: EVT-20260601-0004",
         "type: AcceptanceCriterionChanged",
-        "occurred_at: 2026-06-01T09:02:00.000Z",
+        "occurred_at: 2026-06-01T09:03:00.000Z",
         "actor:",
         "  type: agent",
         "  id: requirement_analyst",
@@ -74,11 +91,15 @@ describe("validateEvents evolution events", () => {
 
     expect(result.errors).toEqual([
       {
-        path: path.join(eventsRoot, "2026", "06", "01", "EVT-20260601-0002-requirement-changed.yaml"),
+        path: path.join(eventsRoot, "2026", "06", "01", "EVT-20260601-0002-feature-changed.yaml"),
+        message: "FeatureChanged references missing feature 'FEAT-999'",
+      },
+      {
+        path: path.join(eventsRoot, "2026", "06", "01", "EVT-20260601-0003-requirement-changed.yaml"),
         message: "RequirementChanged references missing requirement 'REQ-999'",
       },
       {
-        path: path.join(eventsRoot, "2026", "06", "01", "EVT-20260601-0003-acceptance-criterion-changed.yaml"),
+        path: path.join(eventsRoot, "2026", "06", "01", "EVT-20260601-0004-acceptance-criterion-changed.yaml"),
         message: "AcceptanceCriterionChanged references missing acceptance criterion 'AC-999'",
       },
     ]);

@@ -1,0 +1,13 @@
+id: EVT-20260601-0009
+type: AcceptanceCriterionChanged
+occurred_at: 2026-06-01T06:58:08.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+payload:
+  acceptance_criterion_id: AC-025
+  text: Given a net branch delta with changed entities, when the
+    derive-work-packages helper is run, then each derived work package includes
+    its scoped capability, feature, requirement, acceptance-criterion, and test
+    ids together with rationale and dependency information for that net changed
+    scope.

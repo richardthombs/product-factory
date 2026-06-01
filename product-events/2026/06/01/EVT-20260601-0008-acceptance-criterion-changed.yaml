@@ -1,0 +1,11 @@
+id: EVT-20260601-0008
+type: AcceptanceCriterionChanged
+occurred_at: 2026-06-01T06:58:07.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+payload:
+  acceptance_criterion_id: AC-024
+  text: Given a net branch delta with changed entities under one feature, when the
+    derive-work-packages helper is run, then it emits a work-package proposal
+    that groups that net changed scope under that feature.

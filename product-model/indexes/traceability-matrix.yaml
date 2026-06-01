@@ -102,6 +102,17 @@ capabilities:
             description: The system shall record capability and feature status changes and project the resulting readiness metadata.
             requirement_id: REQ-011
         status: active
+      - feature_id: FEAT-014
+        feature_name: Change existing feature descriptions
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-026
+                tests:
+                  - TEST-029
+                text: Given an existing feature, when the change-feature helper is run with a new description, then the system records a FeatureChanged event and projects the updated feature description.
+            description: The system shall provide a helper to change an existing feature description without rewriting accepted history.
+            requirement_id: REQ-016
+        status: active
   - capability_id: CAP-002
     capability_name: Validate and project product model
     features:
@@ -172,30 +183,45 @@ capabilities:
               - acceptance_criterion_id: AC-020
                 tests:
                   - TEST-021
-                text: Given branch-only product events affecting capabilities, features, requirements, acceptance criteria, or tests, when the branch-delta helper is run, then it reports the changed entities grouped by entity type and change kind.
+                text: Given branch-only product events affecting capabilities, features, requirements, acceptance criteria, or tests, when the branch-delta helper is run, then it reports changed entities grouped by entity type and change kind based on their net difference from the base branch.
               - acceptance_criterion_id: AC-021
                 tests:
                   - TEST-022
-                text: Given branch-only product events spanning additive, refinement, reshaping, deprecation, verification, or readiness changes, when the branch-delta helper is run, then it reports the inferred change categories present in the branch delta.
-            description: The system shall summarize changed product entities and inferred change categories in the branch-delta report.
+                text: Given entities that are added and then further refined only on the working branch, when the branch-delta helper is run, then it reports them as added and infers change categories from the net branch delta rather than intermediate branch-only churn.
+            description: The system shall summarize net changed product entities and inferred change categories in the branch-delta report relative to the base branch.
             requirement_id: REQ-013
           - acceptance_criteria:
               - acceptance_criterion_id: AC-022
                 tests:
                   - TEST-023
                   - TEST-024
-                text: Given changed entities in the branch delta, when the branch-delta helper is run, then it reports the impacted capabilities, features, requirements, acceptance criteria, and tests related to those changes.
+                text: Given net changed entities in the branch delta, when the branch-delta helper is run, then it reports the impacted capabilities, features, requirements, acceptance criteria, and tests related to those changes.
               - acceptance_criterion_id: AC-023
                 tests:
                   - TEST-025
                   - TEST-026
-                text: Given a working branch and base branch, when the branch-delta helper is run without a custom output path, then it writes product-model/indexes/branch-delta.yaml and product-model/branch-delta.md as generated artifacts, and the markdown presents changed entities in parent context with explicit change labels.
-            description: The system shall report impacted product entities and write standard branch-delta artifacts for the current branch in machine-readable YAML and human-readable contextual Markdown.
+                text: Given a working branch and base branch, when the branch-delta helper is run without a custom output path, then it writes branch-delta/branch-delta.yaml and branch-delta/branch-delta.md as gitignored branch-local artifacts, and the markdown presents changed entities in parent context with explicit change labels.
+            description: The system shall report impacted product entities and write standard branch-delta artifacts for the current branch based on the net branch delta.
             requirement_id: REQ-014
+        status: active
+      - feature_id: FEAT-013
+        feature_name: Derive work packages from branch delta
+        requirements:
+          - acceptance_criteria:
+              - acceptance_criterion_id: AC-024
+                tests:
+                  - TEST-027
+                text: Given a net branch delta with changed entities under one feature, when the derive-work-packages helper is run, then it emits a work-package proposal that groups that net changed scope under that feature.
+              - acceptance_criterion_id: AC-025
+                tests:
+                  - TEST-028
+                text: Given a net branch delta with changed entities, when the derive-work-packages helper is run, then each derived work package includes its scoped capability, feature, requirement, acceptance-criterion, and test ids together with rationale and dependency information for that net changed scope.
+            description: The system shall derive deterministic work-package proposals from the net branch delta by grouping net changed scope into coherent implementation slices.
+            requirement_id: REQ-015
         status: active
 product_id: PROD-001
 projected_from:
-  event_count: 80
-  last_event_id: EVT-20260531-0080
-  last_occurred_at: 2026-05-31T10:44:00.000Z
-  test_count: 26
+  event_count: 101
+  last_event_id: EVT-20260601-0015
+  last_occurred_at: 2026-06-01T07:12:03.000Z
+  test_count: 29

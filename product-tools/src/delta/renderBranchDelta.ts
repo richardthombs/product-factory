@@ -143,8 +143,10 @@ function normalizeChangeNotes(notes: string[]): { labels: string[]; details: str
     labels.push(note);
   }
 
+  const uniqueLabels = [...new Set(labels)].filter((label) => !(labels.includes("added") && label === "changed"));
+
   return {
-    labels: [...new Set(labels)],
+    labels: uniqueLabels,
     details,
   };
 }

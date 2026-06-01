@@ -1,0 +1,12 @@
+id: EVT-20260601-0014
+type: AcceptanceCriterionAdded
+occurred_at: 2026-06-01T07:12:02.000Z
+actor:
+  type: agent
+  id: feature_specifier
+payload:
+  acceptance_criterion_id: AC-026
+  requirement_id: REQ-016
+  text: Given an existing feature, when the change-feature helper is run with a
+    new description, then the system records a FeatureChanged event and projects
+    the updated feature description.

@@ -1,0 +1,12 @@
+id: EVT-20260601-0004
+type: AcceptanceCriterionChanged
+occurred_at: 2026-06-01T06:58:03.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+payload:
+  acceptance_criterion_id: AC-021
+  text: Given entities that are added and then further refined only on the working
+    branch, when the branch-delta helper is run, then it reports them as added
+    and infers change categories from the net branch delta rather than
+    intermediate branch-only churn.

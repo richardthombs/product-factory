@@ -1,0 +1,15 @@
+id: EVT-20260531-0084
+type: AcceptanceCriterionAdded
+occurred_at: 2026-05-31T10:45:03.000Z
+actor:
+  type: agent
+  id: feature_specifier
+source:
+  change_proposal_id: CHG-008
+payload:
+  acceptance_criterion_id: AC-025
+  requirement_id: REQ-015
+  text: Given a branch delta with changed entities, when the derive-work-packages
+    helper is run, then each derived work package includes its scoped
+    capability, feature, requirement, acceptance-criterion, and test ids
+    together with rationale and dependency information.

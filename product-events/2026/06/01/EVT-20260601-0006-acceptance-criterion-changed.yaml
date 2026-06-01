@@ -1,0 +1,11 @@
+id: EVT-20260601-0006
+type: AcceptanceCriterionChanged
+occurred_at: 2026-06-01T06:58:05.000Z
+actor:
+  type: agent
+  id: requirement_analyst
+payload:
+  acceptance_criterion_id: AC-022
+  text: Given net changed entities in the branch delta, when the branch-delta
+    helper is run, then it reports the impacted capabilities, features,
+    requirements, acceptance criteria, and tests related to those changes.

@@ -12,6 +12,7 @@ capabilities:
       - FEAT-009
       - FEAT-010
       - FEAT-011
+      - FEAT-014
     status: active
   - capability_id: CAP-002
     capability_name: Validate and project product model
@@ -21,5 +22,6 @@ capabilities:
       - FEAT-006
       - FEAT-007
       - FEAT-012
+      - FEAT-013
     status: active
 product_id: PROD-001

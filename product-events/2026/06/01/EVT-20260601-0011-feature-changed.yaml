@@ -1,0 +1,9 @@
+id: EVT-20260601-0011
+type: FeatureChanged
+occurred_at: 2026-06-01T06:58:10.000Z
+actor:
+  type: agent
+  id: feature_specifier
+payload:
+  feature_id: FEAT-013
+  description: Derives deterministic implementation work packages from the net branch-delta report.

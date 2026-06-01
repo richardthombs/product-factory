@@ -1,0 +1,8 @@
+# Generated from /product-events.
+# Do not edit directly.
+# To change this file, add or modify product events.
+acceptance_criterion_ids:
+  - AC-026
+description: The system shall provide a helper to change an existing feature description without rewriting accepted history.
+feature_id: FEAT-014
+id: REQ-016
